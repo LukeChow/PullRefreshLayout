@@ -239,7 +239,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  下拉刷新，有很多框架是通过判断 RecyclerView 的第一个 view 的 top 是否为 0 来触发下拉动作。VLayout 里在处理背景、悬浮态的时候加入了一些对 LayoutManager 不可见的 View，但又真实存在与 RecyclerView 的视图树里，建议使用 layoutManager.getChildAt(0) 来获取第一个 view。
 <br/>
 <br/>
-可复写刷新判断
+解决办法：可复写刷新判断
 ```
     @Override
     public boolean isTargetAbleScrollUp() {
