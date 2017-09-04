@@ -1,6 +1,9 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +18,16 @@ import com.yan.refreshloadlayouttest.widget.PhoenixHeader;
 import com.yan.refreshloadlayouttest.widget.fungame.FunGameBattleCityHeader;
 import com.yan.refreshloadlayouttest.widget.fungame.FunGameHitBlockHeader;
 
+import java.lang.ref.WeakReference;
+
 import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RefreshFragment extends Fragment {
-    View root;
+    private PullRefreshLayout refreshLayout;
+    private View root;
 
     public static RefreshFragment getInstance(int index) {
         RefreshFragment refreshFragment = new RefreshFragment();
@@ -47,14 +53,8 @@ public class RefreshFragment extends Fragment {
     }
 
     private void init() {
-        final PullRefreshLayout refreshLayout = (PullRefreshLayout) root.findViewById(R.id.refreshLayout);
+        refreshLayout = (PullRefreshLayout) root.findViewById(R.id.refreshLayout);
         initHeader(refreshLayout);
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.autoRefresh();
-            }
-        }, 200);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override
             public void onRefresh() {
@@ -78,7 +78,7 @@ public class RefreshFragment extends Fragment {
             case 2:
                 refreshLayout.setHeaderView(new FunGameHitBlockHeader(getContext(), refreshLayout));
                 break;
-          case 3:
+            case 3:
                 refreshLayout.setHeaderView(new FunGameBattleCityHeader(getContext(), refreshLayout));
                 break;
         }
@@ -106,6 +106,79 @@ public class RefreshFragment extends Fragment {
         Glide.with(this)
                 .load(R.drawable.loading_bg)
                 .into((ImageView) root.findViewById(R.id.iv7));
+    }
+
+    private void onLazyLoad() {
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.autoRefresh();
+            }
+        }, 300);
+    }
+
+    /**
+     * Lazy load
+     */
+    private boolean isLazyLoad = false;
+    private boolean isActivityCreate = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (isActivityCreate) {
+                if (!isLazyLoad) {
+                    onLazyLoad();
+                    isLazyLoad = true;
+                }
+            } else if (!isLazyLoad) {
+                lazyHandler.sendEmptyMessage(1);
+            }
+        } else {
+            lazyHandler.removeMessages(1);
+        }
+    }
+
+    private LazyHandler lazyHandler = new LazyHandler(this);
+
+    private static class LazyHandler extends Handler {
+        private WeakReference<RefreshFragment> reference;
+
+        private LazyHandler(RefreshFragment refreshFragment) {
+            reference = new WeakReference<>(refreshFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            RefreshFragment rf = reference.get();
+            if (rf != null) {
+                if (msg.what == 1) {
+                    if (!rf.isActivityCreate) {
+                        sendEmptyMessageDelayed(1, 10);
+                        return;
+                    }
+                    rf.onLazyLoad();
+                    rf.isLazyLoad = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            isLazyLoad = savedInstanceState.getBoolean("isLazyLoad");
+        }
+
+        isActivityCreate = true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isLazyLoad", isLazyLoad);
     }
 
 }

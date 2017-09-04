@@ -2,6 +2,7 @@ package com.yan.refreshloadlayouttest.testactivity;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -67,6 +68,7 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.e("onRefresh", "onRefresh: " + CommonActivity2.this);
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
