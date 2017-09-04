@@ -115,6 +115,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean isHeaderFront = false;
     private boolean isFooterFront = false;
 
+    /**
+     * is Aways Elastic Buffer
+     */
+    private boolean isAwaysElasticBuffer = true;
+
     //--------------------START|| values can modify in the lib only ||START------------------
 
     /**
@@ -419,9 +424,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             }
 
             if (!isOverScrollTrigger && !isTargetAbleScrollUp() && currScrollOffset < 0 && moveDistance >= 0) {
-                overScrollDell(1, currScrollOffset);
+                overScrollDell(1, currScrollOffset, false);
             } else if (!isOverScrollTrigger && !isTargetAbleScrollDown() && currScrollOffset > 0 && moveDistance <= 0) {
-                overScrollDell(2, currScrollOffset);
+                overScrollDell(2, currScrollOffset, false);
             }
         }
     }
@@ -464,9 +469,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (targetView instanceof RecyclerView && ((type == 2 && !CommonUtils.canChildScrollUp(targetView))
                 || (type == 1 && !CommonUtils.canChildScrollDown(targetView)))) {
-            overScrollDell(type, tempDistance);
+            overScrollDell(type, tempDistance, false);
             return true;
         }
+        if (isAwaysElasticBuffer && overScrollAnimator != null && !overScrollAnimator.isRunning()) {
+            overScrollDell(type, tempDistance, true);
+        }
+
         isScrollAbleViewBackScroll = true;
         return false;
     }
@@ -481,9 +490,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * dell over scroll to move children
      */
-    private void startOverScrollAnimation(final int distanceMove) {
+    private void startOverScrollAnimation(final int distanceMove, boolean elasticBuffer) {
         int finalDistance = getFinalOverScrollDistance();
-        abortScroller();
+        if (!elasticBuffer) {
+            abortScroller();
+        }
         cancelAllAnimation();
         if (overScrollAnimator == null) {
             overScrollAnimator = getAnimator(distanceMove, 0, overScrollAnimatorUpdate, overScrollAnimatorListener);
@@ -513,9 +524,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!isTargetAbleScrollUp() && generalPullHelper.isMovingDirectDown && generalPullHelper.dragState == 0) {
-                    overScrollDell(1, -Math.abs(currScrollOffset));
+                    overScrollDell(1, -Math.abs(currScrollOffset), false);
                 } else if (!isTargetAbleScrollDown() && !generalPullHelper.isMovingDirectDown && generalPullHelper.dragState == 0) {
-                    overScrollDell(2, Math.abs(currScrollOffset));
+                    overScrollDell(2, Math.abs(currScrollOffset), false);
                 }
             }
         };
@@ -627,7 +638,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 || (((distanceY < 0 && moveDistance == 0) || moveDistance < 0) && onDragIntercept != null && !onDragIntercept.onFooterUpIntercept());
     }
 
-    private void overScrollDell(int type, int offset) {
+    private void overScrollDell(int type, int offset, boolean elasticBuffer) {
         if (pullTwinkEnable // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
                 && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0
                 || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
@@ -648,7 +659,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         isOverScrollTrigger = true;
 
         int finalScrollOffset = offset < 0 ? Math.max(-overScrollMaxTriggerOffset, offset) : Math.min(overScrollMaxTriggerOffset, offset);
-        startOverScrollAnimation(finalScrollOffset);
+        startOverScrollAnimation(finalScrollOffset, elasticBuffer);
     }
 
     private void dellAutoLoading() {
