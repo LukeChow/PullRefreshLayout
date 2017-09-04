@@ -472,7 +472,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             overScrollDell(type, tempDistance, false);
             return true;
         }
-        if (!isScrollAbleViewBackScroll && isAwaysElasticBuffer && overScrollAnimator != null && !overScrollAnimator.isRunning()) {
+        if (isAwaysElasticBuffer && (overScrollAnimator == null || !overScrollAnimator.isRunning())) {
             overScrollDell(type, tempDistance, true);
         }
 
@@ -492,7 +492,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      */
     private void startOverScrollAnimation(final int distanceMove, boolean elasticBuffer) {
         int finalDistance = getFinalOverScrollDistance();
-        if (!elasticBuffer) {
+        if (elasticBuffer) {
             abortScroller();
         }
         cancelAllAnimation();
@@ -1103,7 +1103,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             if (ViewCompat.isNestedScrollingEnabled(targetView)) {
                 dispatchNestedScroll(0, 0, 0, offsetY, parentOffsetInWindow);
             }
-            onScroll(offsetY + parentOffsetInWindow[1]);
+            if (!onScroll(offsetY + parentOffsetInWindow[1])) {
+                dellScroll(-offsetY + parentOffsetInWindow[1]);
+            }
         }
     };
 
@@ -1135,7 +1137,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    void onScroll(int dy) {
+    boolean onScroll(int dy) {
         if ((generalPullHelper.isMovingDirectDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isMovingDirectDown && !isTargetAbleScrollDown())) {
             if (dy < 0 && dragDampingRatio < 1 && pullDownLimitDistance != 0 && moveDistance - dy > pullDownLimitDistance * dragDampingRatio) {
                 dy = (int) (dy * (1 - (moveDistance / (float) pullDownLimitDistance)));
@@ -1145,7 +1147,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 dy = (int) (dy * dragDampingRatio);
             }
             dellScroll(-dy);
+            return true;
         }
+        return false;
     }
 
     void onStopScroll() {
