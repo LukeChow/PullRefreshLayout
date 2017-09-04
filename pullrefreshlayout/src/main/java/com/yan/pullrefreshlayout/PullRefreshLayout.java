@@ -1625,11 +1625,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean isRefreshing() {
-        return refreshState == 0 && startRefreshAnimator != null && startRefreshAnimator.isRunning() || refreshState == 1;
+        return (refreshState == 0 && startRefreshAnimator != null && startRefreshAnimator.isRunning()) || refreshState == 1;
     }
 
     public boolean isLoading() {
-        return refreshState == 0 && startLoadMoreAnimator != null && startLoadMoreAnimator.isRunning() || refreshState == 2;
+        return (refreshState == 0 && startLoadMoreAnimator != null && startLoadMoreAnimator.isRunning()) || refreshState == 2;
     }
 
     public boolean isDragDown() {
