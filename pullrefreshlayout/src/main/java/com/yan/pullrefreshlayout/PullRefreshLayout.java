@@ -691,13 +691,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private void resetHeaderView(int headerViewHeight) {
         if (headerViewHeight == 0) {
-            resetHeaderAnimation.onAnimationStart(null);
-            resetHeaderAnimation.onAnimationEnd(null);
+            resetHeaderAnimationListener.onAnimationStart(null);
+            resetHeaderAnimationListener.onAnimationEnd(null);
             return;
         }
         if (!cancelAllAnimation(resetHeaderAnimator)) {
             if (resetHeaderAnimator == null) {
-                resetHeaderAnimator = getAnimator(headerViewHeight, 0, headerAnimationUpdate, resetHeaderAnimation);
+                resetHeaderAnimator = getAnimator(headerViewHeight, 0, headerAnimationUpdate, resetHeaderAnimationListener);
             } else {
                 resetHeaderAnimator.setIntValues(headerViewHeight, 0);
             }
@@ -1013,7 +1013,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * state animation
      */
-    private final AnimatorListenerAdapter resetHeaderAnimation = new PullAnimatorListenerAdapter() {
+    private final AnimatorListenerAdapter resetHeaderAnimationListener = new PullAnimatorListenerAdapter() {
         protected void animationStart() {
             if (isResetTrigger && refreshState == 1 && !isHoldingFinishTrigger && onHeaderPullFinish()) {
                 isHoldingFinishTrigger = true;
