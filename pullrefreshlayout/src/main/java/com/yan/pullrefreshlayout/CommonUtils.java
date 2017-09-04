@@ -44,15 +44,11 @@ class CommonUtils {
         if (Build.VERSION.SDK_INT < 14) {
             if (targetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) targetView;
-                if (absListView.getChildCount() > 0) {
-                    int lastChildBottom = absListView.getChildAt(absListView.getChildCount() - 1).getBottom();
-                    return absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1
-                            && lastChildBottom <= absListView.getMeasuredHeight();
-                } else {
-                    return false;
-                }
+                return absListView.getChildCount() > 0
+                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
             } else {
-                return ViewCompat.canScrollVertically(targetView, 1) || targetView.getScrollY() > 0;
+                return ViewCompat.canScrollVertically(targetView, 1) || targetView.getScrollY() < 0;
             }
         } else {
             return ViewCompat.canScrollVertically(targetView, 1);
