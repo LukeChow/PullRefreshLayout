@@ -231,7 +231,22 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.0.3 ： dragState 状态调整
  
-## 4.demo用到的库
+## 4.问题 FAQ
+ 1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
+ <br/>
+ 官方描述如下：
+ <br/>
+ 下拉刷新，有很多框架是通过判断 RecyclerView 的第一个 view 的 top 是否为 0 来触发下拉动作。VLayout 里在处理背景、悬浮态的时候加入了一些对 LayoutManager 不可见的 View，但又真实存在与 RecyclerView 的视图树里，建议使用 layoutManager.getChildAt(0) 来获取第一个 view。
+<br/>
+<br/>
+可复写刷新判断
+```
+    @Override
+    public boolean isTargetAbleScrollUp() {
+        return layoutManager.getChildAt(0) == null || layoutManager.getChildAt(0).getTop() != 0;
+    }
+```
+## 5.demo用到的库
  loading 动画
  <br/>
  AVLoadingIndicatorView(https://github.com/81813780/AVLoadingIndicatorView)
