@@ -472,7 +472,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             overScrollDell(type, tempDistance, false);
             return true;
         }
-        if (isAwaysElasticBuffer && overScrollAnimator != null && !overScrollAnimator.isRunning()) {
+        if (!isScrollAbleViewBackScroll && isAwaysElasticBuffer && overScrollAnimator != null && !overScrollAnimator.isRunning()) {
             overScrollDell(type, tempDistance, true);
         }
 
