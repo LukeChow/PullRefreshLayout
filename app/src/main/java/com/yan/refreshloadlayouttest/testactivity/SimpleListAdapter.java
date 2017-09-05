@@ -52,7 +52,7 @@ public class SimpleListAdapter extends BaseAdapter {
             viewHolder = (SimpleViewHolder) convertView.getTag();
         }
         viewHolder.tv.setText(simpleItems.get(position).title);
-        Glide.with(context)
+        Glide.with(context.getApplicationContext())
                 .load(simpleItems.get(position).resId)
                 .into( viewHolder.iv);
 
