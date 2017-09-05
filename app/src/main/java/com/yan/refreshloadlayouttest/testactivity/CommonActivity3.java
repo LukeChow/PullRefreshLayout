@@ -52,7 +52,6 @@ public class CommonActivity3 extends Activity {
 
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        refreshLayout.setOverScrollDampingRatio(0.15f);
 //        refreshLayout.setAdjustTwinkDuring(2);
 //        refreshLayout.setTwinkEnable(false);
         refreshLayout.setLoadMoreEnable(true);

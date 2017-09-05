@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
+import com.yan.pullrefreshlayout.ViscousInterpolator;
 import com.yan.refreshloadlayouttest.R;
 
 /**
@@ -46,10 +48,15 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         animationInit();
     }
 
+
     // 动画初始化
     private void animationInit() {
+        refreshLayout.setAnimationMainInterpolator(new ViscousInterpolator());
+        refreshLayout.setAnimationOverScrollInterpolator(new LinearInterpolator());
+
         objectAnimator = ObjectAnimator.ofFloat(this, "y", 0, 0);
         objectAnimator.setDuration(300);
+        objectAnimator.setInterpolator(new ViscousInterpolator(8));
 
         objectAnimator.addListener(new AnimatorListenerAdapter() {
             @Override

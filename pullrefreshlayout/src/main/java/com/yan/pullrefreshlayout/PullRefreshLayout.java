@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.webkit.WebView;
 import android.widget.ListView;
@@ -61,7 +60,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * animation without overScroll total during
      */
-    private int animationDuring = 300;
+    private int animationDuring = 400;
 
     /**
      * over scroll start offset
@@ -86,7 +85,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * move distance ratio for over scroll
      */
-    private float overScrollDampingRatio = 0.2F;
+    private float overScrollDampingRatio = 0.3F;
 
     /**
      * switch
@@ -114,11 +113,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      */
     private boolean isHeaderFront = false;
     private boolean isFooterFront = false;
-
-    /**
-     * is Aways Elastic Buffer
-     */
-    private boolean isAwaysElasticBuffer = true;
 
     //--------------------START|| values can modify in the lib only ||START------------------
 
@@ -205,6 +199,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private ValueAnimator startLoadMoreAnimator;
     private ValueAnimator resetFooterAnimator;
     private ValueAnimator overScrollAnimator;
+
+    private Interpolator animationMainInterpolator;
+    private Interpolator animationOverScrollInterpolator;
 
     private Runnable delayHandleActionRunnable;
 
@@ -424,9 +421,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             }
 
             if (!isOverScrollTrigger && !isTargetAbleScrollUp() && currScrollOffset < 0 && moveDistance >= 0) {
-                overScrollDell(1, currScrollOffset, false);
+                overScrollDell(1, currScrollOffset);
             } else if (!isOverScrollTrigger && !isTargetAbleScrollDown() && currScrollOffset > 0 && moveDistance <= 0) {
-                overScrollDell(2, currScrollOffset, false);
+                overScrollDell(2, currScrollOffset);
             }
         }
     }
@@ -469,13 +466,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (targetView instanceof RecyclerView && ((type == 2 && !CommonUtils.canChildScrollUp(targetView))
                 || (type == 1 && !CommonUtils.canChildScrollDown(targetView)))) {
-            overScrollDell(type, tempDistance, false);
+            overScrollDell(type, tempDistance);
             return true;
         }
-        if (isAwaysElasticBuffer && (overScrollAnimator == null || !overScrollAnimator.isRunning())) {
-            overScrollDell(type, tempDistance, true);
-        }
-
         isScrollAbleViewBackScroll = true;
         return false;
     }
@@ -490,14 +483,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * dell over scroll to move children
      */
-    private void startOverScrollAnimation(final int distanceMove, boolean elasticBuffer) {
+    private void startOverScrollAnimation(final int distanceMove) {
         int finalDistance = getFinalOverScrollDistance();
-        if (elasticBuffer) {
-            abortScroller();
-        }
+        abortScroller();
         cancelAllAnimation();
         if (overScrollAnimator == null) {
-            overScrollAnimator = getAnimator(distanceMove, 0, overScrollAnimatorUpdate, overScrollAnimatorListener);
+            if (animationOverScrollInterpolator == null) {
+                animationOverScrollInterpolator = new ViscousInterpolator();
+            }
+            overScrollAnimator = getAnimator(distanceMove, 0, overScrollAnimatorUpdate, overScrollAnimatorListener, animationOverScrollInterpolator);
         } else {
             overScrollAnimator.setIntValues(distanceMove, 0);
         }
@@ -524,9 +518,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!isTargetAbleScrollUp() && generalPullHelper.isMovingDirectDown && generalPullHelper.dragState == 0) {
-                    overScrollDell(1, -Math.abs(currScrollOffset), false);
+                    overScrollDell(1, -Math.abs(currScrollOffset));
                 } else if (!isTargetAbleScrollDown() && !generalPullHelper.isMovingDirectDown && generalPullHelper.dragState == 0) {
-                    overScrollDell(2, Math.abs(currScrollOffset), false);
+                    overScrollDell(2, Math.abs(currScrollOffset));
                 }
             }
         };
@@ -638,7 +632,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 || (((distanceY < 0 && moveDistance == 0) || moveDistance < 0) && onDragIntercept != null && !onDragIntercept.onFooterUpIntercept());
     }
 
-    private void overScrollDell(int type, int offset, boolean elasticBuffer) {
+    private void overScrollDell(int type, int offset) {
         if (pullTwinkEnable // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
                 && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0
                 || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
@@ -659,7 +653,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         isOverScrollTrigger = true;
 
         int finalScrollOffset = offset < 0 ? Math.max(-overScrollMaxTriggerOffset, offset) : Math.min(overScrollMaxTriggerOffset, offset);
-        startOverScrollAnimation(finalScrollOffset, elasticBuffer);
+        startOverScrollAnimation(finalScrollOffset);
     }
 
     private void dellAutoLoading() {
@@ -689,8 +683,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
         if (!cancelAllAnimation(startRefreshAnimator)) {
             if (startRefreshAnimator == null) {
-                startRefreshAnimator = getAnimator(headerViewHeight, refreshTriggerDistance, headerAnimationUpdate, refreshStartAnimationListener);
-                startRefreshAnimator.setInterpolator(new DecelerateInterpolator(2f));
+                if (animationMainInterpolator == null) {
+                    animationMainInterpolator = new ViscousInterpolator();
+                }
+                startRefreshAnimator = getAnimator(headerViewHeight, refreshTriggerDistance, headerAnimationUpdate, refreshStartAnimationListener, animationMainInterpolator);
             } else {
                 startRefreshAnimator.setIntValues(headerViewHeight, refreshTriggerDistance);
             }
@@ -708,7 +704,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
         if (!cancelAllAnimation(resetHeaderAnimator)) {
             if (resetHeaderAnimator == null) {
-                resetHeaderAnimator = getAnimator(headerViewHeight, 0, headerAnimationUpdate, resetHeaderAnimationListener);
+                if (animationMainInterpolator == null) {
+                    animationMainInterpolator = new ViscousInterpolator();
+                }
+                resetHeaderAnimator = getAnimator(headerViewHeight, 0, headerAnimationUpdate, resetHeaderAnimationListener, animationMainInterpolator);
             } else {
                 resetHeaderAnimator.setIntValues(headerViewHeight, 0);
             }
@@ -731,13 +730,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
         if (!cancelAllAnimation(startLoadMoreAnimator)) {
             if (startLoadMoreAnimator == null) {
-                startLoadMoreAnimator = getAnimator(loadMoreViewHeight, -loadTriggerDistance, footerAnimationUpdate, loadingStartAnimationListener);
-                startLoadMoreAnimator.setInterpolator(new DecelerateInterpolator(2f));
+                if (animationMainInterpolator == null) {
+                    animationMainInterpolator = new ViscousInterpolator();
+                }
+                startLoadMoreAnimator = getAnimator(loadMoreViewHeight, -loadTriggerDistance, footerAnimationUpdate, loadingStartAnimationListener, animationMainInterpolator);
             } else {
                 startLoadMoreAnimator.setIntValues(loadMoreViewHeight, -loadTriggerDistance);
             }
             refreshWithAction = withAction;
-            startLoadMoreAnimator.setDuration(getAnimationTime(loadMoreViewHeight+ loadTriggerDistance));
+            startLoadMoreAnimator.setDuration(getAnimationTime(loadMoreViewHeight + loadTriggerDistance));
             startLoadMoreAnimator.start();
         }
     }
@@ -750,7 +751,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
         if (!cancelAllAnimation(resetFooterAnimator)) {
             if (resetFooterAnimator == null) {
-                resetFooterAnimator = getAnimator(loadMoreViewHeight, 0, footerAnimationUpdate, resetFooterAnimationListener);
+                if (animationMainInterpolator == null) {
+                    animationMainInterpolator = new ViscousInterpolator();
+                }
+                resetFooterAnimator = getAnimator(loadMoreViewHeight, 0, footerAnimationUpdate, resetFooterAnimationListener, animationMainInterpolator);
             } else {
                 resetFooterAnimator.setIntValues(loadMoreViewHeight, 0);
             }
@@ -776,10 +780,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         refreshState = 0;
     }
 
-    private ValueAnimator getAnimator(int firstValue, int secondValue, ValueAnimator.AnimatorUpdateListener updateListener, Animator.AnimatorListener animatorListener) {
+    private ValueAnimator getAnimator(int firstValue, int secondValue, ValueAnimator.AnimatorUpdateListener updateListener, Animator.AnimatorListener animatorListener, Interpolator interpolator) {
         ValueAnimator animator = ValueAnimator.ofInt(firstValue, secondValue);
         animator.addUpdateListener(updateListener);
         animator.addListener(animatorListener);
+        animator.setInterpolator(interpolator);
         return animator;
     }
 
@@ -904,14 +909,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (!generalPullHelper.isMovingDirectDown) {
             if (moveDistance > 0) {
                 return 1;
-            } else if (moveDistance < -loadTriggerDistance) {
-                return -1;
+            } else if (moveDistance < 0) {
+                return -1; // scroller fling unable
             }
         } else {
             if (moveDistance < 0) {
                 return 2;
-            } else if (moveDistance > refreshTriggerDistance) {
-                return -1;
+            } else if (moveDistance > 0) {
+                return -1; // scroller fling unable
             }
         }
         return 0;
@@ -1118,9 +1123,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             if (ViewCompat.isNestedScrollingEnabled(targetView)) {
                 dispatchNestedScroll(0, 0, 0, offsetY, parentOffsetInWindow);
             }
-            if (!onScroll(offsetY + parentOffsetInWindow[1])) {
-                dellScroll(-offsetY + parentOffsetInWindow[1]);
-            }
+            onScroll(offsetY + parentOffsetInWindow[1]);
         }
     };
 
@@ -1152,7 +1155,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    boolean onScroll(int dy) {
+    void onScroll(int dy) {
         if ((generalPullHelper.isMovingDirectDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isMovingDirectDown && !isTargetAbleScrollDown())) {
             if (dy < 0 && dragDampingRatio < 1 && pullDownLimitDistance != 0 && moveDistance - dy > pullDownLimitDistance * dragDampingRatio) {
                 dy = (int) (dy * (1 - (moveDistance / (float) pullDownLimitDistance)));
@@ -1162,9 +1165,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 dy = (int) (dy * dragDampingRatio);
             }
             dellScroll(-dy);
-            return true;
         }
-        return false;
     }
 
     void onStopScroll() {
@@ -1614,6 +1615,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public void setDispatchPullTouchAble(boolean dispatchPullTouchAble) {
         this.dispatchPullTouchAble = dispatchPullTouchAble;
+    }
+
+    public void setAnimationMainInterpolator(Interpolator animationMainInterpolator) {
+        this.animationMainInterpolator = animationMainInterpolator;
+    }
+
+    public void setAnimationOverScrollInterpolator(Interpolator animationOverScrollInterpolator) {
+        this.animationOverScrollInterpolator = animationOverScrollInterpolator;
     }
 
     public final int getMoveDistance() {
