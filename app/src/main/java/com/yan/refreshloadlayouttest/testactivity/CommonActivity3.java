@@ -64,9 +64,10 @@ public class CommonActivity3 extends Activity {
 //        refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数
 //        refreshLayout.setPullLimitDistance(400);// 拖拽最大范围，为-1时拖拽范围不受限制
 //        refreshLayout.setRefreshEnable(false);
-        refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(),refreshLayout));
-        refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW );
-        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+        refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(), refreshLayout));
+        refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW);
+        refreshLayout.setLoadMoreEnable(false);
+        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override
             public void onRefresh() {
                 Log.e(TAG, "refreshLayout onRefresh: ");
@@ -74,17 +75,6 @@ public class CommonActivity3 extends Activity {
                     @Override
                     public void run() {
                         refreshLayout.refreshComplete();
-                    }
-                }, 3000);
-            }
-
-            @Override
-            public void onLoading() {
-                Log.e(TAG, "refreshLayout onLoading: ");
-                refreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.loadMoreComplete();
                     }
                 }, 3000);
             }
