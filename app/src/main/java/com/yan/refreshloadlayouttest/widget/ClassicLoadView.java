@@ -36,6 +36,8 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     private PullRefreshLayout refreshLayout;
     private ObjectAnimator objectAnimator;
 
+    float lastPercent = 100;
+
     public ClassicLoadView(@NonNull Context context, final PullRefreshLayout refreshLayout) {
         super(context);
         this.refreshLayout = refreshLayout;
@@ -116,16 +118,21 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         loadingView.setIndicatorColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
     }
 
+
     @Override
     public void onPullChange(float percent) {
         onPullHolding();
         // 判断是否处在 拖拽的状态
+        if (lastPercent == 100) {
+            lastPercent = percent;
+        }
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp() || !refreshLayout.isLoadMoreEnable()) {
             return;
         }
-        if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isLoading()) {
+        if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isLoading() && (lastPercent > percent)) {
             refreshLayout.autoLoading();
         }
+        lastPercent = percent;
     }
 
     @Override
@@ -150,6 +157,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         if (refreshLayout.isLoadMoreEnable()) {
             tv.setText("loading finish");
             loadingView.smoothToHide();
+            lastPercent = 100;
         }
     }
 

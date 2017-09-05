@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库)
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.4-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.4--3-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.4--4-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-393%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.2)
 ### [DEMO下载](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -47,7 +47,9 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setOverScrollDampingRatio(0.2f);//  值越大overscroll越短 default 0.2
     refreshLayout.setAdjustTwinkDuring(3);// 值越大overscroll越慢 default 3
     refreshLayout.setScrollInterpolator(interpolator);// 设置scroller的插值器
-    
+    refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器
+    refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器
+            
     refreshLayout.setAnimationDuring(300);// 动画总时长，不包括overScroll动画 default 300
     refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6
     
@@ -86,8 +88,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshlayout.getRefreshTriggerDistance();// 得到下拉刷新的触发距离
     refreshlayout.getLoadingTriggerDistance();// 得到上拉加载的触发距离
      
-    refreshLayout.setRefreshTriggerDistance(200);// 设置下拉刷新触发位置，默认为header的高度 default 60dp
-    refreshLayout.setLoadTriggerDistance(200);// 设置上拉加载触发位置，默认为footer的高度 default 60dp
+    refreshLayout.setRefreshTriggerDistance(200);// 设置下拉刷新触发位置，默认为header的高度  
+    refreshLayout.setLoadTriggerDistance(200);// 设置上拉加载触发位置，默认为footer的高度  
     refreshLayout.setPullUpLimitDistance(400);// 向上拖拽最大范围，默认控件高度
     refreshLayout.setPullDownLimitDistance(400);// 向下拖拽最大范围，默认控件高度
 
@@ -160,7 +162,6 @@ compile 'com.yan:pullrefreshlayout:(↖)'
         app:prl_refreshTriggerDistance="90dp"
         app:prl_overScrollAdjustValue="1"
         app:prl_twinkEnable="true">     
-        
         
         <!-- 通过以下例子，你可以轻易实现recyclerView(任何View)的header，和数据错误、网络错误等的状态切换--> 
         <com.yan.pullrefreshlayout.PullRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

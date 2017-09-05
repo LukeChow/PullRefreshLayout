@@ -60,7 +60,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * animation without overScroll total during
      */
-    private int animationDuring = 400;
+    private int animationDuring = 350;
 
     /**
      * over scroll start offset

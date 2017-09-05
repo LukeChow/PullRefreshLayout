@@ -1,9 +1,9 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +71,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private void initRefreshLayout() {
         this.refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        findViewById(R.id.container).setBackgroundColor(Color.parseColor("#333333"));
+        findViewById(R.id.container).setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimaryDark));
         StoreHouseHeader header = new StoreHouseHeader(getBaseContext());
         header.setPadding(0, (int) dipToPx(20), 0, (int) dipToPx(20));
         header.initWithString("PullRefreshLayout");

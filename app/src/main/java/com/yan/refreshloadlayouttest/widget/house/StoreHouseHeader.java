@@ -11,12 +11,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Transformation;
+import android.widget.FrameLayout;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.refreshloadlayouttest.widget.NestedFrameLayout;
 
 import java.util.ArrayList;
 
-public class StoreHouseHeader extends View implements PullRefreshLayout.OnPullListener {
+public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLayout.OnPullListener {
 
     public ArrayList<StoreHouseBarItem> mItemList = new ArrayList<StoreHouseBarItem>();
 
@@ -61,6 +63,7 @@ public class StoreHouseHeader extends View implements PullRefreshLayout.OnPullLi
     }
 
     private void initView() {
+        setWillNotDraw(false);
         mLineWidth = (int) dipToPx(1);
         mDropHeight = (int) dipToPx(40);
         mHorizontalRandomness = getContext().getResources().getDisplayMetrics().widthPixels / 2;
