@@ -1,6 +1,7 @@
 package com.yan.refreshloadlayouttest.widget.fungame;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
@@ -44,6 +45,8 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
 
     }
 
+    private boolean isGameViewReady;
+
     @Override
     public void onPullChange(float percent) {
         if (percent <= 1 && mManualOperation && refreshLayout.isHoldingFinishTrigger() && !refreshLayout.isDragUp() && !refreshLayout.isDragDown()) {
@@ -53,11 +56,11 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             if (percent == 1) {
                 refreshLayout.setDispatchPullTouchAble(true);
                 refreshLayout.setMoveWithHeader(false);
+                isGameViewReady = true;
             }
-            if (percent < 1) {
+            if (isGameViewReady && percent < 1) {
                 refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance());
             }
-
             onManualOperationMove(1 + (percent - 1) * 0.6F);
         }
     }
@@ -85,8 +88,10 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             refreshLayout.cancelAllAnimation();
         } else {
             mManualOperation = false;
+            isGameViewReady = false;
             refreshLayout.setDragDampingRatio(0.6F);
             refreshLayout.setMoveWithHeader(true);
+            refreshLayout.setDispatchPullTouchAble(true);
         }
     }
 
