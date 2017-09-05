@@ -14,8 +14,10 @@
         <attr name="prl_pullUpLimitDistance" format="dimension" />
         <attr name="prl_overScrollMaxTriggerOffset" format="dimension" />
 
+        <attr name="prl_resetAnimationDuring" format="integer" />
+        <attr name="prl_refreshAnimationDuring" format="integer" />
+
         <attr name="prl_dragDampingRatio" format="float" />
-        <attr name="prl_animationDuring" format="integer" />
         <attr name="prl_overScrollDampingRatio" format="float" />
         <attr name="prl_overScrollAdjustValue" format="float" />
 

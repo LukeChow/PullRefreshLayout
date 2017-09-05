@@ -50,7 +50,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器
     refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器
             
-    refreshLayout.setAnimationDuring(300);// 动画总时长，不包括overScroll动画 default 300
+    refreshLayout.setRefreshAnimationDuring(int refreshAnimationDuring);// 触发刷新或加载动画的执行时间
+    refreshLayout.setResetAnimationDuring(int resetAnimationDuring);// 触发界面回复的动画执行时间
     refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6
     
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
@@ -142,7 +143,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     <com.yan.pullrefreshlayout.PullRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         app:prl_autoLoadingEnable="false"
         app:prl_dragDampingRatio="0.6"
-        app:prl_animationDuring="300"
+        app:prl_resetAnimationDuring="400"
+        app:prl_refreshAnimationDuring="180"
         app:prl_footerShowGravity="follow"
         app:prl_footerViewId="@layout/header_or_footer"
         app:prl_headerViewId="@layout/header_or_footer"

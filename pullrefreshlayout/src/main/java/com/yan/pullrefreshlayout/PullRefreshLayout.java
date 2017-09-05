@@ -58,14 +58,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private int pullUpLimitDistance = 0;
 
     /**
-     * animation without overScroll total during
+     * refresh Animation total during
      */
-    private int animationDuring = 350;
+    private int refreshAnimationDuring = 180;
+
+    /**
+     * reset animation total during
+     */
+    private int resetAnimationDuring = 400;
 
     /**
      * over scroll start offset
      */
-    private int overScrollMaxTriggerOffset = 50;
+    private int overScrollMaxTriggerOffset = 70;
 
     /**
      * targetViewId
@@ -85,7 +90,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * move distance ratio for over scroll
      */
-    private float overScrollDampingRatio = 0.3F;
+    private float overScrollDampingRatio = 0.35F;
 
     /**
      * switch
@@ -243,7 +248,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         pullDownLimitDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullDownLimitDistance, 0);
         pullUpLimitDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullUpLimitDistance, 0);
 
-        animationDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_animationDuring, animationDuring);
+        resetAnimationDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_resetAnimationDuring, resetAnimationDuring);
+        refreshAnimationDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_refreshAnimationDuring, refreshAnimationDuring);
         dragDampingRatio = ta.getFloat(R.styleable.PullRefreshLayout_prl_dragDampingRatio, dragDampingRatio);
 
         overScrollAdjustValue = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollAdjustValue, overScrollAdjustValue);
@@ -691,7 +697,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 startRefreshAnimator.setIntValues(headerViewHeight, refreshTriggerDistance);
             }
             refreshWithAction = withAction;
-            startRefreshAnimator.setDuration(getAnimationTime(headerViewHeight - refreshTriggerDistance));
+            startRefreshAnimator.setDuration(refreshAnimationDuring);
             startRefreshAnimator.start();
         }
     }
@@ -711,7 +717,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             } else {
                 resetHeaderAnimator.setIntValues(headerViewHeight, 0);
             }
-            resetHeaderAnimator.setDuration(getAnimationTime(headerViewHeight));
+            resetHeaderAnimator.setDuration(resetAnimationDuring);
             resetHeaderAnimator.start();
         }
     }
@@ -738,7 +744,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 startLoadMoreAnimator.setIntValues(loadMoreViewHeight, -loadTriggerDistance);
             }
             refreshWithAction = withAction;
-            startLoadMoreAnimator.setDuration(getAnimationTime(loadMoreViewHeight + loadTriggerDistance));
+            startLoadMoreAnimator.setDuration(refreshAnimationDuring);
             startLoadMoreAnimator.start();
         }
     }
@@ -758,7 +764,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             } else {
                 resetFooterAnimator.setIntValues(loadMoreViewHeight, 0);
             }
-            resetFooterAnimator.setDuration(getAnimationTime(loadMoreViewHeight));
+            resetFooterAnimator.setDuration(resetAnimationDuring);
             resetFooterAnimator.start();
         }
     }
@@ -812,14 +818,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return false;
     }
 
-    private long getAnimationTime(int moveDistance) {
-        float ratio = Math.min(1, Math.abs((float) moveDistance / CommonUtils.getWindowHeight(getContext())));
-        return (long) (Math.max((1.0f - Math.pow((1.0f - ratio), 100)) * animationDuring, animationDuring / 2));
-    }
-
-    private long getOverScrollTime(int moveDistance) {
-        float ratio = Math.abs((float) moveDistance / CommonUtils.getWindowHeight(getContext()));
-        return (long) ((Math.pow(2000 * ratio, 0.5)) * overScrollAdjustValue);
+    private long getOverScrollTime(int distance) {
+        float ratio = Math.abs((float) distance / CommonUtils.getWindowHeight(getContext()));
+        return (long) ((Math.pow(2000 * ratio, 0.46)) * overScrollAdjustValue);
     }
 
     private int getFinalOverScrollDistance() {
@@ -1552,8 +1553,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         this.overScrollDampingRatio = overScrollDampingRatio;
     }
 
-    public void setAnimationDuring(int animationDuring) {
-        this.animationDuring = animationDuring;
+    public void setRefreshAnimationDuring(int refreshAnimationDuring) {
+        this.refreshAnimationDuring = refreshAnimationDuring;
+    }
+
+    public void setResetAnimationDuring(int resetAnimationDuring) {
+        this.resetAnimationDuring = resetAnimationDuring;
     }
 
     public void setDragDampingRatio(float dragDampingRatio) {

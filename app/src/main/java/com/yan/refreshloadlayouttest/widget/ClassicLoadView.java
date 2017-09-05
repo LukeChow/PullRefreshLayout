@@ -129,7 +129,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp() || !refreshLayout.isLoadMoreEnable()) {
             return;
         }
-        if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isLoading() && (lastPercent > percent)) {
+        if (!refreshLayout.isHoldingTrigger() && !refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isLoading() && (lastPercent > percent)) {
             refreshLayout.autoLoading();
         }
         lastPercent = percent;

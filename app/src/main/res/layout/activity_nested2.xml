@@ -38,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:prl_animationDuring="300"
         app:prl_autoLoadingEnable="true"
         app:prl_dragDampingRatio="0.6"
         app:prl_footerShowGravity="follow"
