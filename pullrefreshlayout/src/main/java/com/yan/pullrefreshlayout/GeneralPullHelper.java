@@ -154,6 +154,8 @@ class GeneralPullHelper {
                 break;
             }
             case MotionEvent.ACTION_MOVE:
+                // make sure that can nested to work or the targetView is move with content
+                // dell the touch logic
                 if (!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) {
                     if (activePointerId != ev.getPointerId(0)) {
                         lastMoveY = (int) ev.getY();
@@ -178,9 +180,8 @@ class GeneralPullHelper {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 ev.offsetLocation(0, childConsumed[1]);
-
                 pullRefreshLayout.onStopScroll();
-                if (isTriggerMoveEvent && (Math.abs(velocityY) > minimumFlingVelocity)) {
+                if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isTriggerMoveEvent && (Math.abs(velocityY) > minimumFlingVelocity)) {
                     pullRefreshLayout.onPreFling(-(int) velocityY);
                 }
                 activePointerId = -1;

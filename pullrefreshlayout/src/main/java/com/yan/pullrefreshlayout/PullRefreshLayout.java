@@ -14,6 +14,7 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1184,6 +1185,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onPreFling(float velocityY) {
+        Log.e("onPreFling", "onPreFling: " + velocityY);
         if (flingAble() && overScrollFlingState() != -1) {
             readyScroller();
             abortScroller();
@@ -1240,6 +1242,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+        if (nestedAble(target)) {
+            onPreFling(velocityY);
+        }
         return dispatchNestedPreFling(velocityX, velocityY);
     }
 

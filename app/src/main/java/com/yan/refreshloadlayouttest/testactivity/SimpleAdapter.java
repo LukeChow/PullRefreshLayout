@@ -50,7 +50,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
     @Override
     public void onBindViewHolder(final SimpleViewHolder holder, int position) {
         holder.tv.setText(datas.get(position).title);
-        Glide.with(context)
+        Glide.with(context.getApplicationContext())
                 .load(datas.get(position).resId)
                 .into(holder.iv);
 
