@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.refreshloadlayouttest.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 
 import java.util.ArrayList;
@@ -22,8 +22,7 @@ public class NestedActivity extends AppCompatActivity {
     private SimpleAdapter adapter;
     private View vState;
     private RecyclerView recyclerView;
-
-    private ClassicLoadView classicLoadView;
+    private HeaderOrFooter headerOrFooter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +49,10 @@ public class NestedActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        refreshLayout.setFooterView(classicLoadView = new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
+        refreshLayout.setFooterView(headerOrFooter=new HeaderOrFooter(getApplicationContext()));
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -64,18 +62,21 @@ public class NestedActivity extends AppCompatActivity {
                         if (vState.getVisibility() == View.VISIBLE) {
                             vState.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
-                            refreshLayout.setAutoLoadingEnable(true);
-                            refreshLayout.setLoadMoreEnable(true);
                             refreshLayout.setTargetView(recyclerView);
-                            refreshLayout.setFooterView(classicLoadView);
+
+                            refreshLayout.setFooterView(headerOrFooter);
+                            refreshLayout.setLoadMoreEnable(true);
+                            refreshLayout.setAutoLoadingEnable(true);
                         } else {
-                            refreshLayout.setAutoLoadingEnable(false);
-                            refreshLayout.setLoadMoreEnable(false);
                             refreshLayout.setTargetView(vState);
                             vState.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
+
                             refreshLayout.setFooterView(null);
-                        }
+                            refreshLayout.setLoadMoreEnable(false);
+                            refreshLayout.setAutoLoadingEnable(false);
+
+                            }
                         refreshLayout.refreshComplete();
                     }
                 }, 3000);
@@ -86,20 +87,9 @@ public class NestedActivity extends AppCompatActivity {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (datas.size() > 10) {
-                            classicLoadView.loadFinish();
-                            return;
-                        }
                         datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
                         adapter.notifyItemInserted(datas.size());
-                        refreshLayout.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                // 阻止refreshLayout的默认事件分发
-                                recyclerView.scrollBy(0, -refreshLayout.getMoveDistance());
-                                classicLoadView.startBackAnimation();
-                            }
-                        }, 250);
+                        refreshLayout.loadMoreComplete();
                     }
                 }, 1000);
             }

@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.5-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.5-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.5--1-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-393%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.5)
 ### [DEMO下载](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -44,15 +44,15 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 ```
 //-控件设置-
     refreshLayout.autoRefresh();// 自动刷新
-    refreshLayout.setOverScrollDampingRatio(0.2f);//  值越大overscroll越短 default 0.2
-    refreshLayout.setAdjustTwinkDuring(3);// 值越大overscroll越慢 default 3
+    refreshLayout.setOverScrollDampingRatio(0.2f);//  值越大overscroll越短 default 0.35F
     refreshLayout.setScrollInterpolator(interpolator);// 设置scroller的插值器
-    refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器
-    refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器
+    refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器 default ViscousInterpolator
+    refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器 default ViscousInterpolator
             
-    refreshLayout.setRefreshAnimationDuring(int refreshAnimationDuring);// 触发刷新或加载动画的执行时间
-    refreshLayout.setResetAnimationDuring(int resetAnimationDuring);// 触发界面回复的动画执行时间
-    refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6
+    refreshLayout.setOverScrollMinDuring(int during);// 设置overscroll最小时间 default 75
+    refreshLayout.setRefreshAnimationDuring(int refreshAnimationDuring);// 触发刷新或加载动画的执行时间 default 180
+    refreshLayout.setResetAnimationDuring(int resetAnimationDuring);// 触发界面回复的动画执行时间 default 400
+    refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6F
     
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
     refreshLayout.setOverScrollMaxTriggerOffset(300);// 用于控制overscroll的距离 default 50dp

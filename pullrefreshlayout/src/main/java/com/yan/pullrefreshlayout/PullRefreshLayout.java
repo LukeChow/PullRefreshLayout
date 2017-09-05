@@ -73,6 +73,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private int overScrollMaxTriggerOffset = 70;
 
     /**
+     *  over Scroll Min During
+     */
+    private int overScrollMinDuring = 75;
+
+    /**
      * targetViewId
      */
     private int targetViewId = -1;
@@ -250,6 +255,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         resetAnimationDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_resetAnimationDuring, resetAnimationDuring);
         refreshAnimationDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_refreshAnimationDuring, refreshAnimationDuring);
+        overScrollMinDuring = ta.getInt(R.styleable.PullRefreshLayout_prl_overScrollMinDuring, overScrollMinDuring);
+
         dragDampingRatio = ta.getFloat(R.styleable.PullRefreshLayout_prl_dragDampingRatio, dragDampingRatio);
 
         overScrollAdjustValue = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollAdjustValue, overScrollAdjustValue);
@@ -820,7 +827,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private long getOverScrollTime(int distance) {
         float ratio = Math.abs((float) distance / CommonUtils.getWindowHeight(getContext()));
-        return (long) ((Math.pow(2000 * ratio, 0.46)) * overScrollAdjustValue);
+        return Math.max(overScrollMinDuring, (long) ((Math.pow(2000 * ratio, 0.46)) * overScrollAdjustValue));
     }
 
     private int getFinalOverScrollDistance() {
@@ -1550,6 +1557,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public void setOverScrollMaxTriggerOffset(int overScrollMaxTriggerOffset) {
         this.overScrollMaxTriggerOffset = overScrollMaxTriggerOffset;
+    }
+
+    public void setOverScrollMinDuring(int overScrollMinDuring) {
+        this.overScrollMinDuring = overScrollMinDuring;
     }
 
     public void setOverScrollDampingRatio(float overScrollDampingRatio) {

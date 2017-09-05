@@ -16,6 +16,7 @@
 
         <attr name="prl_resetAnimationDuring" format="integer" />
         <attr name="prl_refreshAnimationDuring" format="integer" />
+        <attr name="prl_overScrollMinDuring" format="integer" />
 
         <attr name="prl_dragDampingRatio" format="float" />
         <attr name="prl_overScrollDampingRatio" format="float" />

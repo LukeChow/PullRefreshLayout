@@ -1,6 +1,5 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,6 +18,8 @@ import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
 public class CommonActivity2 extends CommonActivity1 {
+    private boolean isInterceptedDispatch = false;
+
     protected int getViewId() {
         return R.layout.common_activity2;
     }
@@ -85,12 +86,20 @@ public class CommonActivity2 extends CommonActivity1 {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (linearLayout.getChildCount() > 12) {
+                            classicLoadView.loadFinish();
+                            return;
+                        }
+
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
+                        isInterceptedDispatch = true;
+
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 scrollView.scrollBy(0, -refreshLayout.getMoveDistance());
                                 classicLoadView.startBackAnimation();
+                                isInterceptedDispatch = false;
                             }
                         }, 150);
                     }
@@ -127,5 +136,13 @@ public class CommonActivity2 extends CommonActivity1 {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        refreshLayout.setTwinkEnable(false);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (isInterceptedDispatch) {
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
