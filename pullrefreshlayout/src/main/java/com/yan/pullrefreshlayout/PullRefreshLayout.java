@@ -18,7 +18,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -68,19 +71,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private int resetAnimationDuring = 400;
 
     /**
-     * over scroll up start offset
+     * over scroll top start offset
      */
     private int topOverScrollMaxTriggerOffset = 65;
 
     /**
-     * over scroll down start offset
+     * over scroll bottom start offset
      */
-    private int bottomOverScrollMaxTriggerOffset = 75;
+    private int bottomOverScrollMaxTriggerOffset = 70;
 
     /**
      * over Scroll Min During
      */
-    private int overScrollMinDuring = 75;
+    private int overScrollMinDuring = 60;
 
     /**
      * targetViewId
@@ -508,7 +511,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         cancelAllAnimation();
         if (overScrollAnimator == null) {
             if (animationOverScrollInterpolator == null) {
-                animationOverScrollInterpolator = new ViscousInterpolator();
+                animationOverScrollInterpolator = new LinearInterpolator();
             }
             overScrollAnimator = getAnimator(distanceMove, 0, overScrollAnimatorUpdate, overScrollAnimatorListener, animationOverScrollInterpolator);
         } else {
