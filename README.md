@@ -44,7 +44,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 ```
 //-控件设置-
     refreshLayout.autoRefresh();// 自动刷新
-    refreshLayout.setOverScrollDampingRatio(0.2f);//  值越大overscroll越短 default 0.35F
+    refreshLayout.setOverScrollDampingRatio(0.35f);//  值越大overscroll越短 default 0.35F
     refreshLayout.setScrollInterpolator(interpolator);// 设置scroller的插值器
     refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器 default ViscousInterpolator
     refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器 default ViscousInterpolator
