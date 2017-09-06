@@ -10,9 +10,10 @@
 
         <attr name="prl_refreshTriggerDistance" format="dimension" />
         <attr name="prl_loadTriggerDistance" format="dimension" />
-        <attr name="prl_pullDownLimitDistance" format="dimension" />
-        <attr name="prl_pullUpLimitDistance" format="dimension" />
-        <attr name="prl_overScrollMaxTriggerOffset" format="dimension" />
+        <attr name="prl_pullDownMaxDistance" format="dimension" />
+        <attr name="prl_pullUpMaxDistance" format="dimension" />
+        <attr name="prl_topOverScrollMaxTriggerOffset" format="dimension" />
+        <attr name="prl_downOverScrollMaxTriggerOffset" format="dimension" />
 
         <attr name="prl_resetAnimationDuring" format="integer" />
         <attr name="prl_refreshAnimationDuring" format="integer" />

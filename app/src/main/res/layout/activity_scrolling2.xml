@@ -22,8 +22,8 @@
         app:prl_headerClass="com.yan.refreshloadlayouttest.HeaderOrFooter"
         app:prl_headerFront="true"
         app:prl_headerShowGravity="follow"
-        app:prl_pullDownLimitDistance="80dp"
-        app:prl_pullUpLimitDistance="200dp"
+        app:prl_pullDownMaxDistance="80dp"
+        app:prl_pullUpMaxDistance="200dp"
         app:prl_refreshTriggerDistance="60dp">
 
         <android.support.v4.widget.NestedScrollView

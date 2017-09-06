@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:prl_headerShowGravity="placeholder_follow"
-    app:prl_overScrollMaxTriggerOffset="60dp"
     app:prl_loadMoreEnable="true">
 
     <FrameLayout

@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.5-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.5--1-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.5--2-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-393%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.5)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -55,7 +55,10 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6F
     
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
-    refreshLayout.setOverScrollMaxTriggerOffset(300);// 用于控制overscroll的距离 default 50dp
+    refreshLayout.setTopOverScrollMaxTriggerOffset(300);// 用于控制顶部的overscroll的距离 default 65dp
+    refreshLayout.setBottomOverScrollMaxTriggerOffset(300);// 用于控制底部overscroll的距离 default 75dp
+    refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离 控件 高度
+    refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离 控件 高度
 
     refreshLayout.setRefreshEnable(false);// 下拉刷新是否可用 default true
     refreshLayout.setLoadMoreEnable(true);// 上拉加载是否可用 default false
@@ -83,12 +86,14 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.isOverScrollUp();// 是否正在向上越界回弹
     
     refreshLayout.isHoldingTrigger();// 是否已经触发刷新或加载
-    refreshLayout.isHoldingFinishTrigger();// 是否已经触发刷新或加载完毕
+    refreshLayout.isHoldingFinishTrigger();// 是否已经触发刷新完毕或加载完毕
      
     refreshLayout.getMoveDistance();// 得到refreshlayout的移动距离
     refreshlayout.getRefreshTriggerDistance();// 得到下拉刷新的触发距离
     refreshlayout.getLoadingTriggerDistance();// 得到上拉加载的触发距离
-     
+    refreshlayout.getPullUpLimitDistance();// 得到向上拖拽最大范围（最大距离）
+    refreshlayout.getPullDownLimitDistance();// 得到向下拖拽最大范围（最大距离）
+ 
     refreshLayout.setRefreshTriggerDistance(200);// 设置下拉刷新触发位置，默认为header的高度  
     refreshLayout.setLoadTriggerDistance(200);// 设置上拉加载触发位置，默认为footer的高度  
     refreshLayout.setPullUpLimitDistance(400);// 向上拖拽最大范围，默认控件高度
@@ -154,9 +159,10 @@ compile 'com.yan:pullrefreshlayout:(↖)'
         app:prl_loadMoreEnable="true"
         app:prl_loadTriggerDistance="70dp"
         app:prl_overScrollDampingRatio="0.2"
-        app:prl_overScrollMaxTriggerOffset="80dp"
-        app:prl_pullDownLimitDistance="150dp"
-        app:prl_pullUpLimitDistance="150dp"
+        app:prl_topOverScrollMaxTriggerOffset="65dp"
+        app:prl_bottomOverScrollMaxTriggerOffset="70dp"
+        app:prl_pullDownMaxDistance="150dp"
+        app:prl_pullUpMaxDistance="250dp"
         app:prl_headerFront="true"
         app:prl_footerFront="true"
         app:prl_targetId="@+id/recyclerView"

@@ -124,7 +124,7 @@ public class PhoenixHeader extends View implements PullRefreshLayout.OnPullListe
         setupPathsDrawable();
         setMinimumHeight(dipToPx(100));
         pullRefreshLayout.setRefreshTriggerDistance(dipToPx(100));
-        pullRefreshLayout.setPullDownLimitDistance(dipToPx(150));
+        pullRefreshLayout.setPullDownMaxDistance(dipToPx(150));
         int primaryColor = 0;
         int accentColor = 0;
         if (primaryColor != 0) {

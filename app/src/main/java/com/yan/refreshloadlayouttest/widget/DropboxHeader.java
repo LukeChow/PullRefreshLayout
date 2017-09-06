@@ -125,7 +125,7 @@ public class DropboxHeader extends View implements PullRefreshLayout.OnPullListe
 
                 extendHeight = mHeaderHeight / 2;
                 refreshLayout.setRefreshTriggerDistance(mHeaderHeight);
-                refreshLayout.setPullDownLimitDistance(extendHeight + mHeaderHeight);
+                refreshLayout.setPullDownMaxDistance(extendHeight + mHeaderHeight);
             }
         });
     }

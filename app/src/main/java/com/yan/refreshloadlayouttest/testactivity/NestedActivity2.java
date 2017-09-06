@@ -1,13 +1,10 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
@@ -48,8 +45,8 @@ public class NestedActivity2 extends AppCompatActivity {
 
         refreshLayout.setRefreshTriggerDistance(300);
         refreshLayout.setLoadTriggerDistance(300);
-        refreshLayout.setPullDownLimitDistance(500);
-        refreshLayout.setPullUpLimitDistance(500);
+        refreshLayout.setPullDownMaxDistance(500);
+        refreshLayout.setPullUpMaxDistance(500);
         refreshLayout.setHeaderView(new MaterialHeader(getBaseContext(),refreshLayout, 500F / 300));// 触发距离/拖动范围
         refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW);
         refreshLayout.setHeaderFront(true);
