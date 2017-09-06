@@ -3,7 +3,7 @@
 [![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.5--1-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-393%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.5)
-### [DEMO下载](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
+### [DEMO下载(跑起来看一看，也许这才是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
 header和状态切换演示gif
 <br/>
 ![header和状态切换演示gif](gif/swipe_refresh.gif)
