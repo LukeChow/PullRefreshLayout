@@ -20,7 +20,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 
 ## 1.概述
 #### 本库的主要特点:和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果)
-对所有基础控件(包括，嵌套滑动例如RecyclerView、NestedScrollView，普通的TextView、ListView、ScrollerView、LinearLayout等)提供下拉刷新、上拉加载的支持
+对所有基础控件(包括，嵌套滑动例如RecyclerView、NestedScrollView，普通的TextView、ListView、ScrollerView、webView、LinearLayout等)提供下拉刷新、上拉加载的支持
 ，且实现无痕过度，和与其他库相比更真实的回弹效果(（即使不是滑动控件）也有惯性缓冲效果)，随意定制header和footer，移动的或者不可以动的，完全不受限制（动画可以onPullChange()完全自主设置）。
 <br/>
 ps:本库没有做解耦处理（那样会增加.class，大小也会增加），目的是使库足够小，而且本库功能目的明确，不必做无用功。
@@ -49,14 +49,14 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器 default ViscousInterpolator
     refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器 default ViscousInterpolator
             
-    refreshLayout.setOverScrollMinDuring(int during);// 设置overscroll最小时间 default 75
+    refreshLayout.setOverScrollMinDuring(int during);// 设置overscroll最小时间 default 60
     refreshLayout.setRefreshAnimationDuring(int refreshAnimationDuring);// 触发刷新或加载动画的执行时间 default 180
     refreshLayout.setResetAnimationDuring(int resetAnimationDuring);// 触发界面回复的动画执行时间 default 400
     refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6F
     
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
     refreshLayout.setTopOverScrollMaxTriggerOffset(300);// 用于控制顶部的overscroll的距离 default 65dp
-    refreshLayout.setBottomOverScrollMaxTriggerOffset(300);// 用于控制底部overscroll的距离 default 75dp
+    refreshLayout.setBottomOverScrollMaxTriggerOffset(300);// 用于控制底部overscroll的距离 default 65dp
     refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离 控件 高度
     refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离 控件 高度
 
