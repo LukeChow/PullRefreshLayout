@@ -23,6 +23,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 /**
  * 游戏 header
  * Created by SCWANG on 2017/6/17.
+ * from https://github.com/scwang90/SmartRefreshLayout
  */
 
 public class FunGameHeader extends FunGameBase {

@@ -8,6 +8,7 @@ import android.view.View;
 /**
  * 路径视图
  * Created by SCWANG on 2017/5/29.
+ * from https://github.com/scwang90/SmartRefreshLayout
  */
 
 public class PathsView extends View {

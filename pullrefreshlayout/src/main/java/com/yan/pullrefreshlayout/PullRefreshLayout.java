@@ -18,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
@@ -78,7 +76,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * over scroll bottom start offset
      */
-    private int bottomOverScrollMaxTriggerOffset = 70;
+    private int bottomOverScrollMaxTriggerOffset = 65;
 
     /**
      * over Scroll Min During
@@ -836,7 +834,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private long getOverScrollTime(int distance) {
         float ratio = Math.abs((float) distance / CommonUtils.getWindowHeight(getContext()));
-        return Math.max(overScrollMinDuring, (long) ((Math.pow(2000 * ratio, 0.46)) * overScrollAdjustValue));
+        return Math.max(overScrollMinDuring, (long) ((Math.pow(2000 * ratio, 0.44)) * overScrollAdjustValue));
     }
 
     private int getFinalOverScrollDistance() {

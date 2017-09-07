@@ -7,17 +7,17 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.View;
 import android.view.animation.Transformation;
-import android.widget.FrameLayout;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.NestedFrameLayout;
 
 import java.util.ArrayList;
 
+/**
+ * from https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
+ */
 public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLayout.OnPullListener {
 
     public ArrayList<StoreHouseBarItem> mItemList = new ArrayList<StoreHouseBarItem>();

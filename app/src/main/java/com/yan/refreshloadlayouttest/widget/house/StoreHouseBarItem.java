@@ -10,6 +10,7 @@ import java.util.Random;
 
 /**
  * Created by srain on 11/6/14.
+ * from https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
  */
 public class StoreHouseBarItem extends Animation {
 

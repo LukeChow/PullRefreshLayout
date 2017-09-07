@@ -11,6 +11,7 @@ import com.yan.refreshloadlayouttest.widget.NestedFrameLayout;
 /**
  * 游戏 header
  * Created by SCWANG on 2017/6/17.
+ * from https://github.com/scwang90/SmartRefreshLayout
  */
 
 public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.OnPullListener {
