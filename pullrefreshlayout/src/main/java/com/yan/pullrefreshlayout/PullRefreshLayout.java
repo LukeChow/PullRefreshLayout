@@ -66,7 +66,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * reset animation total during
      */
-    private int resetAnimationDuring = 400;
+    private int resetAnimationDuring = 350;
 
     /**
      * over scroll top start offset
@@ -455,7 +455,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * @return need continue
      */
     private boolean overScrollBackDell(int type, int tempDistance) {
-        if ((type == 1 && (finalScrollDistance > moveDistance)) || (type == 2 && finalScrollDistance < moveDistance)) {
+        if ((type == 1 && (finalScrollDistance > moveDistance * 2)) || (type == 2 && finalScrollDistance < moveDistance * 2)) {
             cancelAllAnimation();
             if ((type == 1 && moveDistance <= tempDistance) || (type == 2 && moveDistance >= tempDistance)) {
                 dellScroll(-moveDistance);
