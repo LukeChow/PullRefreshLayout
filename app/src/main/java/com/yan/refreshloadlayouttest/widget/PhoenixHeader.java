@@ -289,10 +289,16 @@ public class PhoenixHeader extends View implements PullRefreshLayout.OnPullListe
     public void onPullChange(float percent) {
         mRotate = mPercent = percent;
         mHeaderHeight = pullRefreshLayout.getRefreshTriggerDistance();
-
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.height = (int) (pullRefreshLayout.getRefreshTriggerDistance() * (percent > 1 ? percent : 1));
-        setLayoutParams(layoutParams);
+        invalidate();
+        if (pullRefreshLayout.getMoveDistance() > pullRefreshLayout.getRefreshTriggerDistance()) {
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = pullRefreshLayout.getMoveDistance();
+            setLayoutParams(layoutParams);
+        } else if (getHeight() != pullRefreshLayout.getRefreshTriggerDistance()) {
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = pullRefreshLayout.getRefreshTriggerDistance();
+            setLayoutParams(layoutParams);
+        }
     }
 
     @Override

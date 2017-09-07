@@ -353,7 +353,7 @@ public class DropboxHeader extends View implements PullRefreshLayout.OnPullListe
         if (!refreshLayout.isRefreshing()) {
             mReboundPercent = 1f * Math.max(0, (percent - 1) * 2f > 1 ? 1 : (percent - 1) * 2f);
         }
-
+        invalidate();
         if (refreshLayout.getMoveDistance() > refreshLayout.getRefreshTriggerDistance()) {
             ViewGroup.LayoutParams layoutParams = getLayoutParams();
             layoutParams.height = refreshLayout.getMoveDistance();

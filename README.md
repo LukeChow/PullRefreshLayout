@@ -44,7 +44,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 ```
 //-控件设置-
     refreshLayout.autoRefresh();// 自动刷新
-    refreshLayout.setOverScrollDampingRatio(0.35f);//  值越大overscroll越短 default 0.35F
+    refreshLayout.setOverScrollDampingRatio(0.35f);//  值越大overscroll衰减越小（如何运作：overscroll移动偏移量*0.35） default 0.35F
     refreshLayout.setScrollInterpolator(interpolator);// 设置scroller的插值器
     refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器 default ViscousInterpolator
     refreshLayout.setAnimationOverScrollInterpolator(interpolator);// 回弹动画的插值器 default ViscousInterpolator
@@ -52,7 +52,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setOverScrollMinDuring(int during);// 设置overscroll最小时间 default 60
     refreshLayout.setRefreshAnimationDuring(int refreshAnimationDuring);// 触发刷新或加载动画的执行时间 default 180
     refreshLayout.setResetAnimationDuring(int resetAnimationDuring);// 触发界面回复的动画执行时间 default 400
-    refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数 default 0.6F
+    refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数（如何运作：移动偏移量*0.6） default 0.6F
     
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
     refreshLayout.setTopOverScrollMaxTriggerOffset(300);// 用于控制顶部的overscroll的距离 default 65dp
