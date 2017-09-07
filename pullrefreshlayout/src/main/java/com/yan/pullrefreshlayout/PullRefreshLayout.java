@@ -66,7 +66,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * reset animation total during
      */
-    private int resetAnimationDuring = 350;
+    private int resetAnimationDuring = 370;
 
     /**
      * over scroll top start offset
