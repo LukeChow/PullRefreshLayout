@@ -53,7 +53,7 @@ public class NestedActivity extends AppCompatActivity {
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
-        refreshLayout.setFooterView(headerOrFooter=new HeaderOrFooter(getApplicationContext()));
+        refreshLayout.setFooterView(headerOrFooter = new HeaderOrFooter(getApplicationContext()));
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -72,12 +72,12 @@ public class NestedActivity extends AppCompatActivity {
                             refreshLayout.setTargetView(vState);
                             vState.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
-
+                            refreshLayout.cancelTouchEvent();
                             refreshLayout.setFooterView(null);
                             refreshLayout.setLoadMoreEnable(false);
                             refreshLayout.setAutoLoadingEnable(false);
 
-                            }
+                        }
                         refreshLayout.refreshComplete();
                     }
                 }, 3000);
