@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/parallax"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:scaleType="centerCrop"
         android:src="@drawable/top_bg"
         app:layout_collapseMode="parallax" />
