@@ -36,7 +36,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * Created by SCWANG on 2017/5/28.
  * from https://github.com/scwang90/SmartRefreshLayout
  */
-public class ClassicsHeader extends RelativeLayout implements PullRefreshLayout.OnPullListener {
+public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshLayout.OnPullListener {
 
     public static String REFRESH_HEADER_PULLDOWN = "下拉可以刷新";
     public static String REFRESH_HEADER_REFRESHING = "正在刷新...";
