@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
@@ -318,18 +319,16 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         throw new RuntimeException("PullRefreshLayout should have a child");
     }
 
-    public void dispatchSuperTouchEvent(MotionEvent ev) {
-        super.dispatchTouchEvent(ev);
+    public boolean dispatchSuperTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (!dispatchPullTouchAble) {
-            return super.dispatchTouchEvent(ev);
+            return dispatchSuperTouchEvent(ev);
         }
-        generalPullHelper.dispatchTouchEvent(ev);
-        dispatchSuperTouchEvent(ev);
-        return true;
+        return generalPullHelper.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -411,6 +410,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new LayoutParams(getContext(), attrs);
+    }
+
+    @Override
+    public void requestDisallowInterceptTouchEvent(boolean b) {
+        if ((android.os.Build.VERSION.SDK_INT >= 21 || !(targetView instanceof AbsListView))
+                && (targetView == null || ViewCompat.isNestedScrollingEnabled(targetView))) {
+            super.requestDisallowInterceptTouchEvent(b);
+        }
     }
 
     @Override
@@ -1702,4 +1709,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return isAutoLoadingTrigger;
     }
 
+    public boolean isDragMoving() {
+        return generalPullHelper.isDragMoving;
+    }
+
+    public boolean isDragHorizontal() {
+        return generalPullHelper.isDragHorizontal;
+    }
 }

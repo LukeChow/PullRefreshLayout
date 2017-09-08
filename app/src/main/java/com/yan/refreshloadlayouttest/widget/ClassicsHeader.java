@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.animation.LinearInterpolator;
@@ -47,12 +48,12 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
     private String KEY_LAST_UPDATE_TIME = "LAST_UPDATE_TIME";
 
     private Date mLastTime;
-    private TextView mHeaderText;
-    private TextView mLastUpdateText;
-    private ImageView mArrowView;
-    private ImageView mProgressView;
-    private PathsDrawable mArrowDrawable;
-    private ProgressDrawable mProgressDrawable;
+    protected TextView mHeaderText;
+    protected TextView mLastUpdateText;
+    protected ImageView mArrowView;
+    protected ImageView mProgressView;
+    protected PathsDrawable mArrowDrawable;
+    protected ProgressDrawable mProgressDrawable;
     private DateFormat mFormat = new SimpleDateFormat("上次更新 M-d HH:mm", Locale.CHINA);
     private SharedPreferences mShared;
 
@@ -66,8 +67,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
-    private void initView(Context context, AttributeSet attrs) {
-
+    protected void initView(Context context, AttributeSet attrs) {
         setMinimumHeight(dipToPx(80));
 
         LinearLayout layout = new LinearLayout(context);
@@ -213,6 +213,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
     @Override
     public void onPullHolding() {
+        Log.e("onPullHolding", "onPullHolding: " );
         mHeaderText.setText(REFRESH_HEADER_REFRESHING);
         mProgressView.setVisibility(VISIBLE);
         mArrowView.setVisibility(GONE);
@@ -230,23 +231,22 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
     @Override
     public void onPullFinish() {
+        Log.e("onPullFinish", "onPullFinish: " );
         if (mProgressDrawable != null) {
             mProgressDrawable.stop();
         } else {
             mProgressView.animate().rotation(0).setDuration(300);
         }
+        if (!mHeaderText.getText().toString().equals(REFRESH_HEADER_FAILED)) {
+            mHeaderText.setText(REFRESH_HEADER_FINISH);
+        }
         mProgressView.setVisibility(GONE);
-
-        mHeaderText.setText(REFRESH_HEADER_FINISH);
         setLastUpdateTime(new Date());
     }
 
     @Override
     public void onPullReset() {
-        mLastUpdateText.setVisibility(VISIBLE);
-        mArrowView.setVisibility(VISIBLE);
-        mArrowView.animate().rotation(0);
+        Log.e("onPullReset", "onPullReset: " );
+        onPullHoldUnTrigger();
     }
-    //</editor-fold>
-
 }

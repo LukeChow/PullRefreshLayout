@@ -1,6 +1,7 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,26 +15,22 @@ import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.HeaderWithAutoLoading;
+import com.yan.refreshloadlayouttest.widget.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
-import java.lang.reflect.Field;
-
-public class CommonActivity2 extends CommonActivity1 {
+public class CommonActivity2 extends CommonActivity1 implements View.OnTouchListener {
     private boolean isInterceptedDispatch = false;
 
     protected int getViewId() {
         return R.layout.common_activity2;
     }
 
-    ScrollView scrollView;
+    private ScrollView scrollView;
+    private LinearLayout linearLayout;
+    private HorizontalScrollView horizontalScrollView;
 
-    LinearLayout linearLayout;
-
-    private float lastMoveY;
     private boolean intercept = true;
-    HorizontalScrollView horizontalScrollView;
 
     protected void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
@@ -43,13 +40,13 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setTwinkEnable(true);
         refreshLayout.setAutoLoadingEnable(true);
         refreshLayout.setLoadMoreEnable(true);
-        refreshLayout.setHeaderView(new HeaderWithAutoLoading(getBaseContext(), refreshLayout));
+        refreshLayout.setHeaderView(new HeaderWithAutoLoading(getBaseContext(), "LineSpinFadeLoaderIndicator", refreshLayout));
         refreshLayout.setFooterView(new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
 
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
-
+        horizontalScrollView.setOnTouchListener(this);
         refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragInterceptAdapter() {
             @Override
             public boolean onHeaderDownIntercept() {
@@ -131,39 +128,15 @@ public class CommonActivity2 extends CommonActivity1 {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        return !isInterceptedDispatch && super.dispatchTouchEvent(ev);
+    }
 
-        switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                lastMoveY = ev.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (isViewDrag(horizontalScrollView) && Math.abs(ev.getY() - lastMoveY) < ViewConfiguration.get(getBaseContext()).getScaledTouchSlop()) {
-                    intercept = false;
-                }
-
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                intercept = true;
-                break;
-        }
-
-        if (isInterceptedDispatch) {
+    @Override
+    public boolean onTouch(View v, MotionEvent ev) {
+        if (!(!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp())) {
+            intercept = ev.getActionMasked() != MotionEvent.ACTION_MOVE;
             return false;
         }
-        return super.dispatchTouchEvent(ev);
+        return intercept= !refreshLayout.isDragHorizontal();
     }
-
-    private boolean isViewDrag(View view) {
-        try {
-            Field field = view.getClass().getDeclaredField("mIsBeingDragged");
-            field.setAccessible(true);
-            return (boolean) field.get(view);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
 }

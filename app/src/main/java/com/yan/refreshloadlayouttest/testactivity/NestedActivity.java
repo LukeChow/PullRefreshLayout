@@ -7,10 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.HeaderOrFooter;
+import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 
 import java.util.ArrayList;

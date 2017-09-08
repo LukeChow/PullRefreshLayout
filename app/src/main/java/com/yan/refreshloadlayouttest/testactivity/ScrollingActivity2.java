@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
+import com.yan.refreshloadlayouttest.widget.ClassicsHeader;
 
 /**
  * 微博列表
@@ -20,6 +21,8 @@ public class ScrollingActivity2 extends AppCompatActivity {
 
     private int mOffset = 0;
     private int mScrollY = 0;
+
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,11 @@ public class ScrollingActivity2 extends AppCompatActivity {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (count++ % 3 == 0) {
+                            ClassicsHeader classicsHeader = refreshLayout.getHeaderView();
+                            classicsHeader.setRefreshError();
+                        }
+
                         refreshLayout.refreshComplete();
                     }
                 }, 2000);

@@ -1,9 +1,8 @@
-package com.yan.refreshloadlayouttest;
+package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
 /**
  * Created by yan on 2017/7/4.
@@ -12,8 +11,8 @@ import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 public class HeaderWithAutoLoading extends HeaderOrFooter {
     PullRefreshLayout refreshLayout;
 
-    public HeaderWithAutoLoading(Context context, PullRefreshLayout refreshLayout) {
-        super(context);
+    public HeaderWithAutoLoading(Context context, String animationName, PullRefreshLayout refreshLayout) {
+        super(context, animationName);
         this.refreshLayout = refreshLayout;
     }
 

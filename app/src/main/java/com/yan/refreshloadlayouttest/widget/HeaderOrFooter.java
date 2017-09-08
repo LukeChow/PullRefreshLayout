@@ -1,4 +1,4 @@
-package com.yan.refreshloadlayouttest;
+package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
-import com.yan.refreshloadlayouttest.widget.PullRefreshView;
+import com.yan.refreshloadlayouttest.R;
 
 /**
  * Created by yan on 2017/7/4.

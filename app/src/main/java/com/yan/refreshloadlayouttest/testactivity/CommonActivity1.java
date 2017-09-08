@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
-import com.yan.refreshloadlayouttest.HeaderOrFooter;
+import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 
 public class CommonActivity1 extends AppCompatActivity {
