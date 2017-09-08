@@ -246,7 +246,6 @@ class GeneralPullHelper {
             MotionEvent reEvent = MotionEvent.obtain(event);
             reEvent.setAction(MotionEvent.ACTION_DOWN);
             pullRefreshLayout.dispatchSuperTouchEvent(reEvent);
-            reEvent.setAction(MotionEvent.ACTION_MOVE);
         }
     }
 }
