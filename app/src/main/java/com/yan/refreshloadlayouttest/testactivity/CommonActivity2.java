@@ -24,8 +24,6 @@ public class CommonActivity2 extends CommonActivity1 {
         return R.layout.common_activity2;
     }
 
-    ClassicLoadView classicLoadView;
-
     ScrollView scrollView;
 
     LinearLayout linearLayout;
@@ -39,7 +37,7 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setAutoLoadingEnable(true);
         refreshLayout.setLoadMoreEnable(true);
         refreshLayout.setHeaderView(new HeaderOrFooter(getBaseContext(), "SemiCircleSpinIndicator"));
-        refreshLayout.setFooterView(classicLoadView = new ClassicLoadView(getApplicationContext(), refreshLayout));
+        refreshLayout.setFooterView(new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
 
@@ -69,7 +67,6 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e("onRefresh", "onRefresh: " + CommonActivity2.this);
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -87,17 +84,22 @@ public class CommonActivity2 extends CommonActivity1 {
                     @Override
                     public void run() {
                         if (linearLayout.getChildCount() > 12) {
+                            ClassicLoadView classicLoadView = refreshLayout.getFooterView();
                             classicLoadView.loadFinish();
                             return;
                         }
 
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
-                        isInterceptedDispatch = true;
+
+                        if (refreshLayout.getMoveDistance() < 0) {
+                            isInterceptedDispatch = true;
+                        }
 
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 scrollView.scrollBy(0, -refreshLayout.getMoveDistance());
+                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
                                 classicLoadView.startBackAnimation();
                                 isInterceptedDispatch = false;
                             }

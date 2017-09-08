@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 
 /**
@@ -47,7 +46,7 @@ public class ScrollingActivity2 extends AppCompatActivity {
                     public void run() {
                         refreshLayout.refreshComplete();
                     }
-                },2000);
+                }, 2000);
             }
 
             @Override
@@ -75,6 +74,14 @@ public class ScrollingActivity2 extends AppCompatActivity {
         buttonBar.setAlpha(0);
         toolbar.setBackgroundColor(0);
         setImages();
+
+
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.autoRefresh();
+            }
+        }, 150);
     }
 
     private void setImages() {

@@ -28,6 +28,7 @@ import com.yan.refreshloadlayouttest.widget.pathview.PathsDrawable;
  * DropboxRefresh
  * https://dribbble.com/shots/3470499-Dropbox-Refresh
  * Created by SCWANG on 2017/6/24.
+ * from https://github.com/scwang90/SmartRefreshLayout
  */
 
 public class DropboxHeader extends View implements PullRefreshLayout.OnPullListener {
