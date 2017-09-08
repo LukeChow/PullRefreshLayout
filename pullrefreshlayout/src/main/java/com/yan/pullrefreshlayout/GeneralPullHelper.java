@@ -125,7 +125,7 @@ class GeneralPullHelper {
 
                 float movingX = ev.getX() - actionDownPointX;
                 float movingY = ev.getY() - actionDownPointY;
-                if (((Math.sqrt(movingY * movingY + movingX * movingX) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) || pullRefreshLayout.moveDistance != 0)) {
+                if (((Math.abs(movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) || pullRefreshLayout.moveDistance != 0)) {
                     isTriggerMoveEvent = true;
                     lastMoveY = (int) ev.getY();
                 }

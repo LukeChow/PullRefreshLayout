@@ -6,6 +6,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,9 +14,11 @@ import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.HeaderOrFooter;
+import com.yan.refreshloadlayouttest.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
+
+import java.lang.reflect.Field;
 
 public class CommonActivity2 extends CommonActivity1 {
     private boolean isInterceptedDispatch = false;
@@ -28,6 +31,10 @@ public class CommonActivity2 extends CommonActivity1 {
 
     LinearLayout linearLayout;
 
+    private float lastMoveY;
+    private boolean intercept = true;
+    HorizontalScrollView horizontalScrollView;
+
     protected void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         scrollView = (ScrollView) findViewById(R.id.sv);
@@ -36,32 +43,23 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setTwinkEnable(true);
         refreshLayout.setAutoLoadingEnable(true);
         refreshLayout.setLoadMoreEnable(true);
-        refreshLayout.setHeaderView(new HeaderOrFooter(getBaseContext(), "SemiCircleSpinIndicator"));
+        refreshLayout.setHeaderView(new HeaderWithAutoLoading(getBaseContext(), refreshLayout));
         refreshLayout.setFooterView(new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
 
-        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
-        final boolean[] isTouch = {false};
-        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                isTouch[0] = event.getActionMasked() == MotionEvent.ACTION_MOVE;
-                return false;
-            }
-        });
-        refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragIntercept() {
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
+
+        refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragInterceptAdapter() {
             @Override
             public boolean onHeaderDownIntercept() {
-                return !isTouch[0];
+                return intercept;
             }
 
             @Override
             public boolean onFooterUpIntercept() {
-                return !isTouch[0];
-
+                return intercept;
             }
-
         });
 
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
@@ -123,15 +121,6 @@ public class CommonActivity2 extends CommonActivity1 {
         Glide.with(this)
                 .load(R.drawable.img4)
                 .into((ImageView) findViewById(R.id.iv4));
-        Glide.with(this)
-                .load(R.drawable.img5)
-                .into((ImageView) findViewById(R.id.iv5));
-        Glide.with(this)
-                .load(R.drawable.img6)
-                .into((ImageView) findViewById(R.id.iv6));
-        Glide.with(this)
-                .load(R.drawable.loading_bg)
-                .into((ImageView) findViewById(R.id.iv7));
     }
 
     @Override
@@ -142,9 +131,39 @@ public class CommonActivity2 extends CommonActivity1 {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        switch (ev.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                lastMoveY = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (isViewDrag(horizontalScrollView) && Math.abs(ev.getY() - lastMoveY) < ViewConfiguration.get(getBaseContext()).getScaledTouchSlop()) {
+                    intercept = false;
+                }
+
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                intercept = true;
+                break;
+        }
+
         if (isInterceptedDispatch) {
             return false;
         }
         return super.dispatchTouchEvent(ev);
     }
+
+    private boolean isViewDrag(View view) {
+        try {
+            Field field = view.getClass().getDeclaredField("mIsBeingDragged");
+            field.setAccessible(true);
+            return (boolean) field.get(view);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

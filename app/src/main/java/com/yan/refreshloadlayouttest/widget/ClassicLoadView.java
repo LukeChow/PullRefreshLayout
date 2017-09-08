@@ -163,6 +163,20 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
 
     @Override
     public void onPullReset() {
-        Log.e("onPullReset", "onPullReset: ");
+        Log.e("LoadingView", "onPullReset: ");
+
+        /**
+         * 内容没有铺满时继续执行自动加载
+         */
+        if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp()) {
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!refreshLayout.isRefreshing()) {
+                        refreshLayout.autoLoading();
+                    }
+                }
+            }, 250);
+        }
     }
 }
