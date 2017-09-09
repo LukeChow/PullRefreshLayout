@@ -301,7 +301,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         for (int i = 0; i < getChildCount(); i++) {
             if (getChildAt(i) != footerView && getChildAt(i) != headerView) {
                 pullContentLayout = getChildAt(i);
-                /**
+
+                /*
                  * targetView ready
                  */
                 if (targetViewId != -1) {
@@ -1382,9 +1383,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    /**
-     * ------------------| open api |------------------
-     */
+    //  ------------------| open api |------------------
 
     /**
      * move children
@@ -1505,7 +1504,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         this.onDragIntercept = onDragIntercept;
     }
 
-    private void setScrollInterpolator(Interpolator interpolator) {
+    public void setScrollInterpolator(Interpolator interpolator) {
         this.scrollInterpolator = interpolator;
         scroller = ScrollerCompat.create(getContext(), scrollInterpolator);
     }

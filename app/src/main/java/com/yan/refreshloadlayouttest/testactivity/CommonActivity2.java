@@ -1,16 +1,15 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
@@ -28,7 +27,6 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
 
     private ScrollView scrollView;
     private LinearLayout linearLayout;
-    private HorizontalScrollView horizontalScrollView;
 
     private boolean intercept = true;
 
@@ -45,7 +43,7 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
 
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
+        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
         horizontalScrollView.setOnTouchListener(this);
         refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragInterceptAdapter() {
             @Override
@@ -131,12 +129,22 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
         return !isInterceptedDispatch && super.dispatchTouchEvent(ev);
     }
 
+    /**
+     * 移动拦截判断
+     * @param v
+     * @param ev
+     * @return
+     */
     @Override
     public boolean onTouch(View v, MotionEvent ev) {
         if (!(!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp())) {
             intercept = ev.getActionMasked() != MotionEvent.ACTION_MOVE;
             return false;
         }
-        return intercept= !refreshLayout.isDragHorizontal();
+        intercept = !refreshLayout.isDragHorizontal();
+        if (ev.getActionMasked() == MotionEvent.ACTION_CANCEL || ev.getActionMasked() == MotionEvent.ACTION_UP) {
+            intercept = true;
+        }
+        return intercept;
     }
 }

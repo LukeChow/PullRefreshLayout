@@ -116,7 +116,7 @@ class GeneralPullHelper {
                 pullRefreshLayout.dispatchSuperTouchEvent(ev);
                 return true;
             case MotionEvent.ACTION_MOVE:
-                /**
+                /*
                  * director dell
                  */
                 float tempY = ev.getRawY();
@@ -160,7 +160,6 @@ class GeneralPullHelper {
 
                 dellTouchEvent(ev);
 
-                isReDispatchTouchEvent = false;
                 isDragHorizontal = false;
                 isDragMoving = false;
                 velocityY = 0;
@@ -230,6 +229,7 @@ class GeneralPullHelper {
     private void dispatchCancelEvent(MotionEvent event, int movingY) {
         if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY < 0 && pullRefreshLayout.moveDistance > 0 || movingY > 0 && pullRefreshLayout.moveDistance < 0)) {
             dispatchCancelEvent(event);
+            isReDispatchTouchEvent = false;
         }
     }
 
