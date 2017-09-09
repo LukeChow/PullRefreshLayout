@@ -38,6 +38,16 @@ class GeneralPullHelper {
     boolean isMovingDirectDown;
 
     /**
+     * is ReDispatch TouchEvent
+     */
+    private boolean isReDispatchTouchEvent;
+
+    /**
+     * is Dispatch Touch Cancel
+     */
+    private boolean isDispatchTouchCancel;
+
+    /**
      * is touch direct down
      * - use by pullRefreshLayout to get drag state
      */
@@ -75,19 +85,14 @@ class GeneralPullHelper {
     private float lastMotionY;
 
     /**
-     * touchEvent velocityTracker
-     */
-    private VelocityTracker velocityTracker;
-
-    /**
      * velocity y
      */
     private float velocityY;
 
     /**
-     * is ReDispatch TouchEvent
+     * touchEvent velocityTracker
      */
-    private boolean isReDispatchTouchEvent;
+    private VelocityTracker velocityTracker;
 
     GeneralPullHelper(PullRefreshLayout pullRefreshLayout, Context context) {
         this.pullRefreshLayout = pullRefreshLayout;
@@ -116,14 +121,13 @@ class GeneralPullHelper {
                 pullRefreshLayout.dispatchSuperTouchEvent(ev);
                 return true;
             case MotionEvent.ACTION_MOVE:
-                /*
-                 * director dell
-                 */
+                // -----------| direct dell |-----------
                 float tempY = ev.getRawY();
-                if (tempY - lastMotionY > 0) {
+                float dragOffset = tempY - lastMotionY;
+                if (dragOffset > 0) {
                     dragState = 1;
                     isMovingDirectDown = true;
-                } else if (tempY - lastMotionY < 0) {
+                } else if (dragOffset < 0) {
                     dragState = -1;
                     isMovingDirectDown = false;
                 }
@@ -136,13 +140,13 @@ class GeneralPullHelper {
                 if (!isDragMoving && Math.abs((int) movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
                     isDragMoving = true;
                     lastMoveY = (int) ev.getY();
-                    dispatchCancelEvent(ev, (int) movingY);
+                    dispatchCancelEvent(ev, (int) dragOffset);
                 } else if (!isDragMoving && !isDragHorizontal && Math.abs((int) movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
                     isDragHorizontal = true;
                 }
 
                 if (isDragMoving) {
-                    reDispatchEvent(ev, (int) movingY);
+                    reDispatchEvent(ev, (int) dragOffset);
                     dellTouchEvent(ev);
                 }
                 break;
@@ -154,12 +158,14 @@ class GeneralPullHelper {
                 velocityY = (isMovingDirectDown ? 1 : -1) * Math.abs(velocityTracker.getYVelocity());
                 recycleVelocityTracker();
 
-                if (isReDispatchTouchEvent && pullRefreshLayout.moveDistance != 0) {
+                if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isDragMoving && pullRefreshLayout.moveDistance != 0) {
                     dispatchCancelEvent(ev);
                 }
 
                 dellTouchEvent(ev);
 
+                isReDispatchTouchEvent = false;
+                isDispatchTouchCancel = false;
                 isDragHorizontal = false;
                 isDragMoving = false;
                 velocityY = 0;
@@ -227,9 +233,10 @@ class GeneralPullHelper {
     }
 
     private void dispatchCancelEvent(MotionEvent event, int movingY) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY < 0 && pullRefreshLayout.moveDistance > 0 || movingY > 0 && pullRefreshLayout.moveDistance < 0)) {
+        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY < 0 && pullRefreshLayout.moveDistance > 0 || movingY > 0 && pullRefreshLayout.moveDistance < 0
+                || (isDragHorizontal && (pullRefreshLayout.moveDistance != 0 || !pullRefreshLayout.isTargetAbleScrollUp() && movingY > 0 || !pullRefreshLayout.isTargetAbleScrollDown() && movingY < 0)))) {
+            isDispatchTouchCancel = true;
             dispatchCancelEvent(event);
-            isReDispatchTouchEvent = false;
         }
     }
 
@@ -240,7 +247,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchEvent(MotionEvent event, int movingY) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && !isReDispatchTouchEvent
+        if (!pullRefreshLayout.isTargetNestedScrollingEnabled()&& isDispatchTouchCancel && !isReDispatchTouchEvent
                 && ((movingY < 0 && pullRefreshLayout.moveDistance > 0) || (movingY > 0 && pullRefreshLayout.moveDistance < 0))) {
             isReDispatchTouchEvent = true;
             MotionEvent reEvent = MotionEvent.obtain(event);

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
@@ -18,7 +19,7 @@ import com.yan.refreshloadlayouttest.widget.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
-public class CommonActivity2 extends CommonActivity1 implements View.OnTouchListener {
+public class CommonActivity2 extends CommonActivity1 {
     private boolean isInterceptedDispatch = false;
 
     protected int getViewId() {
@@ -42,20 +43,6 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
         refreshLayout.setFooterView(new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
-
-        HorizontalScrollView horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
-        horizontalScrollView.setOnTouchListener(this);
-        refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragInterceptAdapter() {
-            @Override
-            public boolean onHeaderDownIntercept() {
-                return intercept;
-            }
-
-            @Override
-            public boolean onFooterUpIntercept() {
-                return intercept;
-            }
-        });
 
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -116,6 +103,35 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
         Glide.with(this)
                 .load(R.drawable.img4)
                 .into((ImageView) findViewById(R.id.iv4));
+
+
+        findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.iv2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.iv3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.iv4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -129,22 +145,4 @@ public class CommonActivity2 extends CommonActivity1 implements View.OnTouchList
         return !isInterceptedDispatch && super.dispatchTouchEvent(ev);
     }
 
-    /**
-     * 移动拦截判断
-     * @param v
-     * @param ev
-     * @return
-     */
-    @Override
-    public boolean onTouch(View v, MotionEvent ev) {
-        if (!(!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp())) {
-            intercept = ev.getActionMasked() != MotionEvent.ACTION_MOVE;
-            return false;
-        }
-        intercept = !refreshLayout.isDragHorizontal();
-        if (ev.getActionMasked() == MotionEvent.ACTION_CANCEL || ev.getActionMasked() == MotionEvent.ACTION_UP) {
-            intercept = true;
-        }
-        return intercept;
-    }
 }
