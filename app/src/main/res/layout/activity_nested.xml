@@ -20,7 +20,7 @@
     app:prl_refreshAnimationDuring="180"
     app:prl_refreshEnable="true"
     app:prl_refreshTriggerDistance="90dp"
-    app:prl_resetAnimationDuring="370"
+    app:prl_resetAnimationDuring="400"
     app:prl_targetId="@+id/recyclerView"
     app:prl_twinkEnable="true">
 
