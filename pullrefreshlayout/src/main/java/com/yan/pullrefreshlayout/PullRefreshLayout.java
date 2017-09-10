@@ -32,6 +32,8 @@ import android.widget.ScrollView;
 public class PullRefreshLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
     private final NestedScrollingParentHelper parentHelper;
     private final NestedScrollingChildHelper childHelper;
+    private final int[] parentScrollConsumed = new int[2];
+    private final int[] parentOffsetInWindow = new int[2];
 
     /**
      * view children
@@ -1061,9 +1063,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         public void onAnimationUpdate(ValueAnimator animation) {
             int offsetY = (int) ((Integer) animation.getAnimatedValue() * overScrollDampingRatio);
             if (ViewCompat.isNestedScrollingEnabled(targetView)) {
-                dispatchNestedScroll(0, 0, 0, offsetY, generalPullHelper.parentOffsetInWindow);
+                dispatchNestedScroll(0, 0, 0, offsetY, parentOffsetInWindow);
             }
-            onScroll(offsetY + generalPullHelper.parentOffsetInWindow[1]);
+            onScroll(offsetY + parentOffsetInWindow[1]);
         }
     };
 
@@ -1097,7 +1099,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onScroll(int dy) {
-        Log.e("onScroll", "onScroll: " + generalPullHelper.parentOffsetInWindow[1] + "    " + dy);
+        Log.e("onScroll", "onScroll: " + parentOffsetInWindow[1] + "    " + dy);
         if ((generalPullHelper.isMoveTrendDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isMoveTrendDown && !isTargetAbleScrollDown())) {
             if (dy < 0 && dragDampingRatio < 1 && pullDownMaxDistance != 0 && moveDistance - dy > pullDownMaxDistance * dragDampingRatio) {
                 dy = (int) (dy * (1 - (moveDistance / (float) pullDownMaxDistance)));
@@ -1155,7 +1157,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 onPreScroll(dy, consumed);
             }
 
-            final int[] parentConsumed = generalPullHelper.parentScrollConsumed;
+            final int[] parentConsumed = parentScrollConsumed;
             if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
                 consumed[0] += parentConsumed[0];
                 consumed[1] += parentConsumed[1];
@@ -1166,9 +1168,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         if (nestedAble(target)) {
-            dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, generalPullHelper.parentOffsetInWindow);
+            dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, parentOffsetInWindow);
             if (isMoveWithContent) {
-                onScroll(dyUnconsumed + generalPullHelper.parentOffsetInWindow[1]);
+                onScroll(dyUnconsumed + parentOffsetInWindow[1]);
             }
         }
     }
