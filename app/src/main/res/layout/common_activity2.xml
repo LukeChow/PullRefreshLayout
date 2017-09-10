@@ -12,6 +12,9 @@
         android:layout_height="match_parent">
 
         <ScrollView
+
+android:clipToPadding="false"
+            android:paddingTop="1px"
             android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
