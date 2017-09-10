@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
@@ -33,7 +35,7 @@ public class CommonActivity1 extends AppCompatActivity {
                 refreshLayout.autoRefresh();
             }
         }, 150);
-        if (findViewById(R.id.iv)!=null) {
+        if (findViewById(R.id.iv) != null) {
             Glide.with(this)
                     .load(R.drawable.loading_bg)
                     .into((ImageView) findViewById(R.id.iv));
@@ -47,6 +49,12 @@ public class CommonActivity1 extends AppCompatActivity {
 //        refreshLayout.setTwinkEnable(false);
         refreshLayout.setLoadMoreEnable(true);
         refreshLayout.setRefreshShowGravity(ShowGravity.FOLLOW, ShowGravity.FOLLOW);
+        findViewById(R.id.iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "refreshLayout", Toast.LENGTH_LONG).show();
+            }
+        });
 //        refreshLayout.setRefreshEnable(false);
 //        refreshLayout.setAutoLoadingEnable(true);
 //        refreshLayout.setDuringAdjustValue(10f);// 动画执行时间调节，越大动画执行越慢

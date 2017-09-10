@@ -2,6 +2,7 @@ package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,8 +30,6 @@ public class CommonActivity2 extends CommonActivity1 {
     private ScrollView scrollView;
     private LinearLayout linearLayout;
 
-    private boolean intercept = true;
-
     protected void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         scrollView = (ScrollView) findViewById(R.id.sv);
@@ -50,6 +49,7 @@ public class CommonActivity2 extends CommonActivity1 {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Log.e("onRefresh", "onRefresh run: ");
                         refreshLayout.refreshComplete();
                     }
                 }, 3000);
