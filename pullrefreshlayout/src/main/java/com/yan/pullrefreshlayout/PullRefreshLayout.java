@@ -1078,7 +1078,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onPreScroll(int dy, int[] consumed) {
-        Log.e("onPreScroll", "onPreScroll: " + consumed[1]);
+        Log.e("onPreScroll", "onPreScroll: " + consumed[1] + "     " + parentOffsetInWindow[1] + "    " + parentScrollConsumed[1]);
         if (dy > 0 && moveDistance > 0) {
             if (dy > moveDistance) {
                 consumed[1] += moveDistance;

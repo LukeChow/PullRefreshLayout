@@ -87,10 +87,6 @@ class GeneralPullHelper {
     private final int[] childConsumed = new int[2];
     private int lastChildConsumedY;
 
-
-    final int[] parentScrollConsumed = new int[2];
-    final int[] parentOffsetInWindow = new int[2];
-
     /**
      * active pointer id
      */
@@ -151,6 +147,7 @@ class GeneralPullHelper {
                     directionOffset = lastDragRawY - tempRawY;
                     lastDragRawY = tempRawY;
                 }
+                Log.e("lastDragRawY", "dispatchTouchEvent: " + directionOffset + "    " + deltaY);
                 if (directionOffset < 0) {
                     dragState = 1;
                     isMoveTrendDown = true;
@@ -173,6 +170,7 @@ class GeneralPullHelper {
 
                 if (isDragVertical) {
                     reDispatchMoveEventDragging(ev, deltaY);
+
                     dellTouchEvent(ev, deltaY);
 
                     if (lastMoveDistance == Integer.MAX_VALUE) {
@@ -205,13 +203,17 @@ class GeneralPullHelper {
                 break;
             case MotionEventCompat.ACTION_POINTER_DOWN: {
                 final int index = MotionEventCompat.getActionIndex(ev);
-                lastDragEventY = (int) ev.getY(index)  ;
+                lastDragEventY = (int) ev.getY(index);
+                lastDragRawY = (int) ev.getRawY();
                 activePointerId = ev.getPointerId(index);
+                reDispatchPointDown(ev);
+                Log.e("lastDragEventY", "dispatchTouchEvent: " + lastDragEventY);
                 break;
             }
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 lastDragEventY = (int) ev.getY(ev.findPointerIndex(activePointerId));
+                lastDragRawY = (int) ev.getRawY();
                 break;
         }
         return pullRefreshLayout.dispatchSuperTouchEvent(ev);
@@ -265,6 +267,15 @@ class GeneralPullHelper {
         }
     }
 
+    private void reDispatchPointDown(MotionEvent event) {
+        if (childConsumed[1] != 0 && pullRefreshLayout.isTargetNestedScrollingEnabled() && !pullRefreshLayout.isMoveWithContent && pullRefreshLayout.moveDistance == 0) {
+            childConsumed[1] = 0;
+            pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
+            pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_DOWN));
+            pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_MOVE));
+        }
+    }
+
     private void reDispatchMoveEventDrag(MotionEvent event, int movingY) {
         if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY > 0 && pullRefreshLayout.moveDistance > 0 || movingY < 0 && pullRefreshLayout.moveDistance < 0
                 || (isDragHorizontal && (pullRefreshLayout.moveDistance != 0 || !pullRefreshLayout.isTargetAbleScrollUp() && movingY < 0 || !pullRefreshLayout.isTargetAbleScrollDown() && movingY > 0)))) {
@@ -282,7 +293,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchUpEvent(MotionEvent event) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isDragVertical && isLayoutMoved) {
+        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && isDragVertical && isLayoutMoved){
             if (!pullRefreshLayout.isTargetAbleScrollDown() && !pullRefreshLayout.isTargetAbleScrollUp()) {
                 pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
             } else if (pullRefreshLayout.targetView instanceof ViewGroup) {
