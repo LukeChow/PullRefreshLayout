@@ -98,11 +98,6 @@ class GeneralPullHelper {
     private int lastDragEventY;
 
     /**
-     * last drag Raw y
-     */
-    private int lastDragRawY;
-
-    /**
      * touchEvent velocityTracker
      */
     private VelocityTracker velocityTracker;
@@ -125,7 +120,6 @@ class GeneralPullHelper {
                 activePointerId = ev.getPointerId(0);
                 actionDownPointX = ev.getX();
                 actionDownPointY = ev.getY();
-                lastDragRawY = lastDragEventY = (int) actionDownPointY;
 
                 dellTouchEvent(ev, 0);
 
@@ -140,18 +134,10 @@ class GeneralPullHelper {
                 int deltaY = lastDragEventY - tempY;
                 lastDragEventY = tempY;
 
-                // ---------------| direction dell |---------------
-                int directionOffset = deltaY;
-                if (!pullRefreshLayout.isMoveWithContent) {
-                    int tempRawY = (int) ev.getRawY();
-                    directionOffset = lastDragRawY - tempRawY;
-                    lastDragRawY = tempRawY;
-                }
-                Log.e("lastDragRawY", "dispatchTouchEvent: " + directionOffset + "    " + deltaY);
-                if (directionOffset < 0) {
+                if (deltaY < 0) {
                     dragState = 1;
                     isMoveTrendDown = true;
-                } else if (directionOffset > 0) {
+                } else if (deltaY > 0) {
                     dragState = -1;
                     isMoveTrendDown = false;
                 }
@@ -204,7 +190,6 @@ class GeneralPullHelper {
             case MotionEventCompat.ACTION_POINTER_DOWN: {
                 final int index = MotionEventCompat.getActionIndex(ev);
                 lastDragEventY = (int) ev.getY(index);
-                lastDragRawY = (int) ev.getRawY();
                 activePointerId = ev.getPointerId(index);
                 reDispatchPointDown(ev);
                 Log.e("lastDragEventY", "dispatchTouchEvent: " + lastDragEventY);
@@ -213,7 +198,6 @@ class GeneralPullHelper {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 lastDragEventY = (int) ev.getY(ev.findPointerIndex(activePointerId));
-                lastDragRawY = (int) ev.getRawY();
                 break;
         }
         return pullRefreshLayout.dispatchSuperTouchEvent(ev);
@@ -268,11 +252,12 @@ class GeneralPullHelper {
     }
 
     private void reDispatchPointDown(MotionEvent event) {
-        if (childConsumed[1] != 0 && pullRefreshLayout.isTargetNestedScrollingEnabled() && !pullRefreshLayout.isMoveWithContent && pullRefreshLayout.moveDistance == 0) {
+        if (!pullRefreshLayout.isMoveWithContent && pullRefreshLayout.moveDistance == 0 && isLayoutMoved) {
+            lastMoveDistance = Integer.MAX_VALUE;
+            isLayoutMoved = false;
             childConsumed[1] = 0;
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_DOWN));
-            pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_MOVE));
         }
     }
 
@@ -293,7 +278,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchUpEvent(MotionEvent event) {
-        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && isDragVertical && isLayoutMoved){
+        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && isDragVertical && isLayoutMoved) {
             if (!pullRefreshLayout.isTargetAbleScrollDown() && !pullRefreshLayout.isTargetAbleScrollUp()) {
                 pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
             } else if (pullRefreshLayout.targetView instanceof ViewGroup) {
