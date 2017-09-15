@@ -1,6 +1,7 @@
 package com.yan.pullrefreshlayout;
 
 import android.support.annotation.IntDef;
+import android.view.ViewGroup;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -124,7 +125,7 @@ public class ShowGravity {
         if (pullRefreshLayout.headerView != null) {
             int paddingLeft = pullRefreshLayout.getPaddingLeft();
             int paddingTop = pullRefreshLayout.getPaddingTop();
-            PullRefreshLayout.LayoutParams lp = (PullRefreshLayout.LayoutParams) pullRefreshLayout.headerView.getLayoutParams();
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) pullRefreshLayout.headerView.getLayoutParams();
             switch (headerShowGravity) {
                 case FOLLOW:
                 case FOLLOW_PLACEHOLDER:
@@ -154,7 +155,7 @@ public class ShowGravity {
         if (pullRefreshLayout.footerView != null) {
             int paddingLeft = pullRefreshLayout.getPaddingLeft();
             int paddingTop = pullRefreshLayout.getPaddingTop();
-            PullRefreshLayout.LayoutParams lp = (PullRefreshLayout.LayoutParams) pullRefreshLayout.footerView.getLayoutParams();
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) pullRefreshLayout.footerView.getLayoutParams();
             switch (footerShowGravity) {
                 case FOLLOW:
                 case FOLLOW_PLACEHOLDER:
