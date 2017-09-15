@@ -14,6 +14,7 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1164,6 +1165,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
         if (nestedAble(target)) {
             if (isMoveWithContent) {
+                generalPullHelper.dellDirection(dy);
+
                 onPreScroll(dy, consumed);
             }
             final int[] parentConsumed = parentScrollConsumed;

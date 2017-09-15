@@ -125,12 +125,8 @@ class GeneralPullHelper {
                 int deltaY = lastDragEventY - tempY;
                 lastDragEventY = tempY;
 
-                if (deltaY < 0) {
-                    dragState = 1;
-                    isMoveTrendDown = true;
-                } else if (deltaY > 0) {
-                    dragState = -1;
-                    isMoveTrendDown = false;
+                if (!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) {
+                    dellDirection(deltaY);
                 }
 
                 float movingX = ev.getX() - actionDownPointX;
@@ -158,6 +154,8 @@ class GeneralPullHelper {
                             ev.setLocation(ev.getX(), (int) ev.getY() + childConsumed[1]);
                         }
                     }
+
+                    // ---------- | make sure that the pullRefreshLayout is moved|----------
                     if (lastMoveDistance == Integer.MAX_VALUE) {
                         lastMoveDistance = pullRefreshLayout.moveDistance;
                     }
@@ -178,7 +176,6 @@ class GeneralPullHelper {
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 lastDragEventY = (int) ev.getY(ev.findPointerIndex(activePointerId));
-                reDispatchPointEvent(ev);
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -216,6 +213,16 @@ class GeneralPullHelper {
         return pullRefreshLayout.dispatchSuperTouchEvent(ev);
     }
 
+    void dellDirection(int offsetY) {
+        if (offsetY < 0) {
+            dragState = 1;
+            isMoveTrendDown = true;
+        } else if (offsetY > 0) {
+            dragState = -1;
+            isMoveTrendDown = false;
+        }
+    }
+
     private void initVelocityTrackerIfNotExists() {
         if (velocityTracker == null) {
             velocityTracker = VelocityTracker.obtain();
@@ -230,7 +237,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchPointEvent(MotionEvent event) {
-        if (!pullRefreshLayout.isMoveWithContent && pullRefreshLayout.moveDistance == 0 && isLayoutMoved) {
+        if (!pullRefreshLayout.isMoveWithContent && isLayoutMoved) {
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
         }
     }
