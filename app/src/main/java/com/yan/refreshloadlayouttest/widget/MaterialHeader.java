@@ -5,13 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 
-public class MaterialHeader extends View implements PullRefreshLayout.OnPullListener {
+public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayout.OnPullListener {
 
     private MaterialProgressDrawable mDrawable;
     private float mScale = 1f;

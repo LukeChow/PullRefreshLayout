@@ -10,7 +10,6 @@ import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.DropboxHeader;
-import com.yan.refreshloadlayouttest.widget.MaterialHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +64,7 @@ public class CommonActivity3 extends Activity {
 //        refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数
 //        refreshLayout.setPullLimitDistance(400);// 拖拽最大范围，为-1时拖拽范围不受限制
 //        refreshLayout.setRefreshEnable(false);
-        refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW);
-        refreshLayout.setHeaderFront(true);
-        refreshLayout.setMoveWithContent(false);
-        refreshLayout.setHeaderView(new MaterialHeader(getBaseContext(), refreshLayout, 2));
+        refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(), refreshLayout));
         refreshLayout.setLoadMoreEnable(false);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override
