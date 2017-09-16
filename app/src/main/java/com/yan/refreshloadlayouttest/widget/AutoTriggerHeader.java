@@ -25,7 +25,7 @@ public class AutoTriggerHeader extends View implements PullRefreshLayout.OnPullL
 
     @Override
     public void onPullChange(float percent) {
-        if (percent > 0) {//如果你不想要回弹可以这样模拟，否则直接去掉
+        if (percent > 0) {//如果你不想要回弹可以这样模拟，否则直接去掉(同时最好重新设置setRefreshAnimationDuring、setResetAnimationDuring 保证回弹时间相同)
             pullRefreshLayout.moveChildren(1);
         }
     }

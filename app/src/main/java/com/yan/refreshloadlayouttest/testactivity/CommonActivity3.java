@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
+import com.yan.refreshloadlayouttest.widget.AutoTriggerHeader;
 import com.yan.refreshloadlayouttest.widget.DropboxHeader;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class CommonActivity3 extends Activity {
 
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(), refreshLayout));
+        refreshLayout.setHeaderView(new AutoTriggerHeader(getBaseContext(), refreshLayout));
         refreshLayout.setLoadMoreEnable(false);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override
