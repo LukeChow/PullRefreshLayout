@@ -229,16 +229,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private Runnable delayHandleActionRunnable;
 
     public PullRefreshLayout(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public PullRefreshLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public PullRefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
+        super(context, attrs);
         showGravity = new ShowGravity(this);
         generalPullHelper = new GeneralPullHelper(this, context);
 
