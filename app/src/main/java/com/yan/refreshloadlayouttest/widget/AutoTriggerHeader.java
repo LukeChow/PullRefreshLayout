@@ -20,6 +20,7 @@ public class AutoTriggerHeader extends View implements PullRefreshLayout.OnPullL
         this.pullRefreshLayout = pullRefreshLayout;
         pullRefreshLayout.setRefreshTriggerDistance(1);
         pullRefreshLayout.setHeaderFront(false);
+        setVisibility(GONE);
     }
 
     @Override
