@@ -62,6 +62,12 @@ public class CommonActivity1 extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                TwoRefreshHeader twoRefreshHeader = refreshLayout.getHeaderView();
+                if (refreshLayout.getRefreshTriggerDistance() == twoRefreshHeader.getTwoRefreshDistance()) {
+                    Toast.makeText(getApplicationContext(), "二级刷新", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "一级刷新", Toast.LENGTH_SHORT).show();
+                }
                 Log.e(TAG, "refreshLayout onRefresh: ");
                 refreshLayout.postDelayed(new Runnable() {
                     @Override

@@ -15,6 +15,12 @@ public class TwoRefreshHeader extends HeaderOrFooter {
     private int twoRefreshDistance;
     private int firstRefreshTriggerDistance;
 
+    private String twoRefreshText="二级刷新";
+
+    public int getTwoRefreshDistance() {
+        return twoRefreshDistance;
+    }
+
     private int dipToPx(float value) {
         DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
@@ -32,8 +38,8 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         super.onPullChange(percent);
         if (!pullRefreshLayout.isHoldingTrigger()) {
             if (pullRefreshLayout.getMoveDistance() > twoRefreshDistance) {
-                tv.setText("二级刷新");
-            } else {
+                tv.setText(twoRefreshText);
+            } else if (tv.getText().toString().equals(twoRefreshText)){
                 tv.setText("release loading");
             }
         }
