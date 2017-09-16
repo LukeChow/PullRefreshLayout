@@ -7,7 +7,7 @@ import android.util.TypedValue;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 
 /**
- * Created by yan on 2017/7/4.
+ * Created by yan on 2017/9/16.
  */
 
 public class TwoRefreshHeader extends HeaderOrFooter {
@@ -42,7 +42,9 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         super.onPullChange(percent);
         if (!pullRefreshLayout.isHoldingTrigger()) {
             if (pullRefreshLayout.getMoveDistance() > twoRefreshDistance) {
-                tv.setText(twoRefreshText);
+                if(!tv.getText().toString().equals(twoRefreshText)) {
+                    tv.setText(twoRefreshText);
+                }
             } else if (tv.getText().toString().equals(twoRefreshText)) {
                 tv.setText("release loading");
             }
