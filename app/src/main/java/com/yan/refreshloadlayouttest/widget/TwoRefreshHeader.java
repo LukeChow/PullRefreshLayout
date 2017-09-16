@@ -15,7 +15,7 @@ public class TwoRefreshHeader extends HeaderOrFooter {
     private int twoRefreshDistance;
     private int firstRefreshTriggerDistance;
 
-    private String twoRefreshText="二级刷新";
+    private String twoRefreshText = "二级刷新";
 
     public int getTwoRefreshDistance() {
         return twoRefreshDistance;
@@ -30,7 +30,11 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         super(context);
         this.pullRefreshLayout = pullRefreshLayout;
         twoRefreshDistance = dipToPx(250);
-        firstRefreshTriggerDistance = pullRefreshLayout.getRefreshTriggerDistance();
+        pullRefreshLayout.post(new Runnable() {
+            public void run() {
+                firstRefreshTriggerDistance = TwoRefreshHeader.this.pullRefreshLayout.getRefreshTriggerDistance();
+            }
+        });
     }
 
     @Override
@@ -39,7 +43,7 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         if (!pullRefreshLayout.isHoldingTrigger()) {
             if (pullRefreshLayout.getMoveDistance() > twoRefreshDistance) {
                 tv.setText(twoRefreshText);
-            } else if (tv.getText().toString().equals(twoRefreshText)){
+            } else if (tv.getText().toString().equals(twoRefreshText)) {
                 tv.setText("release loading");
             }
         }
