@@ -252,7 +252,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.0.9 ： 多点触控调整
  <br/>
- version:2.1.0 ： 增加阻止子View的事件分发方法
+ version:2.0.9-1 ： 增加阻止子View的事件分发方法
  
 ## 4.问题 FAQ
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
