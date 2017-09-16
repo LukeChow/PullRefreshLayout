@@ -9,7 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
+import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 import com.yan.refreshloadlayouttest.R;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class NestedActivity extends AppCompatActivity {
     private SimpleAdapter adapter;
     private View vState;
     private RecyclerView recyclerView;
-    private HeaderOrFooter headerOrFooter;
+    private ClassicLoadView classicLoadView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class NestedActivity extends AppCompatActivity {
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
-        refreshLayout.setFooterView(headerOrFooter = new HeaderOrFooter(getApplicationContext()));
+        refreshLayout.setFooterView(classicLoadView = new ClassicLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -63,8 +63,7 @@ public class NestedActivity extends AppCompatActivity {
                             vState.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             refreshLayout.setTargetView(recyclerView);
-
-                            refreshLayout.setFooterView(headerOrFooter);
+                            refreshLayout.setFooterView(classicLoadView);
                             refreshLayout.setLoadMoreEnable(true);
                             refreshLayout.setAutoLoadingEnable(true);
                         } else {
@@ -75,7 +74,6 @@ public class NestedActivity extends AppCompatActivity {
                             refreshLayout.setFooterView(null);
                             refreshLayout.setLoadMoreEnable(false);
                             refreshLayout.setAutoLoadingEnable(false);
-
                         }
                         refreshLayout.refreshComplete();
                     }
@@ -89,7 +87,14 @@ public class NestedActivity extends AppCompatActivity {
                     public void run() {
                         datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
                         adapter.notifyItemInserted(datas.size());
-                        refreshLayout.loadMoreComplete();
+                        refreshLayout.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.scrollBy(0, -refreshLayout.getMoveDistance());
+                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
+                                classicLoadView.startBackAnimation();
+                            }
+                        }, 150);
                     }
                 }, 1000);
             }

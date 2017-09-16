@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,8 @@ import com.yan.refreshloadlayouttest.R;
  * 使用这个footer却确认调用以下两个方法
  * refreshLayout.setLoadTriggerDistance(120); 主动设置加载更多的触发距离
  * 设置 footerShowState（默认 为STATE_FOLLOW） 为 STATE_FOLLOW
+ * <p>
+ * 当然这里ClassicLoadView只是一种自动加载更多的实现思路，你也可以按照smartRefreshLayout保持默认执行，同时改变target的滑动位置来实现
  */
 
 public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.OnPullListener {
@@ -35,8 +36,6 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     private AVLoadingIndicatorView loadingView;
     private PullRefreshLayout refreshLayout;
     private ObjectAnimator objectAnimator;
-
-    float lastPercent = 100;
 
     public ClassicLoadView(@NonNull Context context, final PullRefreshLayout refreshLayout) {
         super(context);
@@ -49,7 +48,6 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         initView();
         animationInit();
     }
-
 
     // 动画初始化
     private void animationInit() {
@@ -65,8 +63,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
             public void onAnimationEnd(Animator animation) {
                 refreshLayout.loadMoreComplete();
                 refreshLayout.setMoveWithFooter(true);
-                refreshLayout.cancelTouchEvent();
-                refreshLayout.setDispatchPullTouchAble(true);
+                refreshLayout.setDispatchChildrenEventAble(true);
             }
         });
     }
@@ -79,18 +76,19 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
             refreshLayout.loadMoreComplete();
             return;
         }
+
         // 阻止refreshLayout的默认事件分发
-        refreshLayout.setDispatchPullTouchAble(false);
+        refreshLayout.setDispatchChildrenEventAble(false);
+        // 设置事件为ACTION_CANCEL
+        refreshLayout.cancelTouchEvent();
         // 先设置footer不跟随移动
         refreshLayout.setMoveWithFooter(false);
         // 再设置内容移动到0的位置
         refreshLayout.moveChildren(0);
-        // 设置事件为ACTION_CANCEL
-        refreshLayout.cancelTouchEvent();
+
         // 调用自定义footer动画
         objectAnimator.setFloatValues(getY(), getY() - moveDistance);
         objectAnimator.start();
-
     }
 
     public void loadFinish() {
@@ -123,16 +121,12 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     public void onPullChange(float percent) {
         onPullHolding();
         // 判断是否处在 拖拽的状态
-        if (lastPercent == 100) {
-            lastPercent = percent;
-        }
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp() || !refreshLayout.isLoadMoreEnable()) {
             return;
         }
-        if (!refreshLayout.isHoldingTrigger() && !refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isLoading() && (lastPercent > percent)) {
+        if (!refreshLayout.isHoldingTrigger() && !refreshLayout.isLoading() && (percent < 0)) {
             refreshLayout.autoLoading();
         }
-        lastPercent = percent;
     }
 
     @Override
@@ -153,19 +147,15 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
 
     @Override
     public void onPullFinish() {
-        Log.e("onPullFinish", "onPullFinish: ");
         if (refreshLayout.isLoadMoreEnable()) {
             tv.setText("loading finish");
             loadingView.smoothToHide();
-            lastPercent = 100;
         }
     }
 
     @Override
     public void onPullReset() {
-        Log.e("LoadingView", "onPullReset: ");
-
-        /**
+        /*
          * 内容没有铺满时继续执行自动加载
          */
         if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp()) {

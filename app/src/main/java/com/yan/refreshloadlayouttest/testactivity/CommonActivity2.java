@@ -1,16 +1,11 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -21,8 +16,6 @@ import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
 public class CommonActivity2 extends CommonActivity1 {
-    private boolean isInterceptedDispatch = false;
-
     protected int getViewId() {
         return R.layout.common_activity2;
     }
@@ -71,17 +64,12 @@ public class CommonActivity2 extends CommonActivity1 {
 
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
 
-                        if (refreshLayout.getMoveDistance() < 0) {
-                            isInterceptedDispatch = true;
-                        }
-
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 scrollView.scrollBy(0, -refreshLayout.getMoveDistance());
                                 ClassicLoadView classicLoadView = refreshLayout.getFooterView();
                                 classicLoadView.startBackAnimation();
-                                isInterceptedDispatch = false;
                             }
                         }, 150);
                     }
@@ -132,17 +120,6 @@ public class CommonActivity2 extends CommonActivity1 {
                 Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        refreshLayout.setTwinkEnable(false);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return !isInterceptedDispatch && super.dispatchTouchEvent(ev);
     }
 
 }

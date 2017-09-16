@@ -14,7 +14,6 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -121,6 +120,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * dispatch Pull Touch Able
      */
     private boolean dispatchPullTouchAble = true;
+
+    /**
+     * dispatch Children Event Able
+     */
+    private boolean dispatchChildrenEventAble = true;
 
     /**
      * move With
@@ -324,15 +328,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean dispatchSuperTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
+        return !dispatchChildrenEventAble || super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (!dispatchPullTouchAble) {
-            return dispatchSuperTouchEvent(ev);
-        }
-        return generalPullHelper.dispatchTouchEvent(ev);
+        return (!dispatchPullTouchAble && super.dispatchTouchEvent(ev)) || generalPullHelper.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -1561,12 +1562,16 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public final void cancelTouchEvent() {
         if (generalPullHelper.dragState != 0) {
-            dispatchTouchEvent(MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+            super.dispatchTouchEvent(MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
         }
     }
 
     public void setDispatchPullTouchAble(boolean dispatchPullTouchAble) {
         this.dispatchPullTouchAble = dispatchPullTouchAble;
+    }
+
+    public void setDispatchChildrenEventAble(boolean dispatchChildrenEventAble) {
+        this.dispatchChildrenEventAble = dispatchChildrenEventAble;
     }
 
     public void setAnimationMainInterpolator(Interpolator animationMainInterpolator) {

@@ -1,7 +1,6 @@
 package com.yan.refreshloadlayouttest.widget.fungame;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;

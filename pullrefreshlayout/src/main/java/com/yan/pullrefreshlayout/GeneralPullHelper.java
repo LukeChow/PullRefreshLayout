@@ -259,7 +259,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchUpEvent(MotionEvent event) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isDragVertical && isLayoutMoved) {
+        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && isDragVertical && isLayoutMoved) {
             if (!pullRefreshLayout.isTargetAbleScrollDown() && !pullRefreshLayout.isTargetAbleScrollUp()) {
                 pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
             } else if (pullRefreshLayout.targetView instanceof ViewGroup) {
@@ -290,5 +290,4 @@ class GeneralPullHelper {
             }
         }
     }
-
 }
