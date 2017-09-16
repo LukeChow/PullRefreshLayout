@@ -7,7 +7,8 @@ import com.yan.pullrefreshlayout.PullRefreshLayout;
 
 /**
  * Created by yan on 2017/9/16.
- * 只有开启回弹才能使用
+ * AutoTriggerHeader 只有开启回弹才能使用
+ * <p>
  * 由于自动加载使用的很多，所以本库自带实现了这个功能，调用pullRefreshLayout.setAutoLoadingEnable(true)（不开启回弹也可以触发）
  */
 
