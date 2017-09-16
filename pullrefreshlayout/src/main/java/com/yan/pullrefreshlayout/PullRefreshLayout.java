@@ -1160,9 +1160,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
         if (nestedAble(target)) {
-            if (isMoveWithContent) {
-                generalPullHelper.dellDirection(dy);
+            generalPullHelper.dellDirection(dy);
 
+            if (isMoveWithContent) {
                 onPreScroll(dy, consumed);
             }
             final int[] parentConsumed = parentScrollConsumed;

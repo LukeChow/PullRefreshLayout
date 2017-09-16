@@ -125,7 +125,7 @@ class GeneralPullHelper {
                 int deltaY = lastDragEventY - tempY;
                 lastDragEventY = tempY;
 
-                if (!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) {
+                if (!isDragVertical || !pullRefreshLayout.isTargetNestedScrollingEnabled() || (!pullRefreshLayout.isMoveWithContent && pullRefreshLayout.moveDistance != 0)) {
                     dellDirection(deltaY);
                 }
 
