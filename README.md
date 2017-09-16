@@ -19,7 +19,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 ![demo main View](gif/demo_main.jpg) 
 
 ## 1.概述
-#### 本库的主要特点:和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果)
+#### 本库的主要特点:和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果，完美契合嵌套滑动(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果)
 1.对所有基础控件(包括，嵌套滑动例如RecyclerView、NestedScrollView，普通的TextView、ListView、ScrollerView、webView、LinearLayout等)提供下拉刷新、上拉加载的支持
 ，且实现无痕过度，和与其他库相比更真实的回弹效果(（即使不是滑动控件）也有惯性缓冲效果)。
 #### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新，单边回弹等），header和footer拽出方式默认8种，动画可以onPullChange()完全自主设置。
