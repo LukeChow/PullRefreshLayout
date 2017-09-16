@@ -1102,8 +1102,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 dellScroll(-moveDistance);
                 return;
             }
-            dellScroll(-dy);
             consumed[1] += dy;
+            dellScroll(-dy);
         }
     }
 
@@ -1151,10 +1151,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int axes) {
-        if (nestedAble(target)) {
-            parentHelper.onNestedScrollAccepted(child, target, axes);
-            startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
-        }
+        parentHelper.onNestedScrollAccepted(child, target, axes);
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
     }
 
     @Override

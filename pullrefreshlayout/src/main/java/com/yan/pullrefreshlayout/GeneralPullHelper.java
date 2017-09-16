@@ -57,12 +57,12 @@ class GeneralPullHelper {
     /**
      * first touch point x
      */
-    private float actionDownPointX;
+    private int actionDownPointX;
 
     /**
      * first touch point y
      */
-    private float actionDownPointY;
+    private int actionDownPointY;
 
     /**
      * is touch direct down
@@ -109,9 +109,8 @@ class GeneralPullHelper {
         switch (MotionEventCompat.getActionMasked(ev)) {
             case MotionEvent.ACTION_DOWN:
                 activePointerId = ev.getPointerId(0);
-                actionDownPointX = ev.getX();
-                actionDownPointY = ev.getY();
-                lastDragEventY = (int) actionDownPointY;
+                actionDownPointX = (int) (ev.getX() + 0.5f);
+                lastDragEventY = actionDownPointY = (int) (ev.getY() + 0.5f);
 
                 pullRefreshLayout.onStartScroll();
                 pullRefreshLayout.dispatchSuperTouchEvent(ev);
@@ -121,7 +120,7 @@ class GeneralPullHelper {
                 if (ev.findPointerIndex(activePointerId) == -1) {
                     break;
                 }
-                int tempY = (int) ev.getY(pointerIndex);
+                int tempY = (int) (ev.getY(pointerIndex) + 0.5f);
                 int deltaY = lastDragEventY - tempY;
                 lastDragEventY = tempY;
 
@@ -129,13 +128,13 @@ class GeneralPullHelper {
                     dellDirection(deltaY);
                 }
 
-                float movingX = ev.getX(pointerIndex) - actionDownPointX;
-                float movingY = ev.getY(pointerIndex) - actionDownPointY;
-                if (!isDragVertical && Math.abs((int) movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
+                int movingX = (int) (ev.getX(pointerIndex) + 0.5f) - actionDownPointX;
+                int movingY = (int) (ev.getY(pointerIndex) + 0.5f) - actionDownPointY;
+                if (!isDragVertical && Math.abs(movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
                     isDragVertical = true;
                     reDispatchMoveEventDrag(ev, deltaY);
                     lastDragEventY = (int) ev.getY(pointerIndex);
-                } else if (!isDragVertical && !isDragHorizontal && Math.abs((int) movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
+                } else if (!isDragVertical && !isDragHorizontal && Math.abs(movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
                     isDragHorizontal = true;
                 }
 
