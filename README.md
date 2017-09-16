@@ -16,7 +16,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 
 <br/>
 
-![演示gif](gif/demo.gif) 
+![demo main View](gif/demo_main.png) 
 
 ## 1.概述
 #### 本库的主要特点:和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果)
