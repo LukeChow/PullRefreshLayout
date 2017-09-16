@@ -117,11 +117,11 @@ class GeneralPullHelper {
                 pullRefreshLayout.dispatchSuperTouchEvent(ev);
                 return true;
             case MotionEvent.ACTION_MOVE:
-                final int activePointerIndex = ev.findPointerIndex(activePointerId);
+                final int pointerIndex = ev.findPointerIndex(activePointerId);
                 if (ev.findPointerIndex(activePointerId) == -1) {
                     break;
                 }
-                int tempY = (int) ev.getY(activePointerIndex);
+                int tempY = (int) ev.getY(pointerIndex);
                 int deltaY = lastDragEventY - tempY;
                 lastDragEventY = tempY;
 
@@ -129,12 +129,12 @@ class GeneralPullHelper {
                     dellDirection(deltaY);
                 }
 
-                float movingX = ev.getX() - actionDownPointX;
-                float movingY = ev.getY() - actionDownPointY;
+                float movingX = ev.getX(pointerIndex) - actionDownPointX;
+                float movingY = ev.getY(pointerIndex) - actionDownPointY;
                 if (!isDragVertical && Math.abs((int) movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
                     isDragVertical = true;
-                    lastDragEventY = (int) ev.getY();
                     reDispatchMoveEventDrag(ev, deltaY);
+                    lastDragEventY = (int) ev.getY(pointerIndex);
                 } else if (!isDragVertical && !isDragHorizontal && Math.abs((int) movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
                     isDragHorizontal = true;
                 }
@@ -147,10 +147,9 @@ class GeneralPullHelper {
                     if (lastMoveDistance != pullRefreshLayout.moveDistance) {
                         isLayoutMoved = true;
                     }
+                    lastMoveDistance = pullRefreshLayout.moveDistance;
 
                     reDispatchMoveEventDragging(ev, deltaY);
-
-                    lastMoveDistance = pullRefreshLayout.moveDistance;
 
                     // make sure that can nested to work or the targetView is move with content
                     // dell the touch logic
@@ -161,7 +160,7 @@ class GeneralPullHelper {
 
                         // -------------------| event reset |--------------------
                         if (!pullRefreshLayout.isMoveWithContent) {
-                            ev.setLocation(ev.getX(), (int) ev.getY() + childConsumed[1]);
+                            ev.offsetLocation(0, childConsumed[1]);
                         }
                     }
                 }
@@ -171,13 +170,13 @@ class GeneralPullHelper {
                 final int index = MotionEventCompat.getActionIndex(ev);
                 lastDragEventY = (int) ev.getY(index);
                 activePointerId = ev.getPointerId(index);
-                reDispatchPointEvent();
+                reDispatchPointDownEvent();
                 break;
             }
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 lastDragEventY = (int) ev.getY(ev.findPointerIndex(activePointerId));
-                reDispatchPointEvent();
+                reDispatchPointUpEvent(ev);
                 break;
 
             case MotionEvent.ACTION_UP:
@@ -206,7 +205,6 @@ class GeneralPullHelper {
                 activePointerId = -1;
                 dragState = 0;
                 break;
-
         }
         if (velocityTracker != null) {
             velocityTracker.addMovement(ev);
@@ -238,15 +236,24 @@ class GeneralPullHelper {
         }
     }
 
-    private void reDispatchPointEvent() {
+    private void reDispatchPointDownEvent() {
+        if (pullRefreshLayout.isTargetNestedScrollingEnabled() && !isDragVertical) {
+            isDragVertical = true;
+        }
         if (!pullRefreshLayout.isMoveWithContent && isLayoutMoved && pullRefreshLayout.moveDistance == 0) {
             childConsumed[1] = 0;
             lastChildConsumedY = 0;
         }
     }
 
+    private void reDispatchPointUpEvent(MotionEvent event) {
+        if (!pullRefreshLayout.isMoveWithContent && isLayoutMoved && pullRefreshLayout.moveDistance == 0 && childConsumed[1] != 0) {
+            pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
+        }
+    }
+
     private void reDispatchMoveEventDrag(MotionEvent event, int movingY) {
-        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled()) && (movingY > 0 && pullRefreshLayout.moveDistance > 0 || movingY < 0 && pullRefreshLayout.moveDistance < 0
+        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY > 0 && pullRefreshLayout.moveDistance > 0 || movingY < 0 && pullRefreshLayout.moveDistance < 0
                 || (isDragHorizontal && (pullRefreshLayout.moveDistance != 0 || !pullRefreshLayout.isTargetAbleScrollUp() && movingY < 0 || !pullRefreshLayout.isTargetAbleScrollDown() && movingY > 0)))) {
             isDispatchTouchCancel = true;
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
@@ -254,7 +261,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchMoveEventDragging(MotionEvent event, int movingY) {
-        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled()) && isDispatchTouchCancel && !isReDispatchMoveEvent
+        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isDispatchTouchCancel && !isReDispatchMoveEvent
                 && ((movingY > 0 && pullRefreshLayout.moveDistance > 0) || (movingY < 0 && pullRefreshLayout.moveDistance < 0))) {
             isReDispatchMoveEvent = true;
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_DOWN));
@@ -281,12 +288,12 @@ class GeneralPullHelper {
     }
 
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = (ev.getAction() & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >> MotionEventCompat.ACTION_POINTER_INDEX_SHIFT;
-        final int pointerId = ev.getPointerId(pointerIndex);
-        if (pointerId == activePointerId) {
-            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+        final int actionIndex = MotionEventCompat.getActionIndex(ev);
+        if (ev.getPointerId(actionIndex) == activePointerId) {
+            final int newPointerIndex = actionIndex == 0 ? 1 : 0;
             lastDragEventY = (int) ev.getY(newPointerIndex);
             activePointerId = ev.getPointerId(newPointerIndex);
+
             if (velocityTracker != null) {
                 velocityTracker.clear();
             }
