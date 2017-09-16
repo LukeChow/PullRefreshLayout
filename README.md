@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.9-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.9--1-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.9--2-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-399%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.9)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -247,8 +247,6 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  version:2.0.7 ： 调整回弹插值器为线性插值器，回弹效果基本与qq一致
  <br/>
  version:2.0.9 ： 多点触控调整
- <br/>
- version:2.0.9-1 ： 增加阻止子View的事件分发方法
  
 ## 4.问题 FAQ
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
@@ -262,6 +260,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 ```
     @Override
     public boolean isTargetAbleScrollUp() {
+        //其实也并不是很好用，用滑动监听，计算滚动距离更靠谱
         return layoutManager.getChildAt(0) == null || layoutManager.getChildAt(0).getTop() != 0;
     }
 ```
