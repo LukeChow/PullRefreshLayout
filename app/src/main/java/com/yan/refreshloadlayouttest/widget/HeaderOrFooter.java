@@ -16,7 +16,7 @@ import com.yan.refreshloadlayouttest.R;
  */
 
 public class HeaderOrFooter extends PullRefreshView {
-    private TextView tv;
+    protected TextView tv;
     private AVLoadingIndicatorView loadingView;
     private String animationName;
 

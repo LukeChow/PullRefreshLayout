@@ -1,0 +1,55 @@
+package com.yan.refreshloadlayouttest.widget;
+
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+
+import com.yan.pullrefreshlayout.PullRefreshLayout;
+
+/**
+ * Created by yan on 2017/7/4.
+ */
+
+public class TwoRefreshHeader extends HeaderOrFooter {
+    private PullRefreshLayout pullRefreshLayout;
+    private int twoRefreshDistance;
+    private int firstRefreshTriggerDistance;
+
+    private int dipToPx(float value) {
+        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
+    }
+
+    public TwoRefreshHeader(Context context, PullRefreshLayout pullRefreshLayout) {
+        super(context);
+        this.pullRefreshLayout = pullRefreshLayout;
+        twoRefreshDistance = dipToPx(250);
+        firstRefreshTriggerDistance = pullRefreshLayout.getRefreshTriggerDistance();
+    }
+
+    @Override
+    public void onPullChange(float percent) {
+        super.onPullChange(percent);
+        if (!pullRefreshLayout.isHoldingTrigger()) {
+            if (pullRefreshLayout.getMoveDistance() > twoRefreshDistance) {
+                tv.setText("二级刷新");
+            } else {
+                tv.setText("release loading");
+            }
+        }
+    }
+
+    @Override
+    public void onPullHolding() {
+        super.onPullHolding();
+        if (pullRefreshLayout.getMoveDistance() > twoRefreshDistance) {
+            pullRefreshLayout.setRefreshTriggerDistance(twoRefreshDistance);
+        }
+    }
+
+    @Override
+    public void onPullReset() {
+        pullRefreshLayout.setRefreshTriggerDistance(firstRefreshTriggerDistance);
+        super.onPullReset();
+    }
+}
