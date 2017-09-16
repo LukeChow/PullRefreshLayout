@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.pullrefreshlayout.ShowGravity;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.DropboxHeader;
 
@@ -52,18 +51,6 @@ public class CommonActivity3 extends Activity {
 
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-//        refreshLayout.setAdjustTwinkDuring(2);
-//        refreshLayout.setTwinkEnable(false);
-        refreshLayout.setLoadMoreEnable(true);
-//        refreshLayout.setRefreshEnable(false);
-//        refreshLayout.setAutoLoadingEnable(true);
-//        refreshLayout.setDuringAdjustValue(10f);// 动画执行时间调节，越大动画执行越慢
-        // 刷新或加载完成后回复动画执行时间，为-1时，根据setDuringAdjustValue（）方法实现
-//        refreshLayout.setRefreshBackTime(300);
-//        refreshLayout.setPullViewHeight(400);// 设置头部和底部的高度
-//        refreshLayout.setDragDampingRatio(0.6f);// 阻尼系数
-//        refreshLayout.setPullLimitDistance(400);// 拖拽最大范围，为-1时拖拽范围不受限制
-//        refreshLayout.setRefreshEnable(false);
         refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(), refreshLayout));
         refreshLayout.setLoadMoreEnable(false);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {

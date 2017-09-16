@@ -1,0 +1,53 @@
+package com.yan.refreshloadlayouttest.widget;
+
+import android.content.Context;
+import android.view.View;
+
+import com.yan.pullrefreshlayout.PullRefreshLayout;
+
+/**
+ * Created by yan on 2017/9/16.
+ * 只有开启回弹才能使用，由于自动加载使用的很多，所以本库自带实现了这个功能
+ * 调用pullRefreshLayout.setAutoLoadingEnable(true)（不开启回弹也可以触发）
+ */
+
+public class AutoTriggerHeader extends View implements PullRefreshLayout.OnPullListener {
+    private PullRefreshLayout pullRefreshLayout;
+
+    public AutoTriggerHeader(Context context, PullRefreshLayout pullRefreshLayout) {
+        super(context);
+        this.pullRefreshLayout = pullRefreshLayout;
+        pullRefreshLayout.setRefreshTriggerDistance(1);
+    }
+
+    @Override
+    public void onPullChange(float percent) {
+        if (percent > 0) {//如果你不想要回弹可以这样模拟，否则直接去掉
+            pullRefreshLayout.moveChildren(1);
+        }
+    }
+
+    @Override
+    public void onPullHoldTrigger() {
+
+    }
+
+    @Override
+    public void onPullHoldUnTrigger() {
+
+    }
+
+    @Override
+    public void onPullHolding() {
+    }
+
+    @Override
+    public void onPullFinish() {
+
+    }
+
+    @Override
+    public void onPullReset() {
+
+    }
+}
