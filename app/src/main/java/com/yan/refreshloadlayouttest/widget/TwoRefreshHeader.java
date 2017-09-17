@@ -29,7 +29,7 @@ public class TwoRefreshHeader extends HeaderOrFooter {
     public TwoRefreshHeader(Context context, PullRefreshLayout pullRefreshLayout) {
         super(context);
         this.pullRefreshLayout = pullRefreshLayout;
-        twoRefreshDistance = dipToPx(250);
+        twoRefreshDistance = dipToPx(200);
         pullRefreshLayout.post(new Runnable() {
             public void run() {
                 firstRefreshTriggerDistance = TwoRefreshHeader.this.pullRefreshLayout.getRefreshTriggerDistance();

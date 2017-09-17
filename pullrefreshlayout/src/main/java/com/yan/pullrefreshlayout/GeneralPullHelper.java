@@ -208,7 +208,6 @@ class GeneralPullHelper {
         if (velocityTracker != null) {
             velocityTracker.addMovement(ev);
         }
-
         return pullRefreshLayout.dispatchSuperTouchEvent(ev);
     }
 
@@ -236,9 +235,6 @@ class GeneralPullHelper {
     }
 
     private void reDispatchPointDownEvent() {
-        if (pullRefreshLayout.isTargetNestedScrollingEnabled() && !isDragVertical) {
-            isDragVertical = true;
-        }
         if (!pullRefreshLayout.isMoveWithContent && isLayoutMoved && pullRefreshLayout.moveDistance == 0) {
             childConsumed[1] = 0;
             lastChildConsumedY = 0;
@@ -252,7 +248,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchMoveEventDrag(MotionEvent event, int movingY) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && (movingY > 0 && pullRefreshLayout.moveDistance > 0 || movingY < 0 && pullRefreshLayout.moveDistance < 0
+        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && (movingY > 0 && pullRefreshLayout.moveDistance > 0 || movingY < 0 && pullRefreshLayout.moveDistance < 0
                 || (isDragHorizontal && (pullRefreshLayout.moveDistance != 0 || !pullRefreshLayout.isTargetAbleScrollUp() && movingY < 0 || !pullRefreshLayout.isTargetAbleScrollDown() && movingY > 0)))) {
             isDispatchTouchCancel = true;
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
@@ -260,7 +256,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchMoveEventDragging(MotionEvent event, int movingY) {
-        if (!pullRefreshLayout.isTargetNestedScrollingEnabled() && isDispatchTouchCancel && !isReDispatchMoveEvent
+        if ((!pullRefreshLayout.isTargetNestedScrollingEnabled() || !pullRefreshLayout.isMoveWithContent) && isDispatchTouchCancel && !isReDispatchMoveEvent
                 && ((movingY > 0 && pullRefreshLayout.moveDistance > 0) || (movingY < 0 && pullRefreshLayout.moveDistance < 0))) {
             isReDispatchMoveEvent = true;
             pullRefreshLayout.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_DOWN));

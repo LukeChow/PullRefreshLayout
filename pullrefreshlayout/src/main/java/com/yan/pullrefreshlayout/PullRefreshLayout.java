@@ -255,8 +255,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         isHeaderHeightSet = ta.hasValue(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance);
         isFooterHeightSet = ta.hasValue(R.styleable.PullRefreshLayout_prl_loadTriggerDistance);
-        refreshTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance, CommonUtils.dipToPx(context, refreshTriggerDistance));
-        loadTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_loadTriggerDistance, CommonUtils.dipToPx(context, loadTriggerDistance));
+        refreshTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance, InternalUtils.dipToPx(context, refreshTriggerDistance));
+        loadTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_loadTriggerDistance, InternalUtils.dipToPx(context, loadTriggerDistance));
 
         pullDownMaxDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullDownMaxDistance, 0);
         pullUpMaxDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullUpMaxDistance, 0);
@@ -269,8 +269,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         overScrollAdjustValue = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollAdjustValue, overScrollAdjustValue);
         overScrollDampingRatio = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollDampingRatio, overScrollDampingRatio);
-        topOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_topOverScrollMaxTriggerOffset, CommonUtils.dipToPx(context, topOverScrollMaxTriggerOffset));
-        bottomOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_downOverScrollMaxTriggerOffset, CommonUtils.dipToPx(context, bottomOverScrollMaxTriggerOffset));
+        topOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_topOverScrollMaxTriggerOffset, InternalUtils.dipToPx(context, topOverScrollMaxTriggerOffset));
+        bottomOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_downOverScrollMaxTriggerOffset, InternalUtils.dipToPx(context, bottomOverScrollMaxTriggerOffset));
 
         showGravity.headerShowGravity = ta.getInteger(R.styleable.PullRefreshLayout_prl_headerShowGravity, ShowGravity.FOLLOW);
         showGravity.footerShowGravity = ta.getInteger(R.styleable.PullRefreshLayout_prl_footerShowGravity, ShowGravity.FOLLOW);
@@ -284,7 +284,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private View initRefreshView(Context context, String className, int viewId) {
-        View v = CommonUtils.parseClassName(context, className);
+        View v = InternalUtils.parseClassName(context, className);
         if (v == null) {
             if (viewId != -1) {
                 v = LayoutInflater.from(context).inflate(viewId, null, false);
@@ -483,8 +483,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((WebView) targetView).flingScroll(0, velocity);
         } else if (targetView instanceof RecyclerView && !isTargetNested && !isScrollAbleViewBackScroll) {
             ((RecyclerView) targetView).fling(0, velocity);
-        } else if (targetView instanceof RecyclerView && ((type == 2 && !CommonUtils.canChildScrollUp(targetView))
-                || (type == 1 && !CommonUtils.canChildScrollDown(targetView)))) {
+        } else if ((type == 2 && !InternalUtils.canChildScrollUp(targetView)) || (type == 1 && !InternalUtils.canChildScrollDown(targetView))) {
             overScrollDell(type, tempDistance);
             return true;
         }
@@ -777,7 +776,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private long getOverScrollTime(int distance) {
-        float ratio = Math.abs((float) distance / CommonUtils.getWindowHeight(getContext()));
+        float ratio = Math.abs((float) distance / InternalUtils.getWindowHeight(getContext()));
         return Math.max(overScrollMinDuring, (long) ((Math.pow(2000 * ratio, 0.44)) * overScrollAdjustValue));
     }
 
@@ -970,11 +969,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean isTargetAbleScrollUp() {
-        return CommonUtils.canChildScrollUp(targetView);
+        return InternalUtils.canChildScrollUp(targetView);
     }
 
     public boolean isTargetAbleScrollDown() {
-        return CommonUtils.canChildScrollDown(targetView);
+        return InternalUtils.canChildScrollDown(targetView);
     }
 
     /**
@@ -1261,7 +1260,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         void onPullFinish();
 
         void onPullReset();
-
     }
 
     public interface OnDragIntercept {

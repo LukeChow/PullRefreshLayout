@@ -63,7 +63,9 @@ public class CommonActivity2 extends CommonActivity1 {
                         }
 
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
-
+                        if (refreshLayout.getMoveDistance()<0) {
+                            refreshLayout.setDispatchChildrenEventAble(false);
+                        }
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {

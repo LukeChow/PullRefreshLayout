@@ -87,6 +87,9 @@ public class NestedActivity extends AppCompatActivity {
                     public void run() {
                         datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
                         adapter.notifyItemInserted(datas.size());
+                        if (refreshLayout.getMoveDistance() < 0) {
+                            refreshLayout.setDispatchChildrenEventAble(false);
+                        }
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {

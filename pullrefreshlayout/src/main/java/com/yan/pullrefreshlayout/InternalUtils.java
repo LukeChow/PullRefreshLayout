@@ -15,7 +15,7 @@ import java.lang.reflect.Constructor;
 /**
  * Created by yan on 2017/5/21.
  */
-class CommonUtils {
+class InternalUtils {
 
     /**
      * @return Whether it is possible for the child view of this layout to
