@@ -74,6 +74,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         int moveDistance = refreshLayout.getMoveDistance();
         if (moveDistance >= 0) {// moveDistance大于等于0时不主动处理
             refreshLayout.loadMoreComplete();
+            refreshLayout.setDispatchChildrenEventAble(true);
             return;
         }
 
