@@ -34,6 +34,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
         mHeaderHeight = (int) (mScreenHeightPixels * 0.16f);
         refreshLayout.setRefreshTriggerDistance(mHeaderHeight);
         refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW);
+        refreshLayout.setHeaderFront(true);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             if (isGameViewReady && percent < 1) {
                 refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance());
             }
-            onManualOperationMove(1 + (percent - 1) * 0.6F);
+            onManualOperationMove(1 + (percent - 1) * 0.8F);
         }
     }
 
@@ -79,7 +80,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     public void onPullHolding() {
         mManualOperation = true;
         refreshLayout.setDispatchPullTouchAble(false);
-        refreshLayout.setDragDampingRatio(1);
+        refreshLayout.setDragDampingRatio(0.99999f);
     }
 
     @Override

@@ -17,6 +17,7 @@ public class WithoutTwinkFooter extends View implements PullRefreshLayout.OnPull
 
     public WithoutTwinkFooter(Context context, PullRefreshLayout pullRefreshLayout) {
         super(context);
+        setVisibility(GONE);
         this.pullRefreshLayout = pullRefreshLayout;
     }
 
