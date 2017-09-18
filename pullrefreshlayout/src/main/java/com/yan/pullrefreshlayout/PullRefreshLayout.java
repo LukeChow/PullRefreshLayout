@@ -1588,6 +1588,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return (T) footerView;
     }
 
+    public <T extends View> T getTargetView() {
+        return (T) targetView;
+    }
+
     public int getRefreshTriggerDistance() {
         return refreshTriggerDistance;
     }
