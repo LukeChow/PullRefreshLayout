@@ -473,6 +473,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * kinds of view dell back scroll to normal state
      */
     private boolean kindsOfViewsToNormalDell(int type, int tempDistance) {
+        if (!dispatchChildrenEventAble) {
+            return false;
+        }
+
         final int sign = type == 1 ? 1 : -1;
         int velocity = (int) (sign * Math.abs(scroller.getCurrVelocity()));
 

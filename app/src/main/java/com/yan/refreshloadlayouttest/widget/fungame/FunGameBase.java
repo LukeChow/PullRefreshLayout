@@ -1,6 +1,9 @@
 package com.yan.refreshloadlayouttest.widget.fungame;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.util.Log;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
@@ -20,6 +23,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     protected int mScreenHeightPixels;
     protected boolean mManualOperation;
     protected PullRefreshLayout refreshLayout;
+    private boolean isGameViewReady;
     //</editor-fold>
 
     //<editor-fold desc="View">
@@ -38,6 +42,12 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     }
 
     @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawColor(Color.parseColor("#fefefe"));
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
     }
@@ -46,21 +56,21 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
 
     }
 
-    private boolean isGameViewReady;
-
     @Override
     public void onPullChange(float percent) {
-        if (percent <= 1 && mManualOperation && refreshLayout.isHoldingFinishTrigger() && !refreshLayout.isDragUp() && !refreshLayout.isDragDown()) {
+        if (mManualOperation && !refreshLayout.isDragUp() && !refreshLayout.isDragDown() && refreshLayout.isHoldingFinishTrigger() && percent <= 1) {
             onPullFinish();
+            return;
         }
+
         if (mManualOperation) {
-            if (percent == 1) {
+            if (!isGameViewReady && percent == 1) {
                 refreshLayout.setDispatchPullTouchAble(true);
                 refreshLayout.setMoveWithHeader(false);
                 isGameViewReady = true;
             }
-            if (isGameViewReady && percent < 1) {
-                refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance());
+            if (isGameViewReady && refreshLayout.getMoveDistance() < refreshLayout.getRefreshTriggerDistance() / 4) {
+                refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance() / 4);//保证onPullChange() 会持续触发
             }
             onManualOperationMove(1 + (percent - 1) * 0.8F);
         }
@@ -79,8 +89,9 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     @Override
     public void onPullHolding() {
         mManualOperation = true;
+        refreshLayout.setDragDampingRatio(1f);
         refreshLayout.setDispatchPullTouchAble(false);
-        refreshLayout.setDragDampingRatio(0.99999f);
+        refreshLayout.setDispatchChildrenEventAble(false);
     }
 
     @Override
@@ -93,6 +104,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             refreshLayout.setDragDampingRatio(0.6F);
             refreshLayout.setMoveWithHeader(true);
             refreshLayout.setDispatchPullTouchAble(true);
+            refreshLayout.setDispatchChildrenEventAble(true);
         }
     }
 
