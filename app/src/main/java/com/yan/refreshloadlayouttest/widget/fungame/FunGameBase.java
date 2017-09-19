@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
@@ -78,6 +77,10 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             }
             onManualOperationMove(1 + (percent - 1) * 0.8F);
         }
+
+        if (refreshLayout.isHoldingFinishTrigger() && refreshLayout.getMoveDistance() == 0) {
+            setPRLDispatchChildrenEventAble(true);
+        }
     }
 
     private void setPRLDispatchChildrenEventAble(boolean isDispatch) {
@@ -115,7 +118,6 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             refreshLayout.setDragDampingRatio(0.6F);
             refreshLayout.setMoveWithHeader(true);
             refreshLayout.setDispatchPullTouchAble(true);
-            setPRLDispatchChildrenEventAble(true);
         }
     }
 
