@@ -72,8 +72,8 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
             }
             setPRLDispatchChildrenEventAble(refreshLayout.isTargetAbleScrollUp());
 
-            if (isGameViewReady && refreshLayout.getMoveDistance() < refreshLayout.getRefreshTriggerDistance() / 5) {
-                refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance() / 5);//保证onPullChange() 会持续触发
+            if (isGameViewReady && refreshLayout.getMoveDistance() < refreshLayout.getRefreshTriggerDistance() / 4) {
+                refreshLayout.moveChildren(refreshLayout.getRefreshTriggerDistance() / 4);//保证onPullChange() 会持续触发
             }
             onManualOperationMove(1 + (percent - 1) * 0.8F);
         }
