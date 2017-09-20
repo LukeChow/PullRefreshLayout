@@ -393,22 +393,22 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     @Override
-    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+    protected boolean checkLayoutParams(LayoutParams p) {
         return p instanceof MarginLayoutParams;
     }
 
     @Override
-    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+    protected LayoutParams generateDefaultLayoutParams() {
         return new MarginLayoutParams(-1, -1);
     }
 
     @Override
-    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+    protected LayoutParams generateLayoutParams(LayoutParams p) {
         return new MarginLayoutParams(p);
     }
 
     @Override
-    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
@@ -480,14 +480,18 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         final int sign = type == 1 ? 1 : -1;
         int velocity = (int) (sign * Math.abs(scroller.getCurrVelocity()));
 
-        if (targetView instanceof ListView && !isScrollAbleViewBackScroll) {
-        } else if (targetView instanceof ScrollView && !isScrollAbleViewBackScroll) {
+        if (targetView instanceof ScrollView && !isScrollAbleViewBackScroll) {
             ((ScrollView) targetView).fling(velocity);
         } else if (targetView instanceof WebView && !isScrollAbleViewBackScroll) {
             ((WebView) targetView).flingScroll(0, velocity);
         } else if (targetView instanceof RecyclerView && !isTargetNested && !isScrollAbleViewBackScroll) {
             ((RecyclerView) targetView).fling(0, velocity);
-        } else if ((type == 2 && !InternalUtils.canChildScrollUp(targetView)) || (type == 1 && !InternalUtils.canChildScrollDown(targetView))) {
+        } else if (!InternalUtils.canChildScrollUp(targetView) && !InternalUtils.canChildScrollDown(targetView)
+                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof RecyclerView) {
+            // this case just dell overScroll normal,without any operation
+        } else {
+            // the target is able to scrollUp or scrollDown but have not the fling method
+            // ,so dell the view just like normal view
             overScrollDell(type, tempDistance);
             return true;
         }
@@ -877,7 +881,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private View getRefreshView(View v) {
-        ViewGroup.LayoutParams lp = v.getLayoutParams();
+        LayoutParams lp = v.getLayoutParams();
         if (v.getParent() != null) {
             ((ViewGroup) v.getParent()).removeView(v);
         }
@@ -1077,7 +1081,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             if (ViewCompat.isNestedScrollingEnabled(targetView)) {
                 dispatchNestedScroll(0, 0, 0, offsetY, parentOffsetInWindow);
             }
-            onScroll(offsetY + parentOffsetInWindow[1]);
+            onScrollAny(offsetY + parentOffsetInWindow[1]);
         }
     };
 
@@ -1112,15 +1116,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     void onScroll(int dy) {
         if ((generalPullHelper.isMoveTrendDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isMoveTrendDown && !isTargetAbleScrollDown())) {
-            if (dy < 0 && dragDampingRatio < 1 && pullDownMaxDistance != 0 && moveDistance - dy > pullDownMaxDistance * dragDampingRatio) {
-                dy = (int) (dy * (1 - (moveDistance / (float) pullDownMaxDistance)));
-            } else if (dy > 0 && dragDampingRatio < 1 && pullUpMaxDistance != 0 && -moveDistance + dy > pullUpMaxDistance * dragDampingRatio) {
-                dy = (int) (dy * (1 - (-moveDistance / (float) pullUpMaxDistance)));
-            } else {
-                dy = (int) (dy * dragDampingRatio);
-            }
-            dellScroll(-dy);
+            onScrollAny(dy);
         }
+    }
+
+    private void onScrollAny(int dy) {
+        if (dy < 0 && dragDampingRatio < 1 && pullDownMaxDistance != 0 && moveDistance - dy > pullDownMaxDistance * dragDampingRatio) {
+            dy = (int) (dy * (1 - (moveDistance / (float) pullDownMaxDistance)));
+        } else if (dy > 0 && dragDampingRatio < 1 && pullUpMaxDistance != 0 && -moveDistance + dy > pullUpMaxDistance * dragDampingRatio) {
+            dy = (int) (dy * (1 - (-moveDistance / (float) pullUpMaxDistance)));
+        } else {
+            dy = (int) (dy * dragDampingRatio);
+        }
+        dellScroll(-dy);
     }
 
     void onStopScroll() {

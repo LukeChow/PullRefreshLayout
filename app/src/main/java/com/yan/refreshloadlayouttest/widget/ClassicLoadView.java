@@ -64,6 +64,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
                 refreshLayout.loadMoreComplete();
                 refreshLayout.setMoveWithFooter(true);
                 refreshLayout.setDispatchChildrenEventAble(true);
+                refreshLayout.cancelTouchEvent();
             }
         });
     }
