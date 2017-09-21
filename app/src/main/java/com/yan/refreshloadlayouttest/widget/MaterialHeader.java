@@ -1,12 +1,13 @@
 package com.yan.refreshloadlayouttest.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 
@@ -14,19 +15,25 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
 
     private MaterialProgressDrawable mDrawable;
     private float mScale = 1f;
-    private boolean isHolding = false;
     private float multiple;
     private PullRefreshLayout refreshLayout;
 
-    private Animation mScaleAnimation = new Animation() {
+    private final ValueAnimator scaleAnimation = ValueAnimator.ofFloat(1, 0);
+
+    private final AnimatorListenerAdapter listenerAdapter = new AnimatorListenerAdapter() {
         @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            mScale = 1f - interpolatedTime;
-            mDrawable.setAlpha((int) (255 * mScale));
-            if (mScale == 0) {
-                setTranslationY(0);
-                refreshLayout.setMoveWithHeader(true);
+        public void onAnimationEnd(Animator animation) {
+            if (!refreshLayout.isRefreshing() && !refreshLayout.isLoading()) {
+                reset();
             }
+        }
+    };
+
+    private final ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mScale = (float) animation.getAnimatedValue();
+            mDrawable.setAlpha((int) (255 * mScale));
             invalidate();
         }
     };
@@ -42,7 +49,10 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         mDrawable = new MaterialProgressDrawable(getContext(), this);
         mDrawable.setBackgroundColor(Color.WHITE);
         mDrawable.setCallback(this);
-        mScaleAnimation.setDuration(200);
+
+        scaleAnimation.setDuration(200);
+        scaleAnimation.addUpdateListener(updateListener);
+        scaleAnimation.addListener(listenerAdapter);
     }
 
     @Override
@@ -52,11 +62,6 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         } else {
             super.invalidateDrawable(dr);
         }
-    }
-
-    public void setColorSchemeColors(int[] colors) {
-        mDrawable.setColorSchemeColors(colors);
-        invalidate();
     }
 
     @Override
@@ -85,7 +90,7 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
 
     @Override
     public void onPullChange(float percent) {
-        if (isHolding) return;
+        if (refreshLayout.isHoldingTrigger()) return;
         percent = Math.abs(percent / multiple);
 
         mDrawable.setAlpha((int) (percent * 255));
@@ -112,7 +117,6 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
 
     @Override
     public void onPullHolding() {
-        isHolding = true;
         mDrawable.setAlpha(255);
         mDrawable.start();
     }
@@ -121,14 +125,23 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
     public void onPullFinish() {
         mDrawable.stop();
         refreshLayout.setMoveWithHeader(false);
-        startAnimation(mScaleAnimation);
+        refreshLayout.setMoveWithFooter(false);
+        scaleAnimation.start();
     }
 
     @Override
     public void onPullReset() {
-        isHolding = false;
-        mScale = 1f;
-        mDrawable.stop();
-        refreshLayout.setMoveWithHeader(true);
+        if (!scaleAnimation.isRunning()) {
+            reset();
+        }
     }
+
+    private void reset() {
+        setTranslationY(0);
+        mDrawable.stop();
+        mScale = 1f;
+        refreshLayout.setMoveWithHeader(true);
+        refreshLayout.setMoveWithFooter(true);
+    }
+
 }
