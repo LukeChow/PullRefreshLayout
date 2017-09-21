@@ -1,7 +1,6 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -14,7 +13,7 @@ import com.yan.refreshloadlayouttest.widget.WithoutTwinkFooter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonActivity3 extends Activity {
+public class CommonActivity3 extends BaseActivity {
     private static final String TAG = "CommonActivity3";
 
     protected PullRefreshLayout refreshLayout;

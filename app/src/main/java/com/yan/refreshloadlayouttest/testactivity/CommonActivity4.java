@@ -1,7 +1,5 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +12,7 @@ import com.yan.refreshloadlayouttest.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonActivity4 extends Activity {
+public class CommonActivity4 extends BaseActivity {
     private List<SimpleItem> datas;
 
     @Override

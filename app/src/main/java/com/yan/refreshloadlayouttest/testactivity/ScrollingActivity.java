@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,7 @@ import com.yan.refreshloadlayouttest.widget.house.StoreHouseHeader;
 
 import java.util.ArrayList;
 
-public class ScrollingActivity extends AppCompatActivity {
+public class ScrollingActivity extends BaseActivity {
     private static final String TAG = "NestedActivity";
     private PullRefreshLayout refreshLayout;
 

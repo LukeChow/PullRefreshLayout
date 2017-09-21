@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.refreshloadlayouttest.App;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.PhoenixHeader;
 import com.yan.refreshloadlayouttest.widget.fungame.FunGameBattleCityHeader;
@@ -179,6 +180,12 @@ public class RefreshFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isLazyLoad", isLazyLoad);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher(getActivity().getApplicationContext()).watch(this);
     }
 
 }

@@ -15,7 +15,7 @@ import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.TwoRefreshHeader;
 
-public class CommonActivity1 extends AppCompatActivity {
+public class CommonActivity1 extends BaseActivity {
     private static final String TAG = "CommonActivity1";
 
     protected PullRefreshLayout refreshLayout;

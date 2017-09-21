@@ -14,7 +14,7 @@ import com.yan.refreshloadlayouttest.widget.MaterialHeader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NestedActivity2 extends AppCompatActivity {
+public class NestedActivity2 extends BaseActivity {
     private static final String TAG = "NestedActivity";
     private List<SimpleItem> datas;
     private PullRefreshLayout refreshLayout;

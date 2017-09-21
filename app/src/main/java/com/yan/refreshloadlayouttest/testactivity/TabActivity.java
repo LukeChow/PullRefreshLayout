@@ -6,7 +6,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.yan.refreshloadlayouttest.R;
@@ -14,7 +13,7 @@ import com.yan.refreshloadlayouttest.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabActivity extends AppCompatActivity {
+public class TabActivity extends BaseActivity {
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -79,5 +78,4 @@ public class TabActivity extends AppCompatActivity {
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
 }
