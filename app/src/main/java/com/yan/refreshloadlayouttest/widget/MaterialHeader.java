@@ -8,8 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 
