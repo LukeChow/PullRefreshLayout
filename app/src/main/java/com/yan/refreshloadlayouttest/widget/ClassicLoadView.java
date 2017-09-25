@@ -65,6 +65,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
                 refreshLayout.setMoveWithFooter(true);
                 refreshLayout.setDispatchChildrenEventAble(true);
                 refreshLayout.cancelTouchEvent();
+                loadingView.smoothToHide();
             }
         });
     }
@@ -76,6 +77,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         if (moveDistance >= 0) {// moveDistance大于等于0时不主动处理
             refreshLayout.loadMoreComplete();
             refreshLayout.setDispatchChildrenEventAble(true);
+            loadingView.smoothToHide();
             return;
         }
 
