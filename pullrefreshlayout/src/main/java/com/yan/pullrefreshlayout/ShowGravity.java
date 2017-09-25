@@ -39,146 +39,137 @@ public class ShowGravity {
     int headerShowGravity = FOLLOW;
     int footerShowGravity = FOLLOW;
 
-    private PullRefreshLayout pullRefreshLayout;
+    private PullRefreshLayout prl;
 
     ShowGravity(PullRefreshLayout pullRefreshLayout) {
-        this.pullRefreshLayout = pullRefreshLayout;
+        this.prl = pullRefreshLayout;
     }
 
     void dellHeaderMoving(int moveDistance) {
-        if (pullRefreshLayout.headerView != null && moveDistance >= 0) {
+        if (prl.headerView != null && moveDistance >= 0) {
             switch (headerShowGravity) {
                 case FOLLOW:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance);
+                    prl.headerView.setTranslationY(moveDistance);
                     break;
                 case FOLLOW_PLACEHOLDER:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance <= pullRefreshLayout
-                            .refreshTriggerDistance ? moveDistance : pullRefreshLayout
-                            .refreshTriggerDistance);
+                    prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance ? moveDistance
+                            : prl.refreshTriggerDistance);
                     break;
                 case FOLLOW_CENTER:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance <= pullRefreshLayout
-                            .refreshTriggerDistance ? moveDistance : pullRefreshLayout.refreshTriggerDistance
-                            + (moveDistance - pullRefreshLayout.refreshTriggerDistance) / 2);
+                    prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance ? moveDistance
+                            : prl.refreshTriggerDistance + (moveDistance - prl.refreshTriggerDistance) / 2);
                     break;
                 case PLACEHOLDER_CENTER:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance <=
-                            pullRefreshLayout.refreshTriggerDistance ? 0 : (moveDistance
-                            - pullRefreshLayout.refreshTriggerDistance) / 2);
+                    prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance ? 0
+                            : (moveDistance - prl.refreshTriggerDistance) / 2);
                     break;
                 case PLACEHOLDER_FOLLOW:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance <= pullRefreshLayout
-                            .refreshTriggerDistance ? 0 : moveDistance
-                            - pullRefreshLayout.refreshTriggerDistance);
+                    prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance ? 0
+                            : moveDistance - prl.refreshTriggerDistance);
                     break;
                 case CENTER:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance / 2);
+                    prl.headerView.setTranslationY(moveDistance / 2);
                     break;
                 case CENTER_FOLLOW:
-                    pullRefreshLayout.headerView.setTranslationY(moveDistance <= pullRefreshLayout
+                    prl.headerView.setTranslationY(moveDistance <= prl
                             .refreshTriggerDistance ? moveDistance / 2 : moveDistance
-                            - pullRefreshLayout.refreshTriggerDistance / 2);
+                            - prl.refreshTriggerDistance / 2);
                     break;
             }
         }
     }
 
     void dellFooterMoving(int moveDistance) {
-        if (pullRefreshLayout.footerView != null && moveDistance <= 0) {
+        if (prl.footerView != null && moveDistance <= 0) {
             switch (footerShowGravity) {
                 case FOLLOW:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance);
+                    prl.footerView.setTranslationY(moveDistance);
                     break;
                 case FOLLOW_PLACEHOLDER:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance >= -pullRefreshLayout
-                            .loadTriggerDistance ? moveDistance : -pullRefreshLayout
-                            .loadTriggerDistance);
+                    prl.footerView.setTranslationY(moveDistance >= -prl.loadTriggerDistance ? moveDistance
+                            : -prl.loadTriggerDistance);
                     break;
                 case FOLLOW_CENTER:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance <= -pullRefreshLayout
-                            .loadTriggerDistance ? -pullRefreshLayout.loadTriggerDistance
-                            + (pullRefreshLayout.loadTriggerDistance + moveDistance) / 2 : moveDistance);
+                    prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance ? -prl.loadTriggerDistance
+                            + (prl.loadTriggerDistance + moveDistance) / 2 : moveDistance);
                     break;
                 case PLACEHOLDER_CENTER:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance <= -pullRefreshLayout
-                            .loadTriggerDistance ? (moveDistance + pullRefreshLayout
-                            .loadTriggerDistance) / 2 : 0);
+                    prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
+                            ? (moveDistance + prl.loadTriggerDistance) / 2 : 0);
                     break;
                 case PLACEHOLDER_FOLLOW:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance <= -pullRefreshLayout
-                            .loadTriggerDistance ? moveDistance + pullRefreshLayout
-                            .loadTriggerDistance : 0);
+                    prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
+                            ? moveDistance + prl.loadTriggerDistance : 0);
                     break;
                 case CENTER:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance / 2);
+                    prl.footerView.setTranslationY(moveDistance / 2);
                     break;
                 case CENTER_FOLLOW:
-                    pullRefreshLayout.footerView.setTranslationY(moveDistance <= -pullRefreshLayout
-                            .loadTriggerDistance ? moveDistance + pullRefreshLayout
-                            .loadTriggerDistance / 2 : moveDistance / 2);
+                    prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
+                            ? moveDistance + prl.loadTriggerDistance / 2 : moveDistance / 2);
                     break;
             }
         }
     }
 
     void layout(int left, int top, int right, int bottom) {
-        if (pullRefreshLayout.headerView != null) {
-            int paddingLeft = pullRefreshLayout.getPaddingLeft();
-            int paddingTop = pullRefreshLayout.getPaddingTop();
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) pullRefreshLayout.headerView.getLayoutParams();
+        if (prl.headerView != null) {
+            int paddingLeft = prl.getPaddingLeft();
+            int paddingTop = prl.getPaddingTop();
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) prl.headerView.getLayoutParams();
             switch (headerShowGravity) {
                 case FOLLOW:
                 case FOLLOW_PLACEHOLDER:
                 case FOLLOW_CENTER:
-                    pullRefreshLayout.headerView.layout(paddingLeft + lp.leftMargin
-                            , top + lp.topMargin + paddingTop - pullRefreshLayout.headerView.getMeasuredHeight()
-                            , paddingLeft + lp.leftMargin + pullRefreshLayout.headerView.getMeasuredWidth()
+                    prl.headerView.layout(paddingLeft + lp.leftMargin
+                            , top + lp.topMargin + paddingTop - prl.headerView.getMeasuredHeight()
+                            , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
                             , top + lp.topMargin + paddingTop);
                     break;
                 case PLACEHOLDER:
                 case PLACEHOLDER_CENTER:
                 case PLACEHOLDER_FOLLOW:
-                    pullRefreshLayout.headerView.layout(paddingLeft + lp.leftMargin
+                    prl.headerView.layout(paddingLeft + lp.leftMargin
                             , top + paddingTop + lp.topMargin
-                            , paddingLeft + lp.leftMargin + pullRefreshLayout.headerView.getMeasuredWidth()
-                            , top + paddingTop + lp.topMargin + pullRefreshLayout.headerView.getMeasuredHeight());
+                            , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
+                            , top + paddingTop + lp.topMargin + prl.headerView.getMeasuredHeight());
                     break;
                 case CENTER:
                 case CENTER_FOLLOW:
-                    pullRefreshLayout.headerView.layout(paddingLeft + lp.leftMargin
-                            , -pullRefreshLayout.headerView.getMeasuredHeight() / 2
-                            , paddingLeft + lp.leftMargin + pullRefreshLayout.headerView.getMeasuredWidth()
-                            , pullRefreshLayout.headerView.getMeasuredHeight() / 2);
+                    prl.headerView.layout(paddingLeft + lp.leftMargin
+                            , -prl.headerView.getMeasuredHeight() / 2
+                            , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
+                            , prl.headerView.getMeasuredHeight() / 2);
                     break;
             }
         }
-        if (pullRefreshLayout.footerView != null) {
-            int paddingLeft = pullRefreshLayout.getPaddingLeft();
-            int paddingTop = pullRefreshLayout.getPaddingTop();
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) pullRefreshLayout.footerView.getLayoutParams();
+        if (prl.footerView != null) {
+            int paddingLeft = prl.getPaddingLeft();
+            int paddingTop = prl.getPaddingTop();
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) prl.footerView.getLayoutParams();
             switch (footerShowGravity) {
                 case FOLLOW:
                 case FOLLOW_PLACEHOLDER:
                 case FOLLOW_CENTER:
-                    pullRefreshLayout.footerView.layout(lp.leftMargin + paddingLeft
+                    prl.footerView.layout(lp.leftMargin + paddingLeft
                             , bottom + lp.topMargin + paddingTop
-                            , lp.leftMargin + paddingLeft + pullRefreshLayout.footerView.getMeasuredWidth()
-                            , bottom + lp.topMargin + paddingTop + pullRefreshLayout.footerView.getMeasuredHeight());
+                            , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
+                            , bottom + lp.topMargin + paddingTop + prl.footerView.getMeasuredHeight());
                     break;
                 case PLACEHOLDER:
                 case PLACEHOLDER_CENTER:
                 case PLACEHOLDER_FOLLOW:
-                    pullRefreshLayout.footerView.layout(lp.leftMargin + paddingLeft
-                            , bottom + lp.topMargin + paddingTop - pullRefreshLayout.footerView.getMeasuredHeight()
-                            , lp.leftMargin + paddingLeft + pullRefreshLayout.footerView.getMeasuredWidth()
+                    prl.footerView.layout(lp.leftMargin + paddingLeft
+                            , bottom + lp.topMargin + paddingTop - prl.footerView.getMeasuredHeight()
+                            , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
                             , bottom + lp.topMargin + paddingTop);
                     break;
                 case CENTER:
                 case CENTER_FOLLOW:
-                    pullRefreshLayout.footerView.layout(lp.leftMargin + paddingLeft
-                            , bottom - pullRefreshLayout.footerView.getMeasuredHeight() / 2
-                            , lp.leftMargin + paddingLeft + pullRefreshLayout.footerView.getMeasuredWidth()
-                            , bottom + pullRefreshLayout.footerView.getMeasuredHeight() / 2);
+                    prl.footerView.layout(lp.leftMargin + paddingLeft
+                            , bottom - prl.footerView.getMeasuredHeight() / 2
+                            , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
+                            , bottom + prl.footerView.getMeasuredHeight() / 2);
                     break;
             }
         }

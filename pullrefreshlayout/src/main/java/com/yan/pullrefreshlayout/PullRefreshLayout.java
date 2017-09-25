@@ -32,7 +32,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private final NestedScrollingParentHelper parentHelper;
     private final NestedScrollingChildHelper childHelper;
     private final int[] parentScrollConsumed = new int[2];
-    private final int[] parentOffsetInWindow = new int[2];
+    final int[] parentOffsetInWindow = new int[2];
 
     /**
      * view children
