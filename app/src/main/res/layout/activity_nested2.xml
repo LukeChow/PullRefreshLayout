@@ -42,7 +42,6 @@
         app:prl_dragDampingRatio="0.6"
         app:prl_footerShowGravity="follow"
         app:prl_footerViewId="@layout/header_or_footer"
-        app:prl_headerClass="com.yan.refreshloadlayouttest.testactivity.PlaceHolderHeader"
         app:prl_headerShowGravity="placeholder"
         app:prl_loadMoreEnable="true"
         app:prl_refreshEnable="true"
