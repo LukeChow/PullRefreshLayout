@@ -136,6 +136,13 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mDrawable.stop();
+        clearAnimation();
+    }
+
     private void reset() {
         setTranslationY(0);
         mDrawable.stop();

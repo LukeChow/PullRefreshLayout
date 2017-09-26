@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
@@ -64,6 +65,14 @@ public class HeaderOrFooter extends PullRefreshView {
         if (withBg) {
             setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.e("onDetachedFromWindow", "onDetachedFromWindow: "+this.getContext()+"   " );
+        loadingView.smoothToHide();
+        loadingView.clearAnimation();
     }
 
     @Override

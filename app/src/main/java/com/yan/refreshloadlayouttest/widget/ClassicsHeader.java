@@ -225,6 +225,14 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mProgressDrawable != null) {
+            mProgressDrawable.stop();
+        }
+    }
+
     public void setRefreshError() {
         mHeaderText.setText(REFRESH_HEADER_FAILED);
     }

@@ -318,6 +318,12 @@ public class PhoenixHeader extends View implements PullRefreshLayout.OnPullListe
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        clearAnimation();
+    }
+
+    @Override
     public void onPullFinish() {
         isRefreshing = false;
         clearAnimation();
