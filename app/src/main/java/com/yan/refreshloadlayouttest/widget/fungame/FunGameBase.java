@@ -111,7 +111,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     @Override
     public void onPullFinish() {
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp()) {
-            refreshLayout.cancelAnimation();
+            refreshLayout.cancelAllAnimation();
         } else {
             mManualOperation = false;
             isGameViewReady = false;
