@@ -381,6 +381,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         cancelAllAnimation();
         abortScroller();
 
+        clearAnimators(startRefreshAnimator);
+        clearAnimators(resetHeaderAnimator);
+        clearAnimators(startLoadMoreAnimator);
+        clearAnimators(resetFooterAnimator);
+        clearAnimators(overScrollAnimator);
+
         startRefreshAnimator = null;
         resetHeaderAnimator = null;
         startLoadMoreAnimator = null;
@@ -388,7 +394,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         overScrollAnimator = null;
 
         delayHandleActionRunnable = null;
-
         super.onDetachedFromWindow();
     }
 
@@ -780,6 +785,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private void cancelAnimation(ValueAnimator animator) {
         if (animator != null && animator.isRunning()) {
             animator.cancel();
+        }
+    }
+
+    private void clearAnimators(ValueAnimator animator) {
+        if (animator != null) {
+            animator.removeAllUpdateListeners();
+            animator.removeAllListeners();
         }
     }
 

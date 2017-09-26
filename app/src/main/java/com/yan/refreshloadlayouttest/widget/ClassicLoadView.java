@@ -46,13 +46,11 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
         setBackgroundColor(Color.WHITE);
         initView();
-        animationInit();
     }
 
     // 动画初始化
     private void animationInit() {
-        refreshLayout.setAnimationMainInterpolator(new ViscousInterpolator());
-        refreshLayout.setAnimationOverScrollInterpolator(new LinearInterpolator());
+        if (objectAnimator != null) return;
 
         objectAnimator = ObjectAnimator.ofFloat(this, "y", 0, 0);
         objectAnimator.setDuration(300);
@@ -91,6 +89,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         refreshLayout.moveChildren(0);
 
         // 调用自定义footer动画
+        animationInit();
         objectAnimator.setFloatValues(getY(), getY() - moveDistance);
         objectAnimator.start();
     }
@@ -102,6 +101,20 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
             refreshLayout.loadMoreComplete();
             tv.setText("no more data");
             loadingView.smoothToHide();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        loadingView.smoothToHide();
+        loadingView.clearAnimation();
+
+        if (objectAnimator != null) {
+            objectAnimator.cancel();
+            objectAnimator.removeAllListeners();
+            objectAnimator.removeAllUpdateListeners();
+            objectAnimator = null;
         }
     }
 
@@ -118,6 +131,8 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
 
         loadingView.setIndicator("LineScaleIndicator");
         loadingView.setIndicatorColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        refreshLayout.setAnimationMainInterpolator(new ViscousInterpolator());
+        refreshLayout.setAnimationOverScrollInterpolator(new LinearInterpolator());
     }
 
 
