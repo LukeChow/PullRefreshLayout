@@ -27,7 +27,7 @@ public class CommonActivity4 extends BaseActivity {
 
     private void initListView() {
         ListView listView = (ListView) findViewById(R.id.lv_data);
-        listView.setAdapter(new SimpleListAdapter(getBaseContext(), datas));
+        listView.setAdapter(new SimpleListAdapter(this, datas));
     }
 
     private void initRefreshLayout() {

@@ -36,7 +36,7 @@ public class CommonActivity3 extends BaseActivity {
 
     private void initListView() {
         ListView listView = (ListView) findViewById(R.id.lv_data);
-        listView.setAdapter(new SimpleListAdapter(getApplicationContext(), datas));
+        listView.setAdapter(new SimpleListAdapter(this, datas));
     }
 
     protected void initData() {

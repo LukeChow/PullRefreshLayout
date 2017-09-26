@@ -1,8 +1,6 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.content.Context;
-import android.net.Uri;
-import android.support.v4.content.ContextCompat;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +16,11 @@ import java.util.List;
  */
 
 public class SimpleListAdapter extends BaseAdapter {
-    private Context context;
+    private Activity activity;
     private List<SimpleItem> simpleItems;
 
-    public SimpleListAdapter(Context context, List<SimpleItem> simpleItems) {
-        this.context = context;
+    public SimpleListAdapter(Activity activity, List<SimpleItem> simpleItems) {
+        this.activity = activity;
         this.simpleItems = simpleItems;
     }
 
@@ -46,13 +44,13 @@ public class SimpleListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         SimpleViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.simple_item, parent, false);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.simple_item, parent, false);
             convertView.setTag(viewHolder = new SimpleViewHolder(convertView));
         } else {
             viewHolder = (SimpleViewHolder) convertView.getTag();
         }
         viewHolder.tv.setText(simpleItems.get(position).title);
-        Glide.with(context.getApplicationContext())
+        Glide.with(activity )
                 .load(simpleItems.get(position).resId)
                 .into( viewHolder.iv);
 
