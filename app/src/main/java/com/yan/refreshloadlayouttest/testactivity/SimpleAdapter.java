@@ -1,12 +1,12 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.bumptech.glide.Glide;
 import com.yan.refreshloadlayouttest.R;
 
 import java.util.List;
@@ -31,17 +31,17 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    private Activity activity;
+    private Context context;
     private List<SimpleItem> datas;
 
     public SimpleAdapter(Activity context, List<SimpleItem> datas) {
-        this.activity = context;
+        this.context = context.getApplicationContext();
         this.datas = datas;
     }
 
     @Override
     public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        SimpleViewHolder holder = new SimpleViewHolder(LayoutInflater.from(activity)
+        SimpleViewHolder holder = new SimpleViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.simple_item, parent, false));
         return holder;
     }
@@ -49,9 +49,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
     @Override
     public void onBindViewHolder(final SimpleViewHolder holder, int position) {
         holder.tv.setText(datas.get(position).title);
-        Glide.with(activity)
-                .load(datas.get(position).resId)
-                .into(holder.iv);
+        holder.iv.setImageDrawable(ContextCompat.getDrawable(context,datas.get(position).resId));
 
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

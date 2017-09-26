@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicsHeader;
@@ -82,7 +81,6 @@ public class ScrollingActivity2 extends BaseActivity {
         toolbar.setBackgroundColor(0);
         setImages();
 
-
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -92,27 +90,20 @@ public class ScrollingActivity2 extends BaseActivity {
     }
 
     private void setImages() {
-        Glide.with(this)
-                .load(R.drawable.img1)
-                .into((ImageView) findViewById(R.id.iv1));
-        Glide.with(this)
-                .load(R.drawable.img2)
-                .into((ImageView) findViewById(R.id.iv2));
-        Glide.with(this)
-                .load(R.drawable.img3)
-                .into((ImageView) findViewById(R.id.iv3));
-        Glide.with(this)
-                .load(R.drawable.img4)
-                .into((ImageView) findViewById(R.id.iv4));
-        Glide.with(this)
-                .load(R.drawable.img5)
-                .into((ImageView) findViewById(R.id.iv5));
-        Glide.with(this)
-                .load(R.drawable.img6)
-                .into((ImageView) findViewById(R.id.iv6));
-        Glide.with(this)
-                .load(R.drawable.loading_bg)
-                .into((ImageView) findViewById(R.id.iv7));
+        ((ImageView) findViewById(R.id.iv1)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img1));
+        ((ImageView) findViewById(R.id.iv2)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img2));
+        ((ImageView) findViewById(R.id.iv3)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img3));
+        ((ImageView) findViewById(R.id.iv4)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img4));
+        ((ImageView) findViewById(R.id.iv5)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img5));
+        ((ImageView) findViewById(R.id.iv6)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img6));
+        ((ImageView) findViewById(R.id.iv7)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.loading_bg));
     }
 
 }

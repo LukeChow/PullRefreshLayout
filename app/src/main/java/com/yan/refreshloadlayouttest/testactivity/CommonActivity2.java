@@ -1,5 +1,6 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
@@ -81,19 +81,14 @@ public class CommonActivity2 extends CommonActivity1 {
     }
 
     private void setImages() {
-        Glide.with(this)
-                .load(R.drawable.img1)
-                .into((ImageView) findViewById(R.id.iv1));
-        Glide.with(this)
-                .load(R.drawable.img2)
-                .into((ImageView) findViewById(R.id.iv2));
-        Glide.with(this)
-                .load(R.drawable.img3)
-                .into((ImageView) findViewById(R.id.iv3));
-        Glide.with(this)
-                .load(R.drawable.img4)
-                .into((ImageView) findViewById(R.id.iv4));
-
+        ((ImageView) findViewById(R.id.iv1)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img1));
+        ((ImageView) findViewById(R.id.iv2)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img2));
+        ((ImageView) findViewById(R.id.iv3)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img3));
+        ((ImageView) findViewById(R.id.iv4)).setImageDrawable(ContextCompat
+                .getDrawable(getApplicationContext(), R.drawable.img4));
 
         findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
             @Override

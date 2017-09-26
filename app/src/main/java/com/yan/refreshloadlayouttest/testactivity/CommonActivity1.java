@@ -2,13 +2,12 @@ package com.yan.refreshloadlayouttest.testactivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
 import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
@@ -37,9 +36,7 @@ public class CommonActivity1 extends BaseActivity {
             }
         }, 150);
         if (findViewById(R.id.iv) != null) {
-            Glide.with(this)
-                    .load(R.drawable.loading_bg)
-                    .into((ImageView) findViewById(R.id.iv));
+            ((ImageView) findViewById(R.id.iv)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.loading_bg));
         }
     }
 
@@ -65,7 +62,7 @@ public class CommonActivity1 extends BaseActivity {
                 TwoRefreshHeader twoRefreshHeader = refreshLayout.getHeaderView();
                 if (refreshLayout.getRefreshTriggerDistance() == twoRefreshHeader.getTwoRefreshDistance()) {
                     Toast.makeText(getApplicationContext(), "二级刷新", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "一级刷新", Toast.LENGTH_SHORT).show();
                 }
                 Log.e(TAG, "refreshLayout onRefresh: ");

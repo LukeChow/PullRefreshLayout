@@ -1,17 +1,15 @@
-package com.yan.refreshloadlayouttest.testactivity;
+package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
-import com.yan.refreshloadlayouttest.widget.NestedFrameLayout;
 
 /**
  * Created by Administrator on 2017/7/16 0016.
@@ -21,10 +19,8 @@ public class PlaceHolderHeader extends NestedFrameLayout implements PullRefreshL
     public PlaceHolderHeader(@NonNull Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.refresh_view_big, this, true);
-        Glide.with(context)
-                .load(R.drawable.loading_bg)
-                .into((ImageView) findViewById(R.id.iv_bg));
-
+        ((ImageView) findViewById(R.id.iv_bg)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(),R.drawable.loading_bg));
     }
 
     @Override

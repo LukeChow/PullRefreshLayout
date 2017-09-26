@@ -5,18 +5,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.App;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.PhoenixHeader;
 import com.yan.refreshloadlayouttest.widget.fungame.FunGameBattleCityHeader;
+import com.yan.refreshloadlayouttest.widget.fungame.FunGameHeader;
 import com.yan.refreshloadlayouttest.widget.fungame.FunGameHitBlockHeader;
 
 import java.lang.ref.WeakReference;
@@ -86,27 +87,20 @@ public class RefreshFragment extends Fragment {
     }
 
     private void setImages() {
-        Glide.with(this)
-                .load(R.drawable.img1)
-                .into((ImageView) root.findViewById(R.id.iv1));
-        Glide.with(this)
-                .load(R.drawable.img2)
-                .into((ImageView) root.findViewById(R.id.iv2));
-        Glide.with(this)
-                .load(R.drawable.img3)
-                .into((ImageView) root.findViewById(R.id.iv3));
-        Glide.with(this)
-                .load(R.drawable.img4)
-                .into((ImageView) root.findViewById(R.id.iv4));
-        Glide.with(this)
-                .load(R.drawable.img5)
-                .into((ImageView) root.findViewById(R.id.iv5));
-        Glide.with(this)
-                .load(R.drawable.img6)
-                .into((ImageView) root.findViewById(R.id.iv6));
-        Glide.with(this)
-                .load(R.drawable.loading_bg)
-                .into((ImageView) root.findViewById(R.id.iv7));
+        ((ImageView) root.findViewById(R.id.iv1)).setImageDrawable(ContextCompat
+                .getDrawable(getActivity().getApplicationContext(), R.drawable.img1));
+        ((ImageView) root.findViewById(R.id.iv2)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.img2));
+        ((ImageView) root.findViewById(R.id.iv3)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.img3));
+        ((ImageView) root.findViewById(R.id.iv4)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.img4));
+        ((ImageView) root.findViewById(R.id.iv5)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.img5));
+        ((ImageView) root.findViewById(R.id.iv6)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.img6));
+        ((ImageView) root.findViewById(R.id.iv7)).setImageDrawable(ContextCompat
+                .getDrawable(getContext().getApplicationContext(), R.drawable.loading_bg));
     }
 
     private void onLazyLoad() {
@@ -172,7 +166,6 @@ public class RefreshFragment extends Fragment {
         if (savedInstanceState != null) {
             isLazyLoad = savedInstanceState.getBoolean("isLazyLoad");
         }
-
         isActivityCreate = true;
     }
 
@@ -186,6 +179,10 @@ public class RefreshFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         App.getRefWatcher(getActivity().getApplicationContext()).watch(this);
-    }
 
+        if (refreshLayout.getHeaderView() instanceof FunGameHeader) {
+            FunGameHeader funGameHeader = refreshLayout.getHeaderView();
+            funGameHeader.postEnd();
+        }
+    }
 }

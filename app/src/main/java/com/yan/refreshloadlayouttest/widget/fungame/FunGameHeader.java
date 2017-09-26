@@ -174,6 +174,11 @@ public class FunGameHeader extends FunGameBase {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+    }
+
+    @Override
     public void onPullFinish() {
         super.onPullFinish();
         if (!mManualOperation) {
