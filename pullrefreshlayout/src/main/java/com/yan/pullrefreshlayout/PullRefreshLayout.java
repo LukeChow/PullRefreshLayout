@@ -377,7 +377,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     protected void onDetachedFromWindow() {
         isAttachWindow = false;
 
-        removeDelayRunnable();
         cancelAllAnimation();
         abortScroller();
 
@@ -1361,6 +1360,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         cancelAnimation(resetHeaderAnimator);
         cancelAnimation(startLoadMoreAnimator);
         cancelAnimation(resetFooterAnimator);
+        removeDelayRunnable();
     }
 
     public void refreshComplete() {

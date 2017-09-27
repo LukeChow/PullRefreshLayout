@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -19,6 +20,8 @@ import com.yan.refreshloadlayouttest.R;
 public class HeaderOrFooter extends PullRefreshView {
     protected TextView tv;
     private AVLoadingIndicatorView loadingView;
+    protected FrameLayout rlContainer;
+
     private String animationName;
 
     private boolean isStateFinish;
@@ -70,7 +73,6 @@ public class HeaderOrFooter extends PullRefreshView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        Log.e("onDetachedFromWindow", "onDetachedFromWindow: "+this.getContext()+"   " );
         loadingView.smoothToHide();
         loadingView.clearAnimation();
     }
@@ -82,6 +84,7 @@ public class HeaderOrFooter extends PullRefreshView {
 
     @Override
     protected void initView() {
+        rlContainer = (FrameLayout) findViewById(R.id.rl_container);
         tv = (TextView) findViewById(R.id.title);
         loadingView = (AVLoadingIndicatorView) findViewById(R.id.loading_view);
     }
