@@ -23,7 +23,6 @@ header和状态切换演示gif
 
 fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 <br/>
-
 ![header和状态切换演示gif](gif/fun_header.gif) 
 <br/>
  
