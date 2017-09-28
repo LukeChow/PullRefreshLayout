@@ -5,21 +5,28 @@
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-399%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.9)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
 header和状态切换演示gif
-<br/>
-![header和状态切换演示gif](gif/swipe_refresh.gif)
+<br/> 
 ![header和状态切换演示gif](gif/new_demo.gif) 
+ <br/> 
+ 
+二级刷新
+<br/>
+![header和状态切换演示gif](gif/two_refresh.gif) 
+<br/>
+
+嵌套滑动
+<br/>
+![header和状态切换演示gif](gif/behavior1.gif) 
+![header和状态切换演示gif](gif/behavior2.gif) 
+![header和状态切换演示gif](gif/behavior3.gif) 
+<br/>
 
 fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 <br/>
 
 ![header和状态切换演示gif](gif/fun_header.gif) 
 <br/>
-
-二级刷新
-<br/>
-
-![header和状态切换演示gif](gif/two_refresh.gif) 
-
+ 
 ## 1.概述
 #### 本库的主要特点:完美契合嵌套滑动，和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果),切换状态见NestedActivity
 1.对所有基础控件(包括，嵌套滑动例如RecyclerView、NestedScrollView，普通的TextView、ListView、ScrollerView、webView、LinearLayout等)提供下拉刷新、上拉加载的支持
