@@ -15,7 +15,6 @@ import java.util.List;
 
 public class TabActivity extends BaseActivity {
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 

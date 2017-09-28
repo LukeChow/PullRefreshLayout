@@ -182,6 +182,7 @@ public class RefreshFragment extends Fragment {
 
         if (refreshLayout.getHeaderView() instanceof FunGameHeader) {
             FunGameHeader funGameHeader = refreshLayout.getHeaderView();
+            funGameHeader.onPullFinish();
             funGameHeader.postEnd();
         }
     }
