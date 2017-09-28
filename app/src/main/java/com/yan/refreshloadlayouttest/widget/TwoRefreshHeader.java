@@ -53,7 +53,6 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
         }
     };
 
-
     public boolean isTwoRefresh() {
         return isTwoRefresh;
     }
@@ -179,7 +178,6 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
             pullRefreshLayout.setDispatchPullTouchAble(true);
         }
     }
-
 
     @Override
     protected void onDetachedFromWindow() {

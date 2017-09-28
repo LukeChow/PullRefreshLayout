@@ -11,19 +11,20 @@ header和状态切换演示gif
  
 二级刷新
 <br/>
-![header和状态切换演示gif](gif/two_refresh.gif) 
+![二级刷新](gif/two_refresh.gif) 
+![二级刷新](gif/sliding_down.gif) 
 <br/>
 
 嵌套滑动
 <br/>
-![header和状态切换演示gif](gif/behavior1.gif) 
-![header和状态切换演示gif](gif/behavior2.gif) 
-![header和状态切换演示gif](gif/behavior3.gif) 
+![嵌套滑动](gif/behavior1.gif) 
+![嵌套滑动](gif/behavior2.gif) 
+![嵌套滑动](gif/behavior3.gif) 
 <br/>
 
 fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 <br/>
-![header和状态切换演示gif](gif/fun_header.gif) 
+![fun header](gif/fun_header.gif) 
 <br/>
  
 ## 1.概述

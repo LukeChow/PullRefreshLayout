@@ -14,6 +14,7 @@ import com.yan.refreshloadlayouttest.testactivity.NestedActivity;
 import com.yan.refreshloadlayouttest.testactivity.NestedActivity2;
 import com.yan.refreshloadlayouttest.testactivity.ScrollingActivity;
 import com.yan.refreshloadlayouttest.testactivity.ScrollingActivity2;
+import com.yan.refreshloadlayouttest.testactivity.SlidingDownActivity;
 import com.yan.refreshloadlayouttest.testactivity.TabActivity;
 
 public class OptionActivity extends BaseActivity {
@@ -53,6 +54,9 @@ public class OptionActivity extends BaseActivity {
                             break;
                         case 8:
                             startActivity(new Intent(getBaseContext(), TabActivity.class));
+                            break;
+                       case 9:
+                            startActivity(new Intent(getBaseContext(), SlidingDownActivity.class));
                             break;
                     }
                 }

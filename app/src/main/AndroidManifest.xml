@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yan.refreshloadlayouttest">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -50,8 +51,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".testactivity.TabActivity"
-            android:label="@string/title_activity_tab">
-        </activity>
+            android:label="@string/title_activity_tab"></activity>
+        <activity
+            android:name=".testactivity.SlidingDownActivity"
+            android:label="@string/title_activity_tab"></activity>
     </application>
 
 </manifest>

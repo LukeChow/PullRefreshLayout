@@ -116,7 +116,7 @@ public class NestedFrameLayout extends FrameLayout implements NestedScrollingChi
                     int initialVelocity = (int) VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId);
 
                     if ((Math.abs(initialVelocity) > mMinimumVelocity)) {
-                        flingWithNestedDispatch(-initialVelocity)  ;
+                        flingWithNestedDispatch(-initialVelocity);
                     }
                 }
                 mActivePointerId = INVALID_POINTER;
@@ -130,7 +130,10 @@ public class NestedFrameLayout extends FrameLayout implements NestedScrollingChi
             }
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(evto);
-                mLastMotionY = (int) evto.getY(evto.findPointerIndex(mActivePointerId));
+                try {
+                    mLastMotionY = (int) evto.getY(evto.findPointerIndex(mActivePointerId));
+                } catch (Exception e) {
+                }
                 break;
         }
 
@@ -148,13 +151,12 @@ public class NestedFrameLayout extends FrameLayout implements NestedScrollingChi
     }
 
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = (ev.getAction() & MotionEventCompat.ACTION_POINTER_INDEX_MASK)
-                >> MotionEventCompat.ACTION_POINTER_INDEX_SHIFT;
-        final int pointerId = ev.getPointerId(pointerIndex);
-        if (pointerId == mActivePointerId) {
-            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+        final int actionIndex = MotionEventCompat.getActionIndex(ev);
+        if (ev.getPointerId(actionIndex) == mActivePointerId) {
+            final int newPointerIndex = actionIndex == 0 ? 1 : 0;
             mLastMotionY = (int) ev.getY(newPointerIndex);
             mActivePointerId = ev.getPointerId(newPointerIndex);
+
             if (mVelocityTracker != null) {
                 mVelocityTracker.clear();
             }
