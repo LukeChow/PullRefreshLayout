@@ -71,9 +71,8 @@ public class ShowGravity {
                     prl.headerView.setTranslationY(moveDistance / 2);
                     break;
                 case CENTER_FOLLOW:
-                    prl.headerView.setTranslationY(moveDistance <= prl
-                            .refreshTriggerDistance ? moveDistance / 2 : moveDistance
-                            - prl.refreshTriggerDistance / 2);
+                    prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance
+                            ? moveDistance / 2 : moveDistance - prl.refreshTriggerDistance / 2);
                     break;
             }
         }
@@ -86,8 +85,8 @@ public class ShowGravity {
                     prl.footerView.setTranslationY(moveDistance);
                     break;
                 case FOLLOW_PLACEHOLDER:
-                    prl.footerView.setTranslationY(moveDistance >= -prl.loadTriggerDistance ? moveDistance
-                            : -prl.loadTriggerDistance);
+                    prl.footerView.setTranslationY(moveDistance >= -prl.loadTriggerDistance
+                            ? moveDistance : -prl.loadTriggerDistance);
                     break;
                 case FOLLOW_CENTER:
                     prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance ? -prl.loadTriggerDistance

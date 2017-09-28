@@ -675,10 +675,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void startRefresh(int headerViewHeight, final boolean withAction) {
+        if (headerViewHeight == refreshTriggerDistance) {
+            refreshStartAnimationListener.onAnimationEnd(null);
+            return;
+        }
         if (!isHoldingTrigger && onHeaderPullHolding()) {
             isHoldingTrigger = true;
         }
         cancelAllAnimation();
+
         if (startRefreshAnimator == null) {
             startRefreshAnimator = getAnimator(headerViewHeight, refreshTriggerDistance, headerAnimationUpdate, refreshStartAnimationListener, readyMainInterpolator());
         } else {
@@ -714,6 +719,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void startLoadMore(int loadMoreViewHeight, boolean withAction) {
+        if (loadMoreViewHeight == -loadTriggerDistance) {
+            loadingStartAnimationListener.onAnimationEnd(null);
+            return;
+        }
         if (!isHoldingTrigger && onFooterPullHolding()) {
             isHoldingTrigger = true;
         }
@@ -862,7 +871,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (moveDistance == 0) {
             return 0;
         }
-        if (!generalPullHelper.isMoveTrendDown) {
+        if (!generalPullHelper.isDragMoveTrendDown) {
             if (moveDistance > 0) {
                 return 1;
             } else if (moveDistance < 0) {
@@ -1051,7 +1060,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
-            onStopScroll();
+            handleAction();
             onStopNestedScroll(null);
         }
     };
@@ -1113,7 +1122,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onScroll(int dy) {
-        if ((generalPullHelper.isMoveTrendDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isMoveTrendDown && !isTargetAbleScrollDown())) {
+        if ((generalPullHelper.isDragMoveTrendDown && !isTargetAbleScrollUp()) || (!generalPullHelper.isDragMoveTrendDown && !isTargetAbleScrollDown())) {
             onScrollAny(dy);
         }
     }
@@ -1130,6 +1139,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onStopScroll() {
+        // just make that custom header and footer easier
+        if (generalPullHelper.isLayoutDragMoved) {
+            onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
+            onFooterPullChange((float) moveDistance / refreshTriggerDistance);
+        }
+
         removeDelayRunnable();
         if (!pullTwinkEnable) {
             handleAction();
@@ -1651,8 +1666,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return generalPullHelper.dragState == -1;
     }
 
-    public boolean isMoveTrendDown() {
-        return generalPullHelper.isMoveTrendDown;
+    public boolean isDragMoveTrendDown() {
+        return generalPullHelper.isDragMoveTrendDown;
     }
 
     public boolean isHoldingTrigger() {
@@ -1677,5 +1692,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public boolean isDragHorizontal() {
         return generalPullHelper.isDragHorizontal;
+    }
+
+    public boolean isLayoutDragMoved() {
+        return generalPullHelper.isLayoutDragMoved;
     }
 }

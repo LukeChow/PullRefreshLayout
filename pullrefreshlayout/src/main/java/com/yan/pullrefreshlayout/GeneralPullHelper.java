@@ -27,6 +27,7 @@ class GeneralPullHelper {
      * - use by pullRefreshLayout to know is drag Vertical
      */
     boolean isDragVertical;
+
     /**
      * is Drag Horizontal
      * - use by pullRefreshLayout to know is drag Horizontal
@@ -37,7 +38,12 @@ class GeneralPullHelper {
      * is moving direct down
      * - use by pullRefreshLayout to get moving direction
      */
-    boolean isMoveTrendDown;
+    boolean isDragMoveTrendDown;
+
+    /**
+     * is Refresh Layout has moved
+     */
+    boolean isLayoutDragMoved;
 
     /**
      * is ReDispatch TouchEvent
@@ -50,9 +56,10 @@ class GeneralPullHelper {
     private boolean isDispatchTouchCancel;
 
     /**
-     * is Refresh Layout has moved
+     * is touch direct down
+     * - use by pullRefreshLayout to get drag state
      */
-    private boolean isLayoutMoved;
+    int dragState;
 
     /**
      * first touch point x
@@ -63,12 +70,6 @@ class GeneralPullHelper {
      * first touch point y
      */
     private int actionDownPointY;
-
-    /**
-     * is touch direct down
-     * - use by pullRefreshLayout to get drag state
-     */
-    int dragState;
 
     /**
      * last Layout Move Distance
@@ -112,6 +113,8 @@ class GeneralPullHelper {
                 actionDownPointX = (int) (ev.getX() + 0.5f);
                 lastDragEventY = actionDownPointY = (int) (ev.getY() + 0.5f);
 
+                isLayoutDragMoved = false;
+
                 prl.onStartScroll();
                 prl.dispatchSuperTouchEvent(ev);
                 return true;
@@ -144,7 +147,7 @@ class GeneralPullHelper {
                         lastMoveDistance = prl.moveDistance;
                     }
                     if (lastMoveDistance != prl.moveDistance) {
-                        isLayoutMoved = true;
+                        isLayoutDragMoved = true;
                     }
                     lastMoveDistance = prl.moveDistance;
 
@@ -183,7 +186,7 @@ class GeneralPullHelper {
                 dragState = 0;// get know the touchState first
 
                 velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
-                float velocityY = (isMoveTrendDown ? 1 : -1) * Math.abs(VelocityTrackerCompat.getYVelocity(velocityTracker, activePointerId));
+                float velocityY = (isDragMoveTrendDown ? 1 : -1) * Math.abs(VelocityTrackerCompat.getYVelocity(velocityTracker, activePointerId));
                 if (!prl.isTargetNestedScrollingEnabled() && isDragVertical && (Math.abs(velocityY) > minimumFlingVelocity)) {
                     prl.onPreFling(-(int) velocityY);
                 }
@@ -196,7 +199,6 @@ class GeneralPullHelper {
                 isReDispatchMoveEvent = false;
                 isDispatchTouchCancel = false;
                 isDragHorizontal = false;
-                isLayoutMoved = false;
                 isDragVertical = false;
 
                 lastMoveDistance = Integer.MAX_VALUE;
@@ -215,10 +217,10 @@ class GeneralPullHelper {
     void dellDirection(int offsetY) {
         if (offsetY < 0) {
             dragState = 1;
-            isMoveTrendDown = true;
+            isDragMoveTrendDown = true;
         } else if (offsetY > 0) {
             dragState = -1;
-            isMoveTrendDown = false;
+            isDragMoveTrendDown = false;
         }
     }
 
@@ -236,14 +238,14 @@ class GeneralPullHelper {
     }
 
     private void reDispatchPointDownEvent() {
-        if (!prl.isMoveWithContent && isLayoutMoved && prl.moveDistance == 0) {
+        if (!prl.isMoveWithContent && isLayoutDragMoved && prl.moveDistance == 0) {
             childConsumed[1] = 0;
             lastChildConsumedY = 0;
         }
     }
 
     private void reDispatchPointUpEvent(MotionEvent event) {
-        if (!prl.isMoveWithContent && isLayoutMoved && prl.moveDistance == 0 && childConsumed[1] != 0) {
+        if (!prl.isMoveWithContent && isLayoutDragMoved && prl.moveDistance == 0 && childConsumed[1] != 0) {
             prl.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
         }
     }
@@ -265,7 +267,7 @@ class GeneralPullHelper {
     }
 
     private void reDispatchUpEvent(MotionEvent event) {
-        if ((!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent) && isDragVertical && isLayoutMoved) {
+        if ((!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent) && isDragVertical && isLayoutDragMoved) {
             if (!prl.isTargetAbleScrollDown() && !prl.isTargetAbleScrollUp()) {
                 prl.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
             } else if (prl.targetView instanceof ViewGroup) {

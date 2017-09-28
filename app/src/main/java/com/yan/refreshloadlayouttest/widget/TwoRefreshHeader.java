@@ -1,36 +1,61 @@
 package com.yan.refreshloadlayouttest.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.pullrefreshlayout.ViscousInterpolator;
+import com.yan.refreshloadlayouttest.OptionActivity;
 import com.yan.refreshloadlayouttest.R;
 
 /**
  * Created by yan on 2017/9/16.
  */
 
-public class TwoRefreshHeader extends HeaderOrFooter {
-    private static int REFRESH_FIRST_DURING = 180;
-    private int twoRefreshDuring = 400;
+public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickListener {
+    private final String TWO_REFRESH_TEXT = "二级刷新";
+    private final int REFRESH_FIRST_DURING = 180;
+    private final int TWO_REFRESH_DURING = 400;
 
     private int twoRefreshDistance;
     private int firstRefreshTriggerDistance;
 
-    private String twoRefreshText = "二级刷新";
-
     private PullRefreshLayout pullRefreshLayout;
+    private TextView tvTitle;
+
+    private boolean isTwoRefresh;
+
+    private ObjectAnimator alphaInAnimation;
+    private ObjectAnimator alphaOutAnimation;
+    private ValueAnimator translateYAnimation;
+
+    private CountDownTimer countDownTimer = new CountDownTimer(3100, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            tvTitle.setText("倒计时" + (int) ((millisUntilFinished) / 1000) + "秒进入新的世界");
+        }
+
+        @Override
+        public void onFinish() {
+            tvTitle.setText("倒计时0秒进入新的世界");
+            getContext().startActivity(new Intent(getContext(), OptionActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    };
 
 
-    public int getTwoRefreshDistance() {
-        return twoRefreshDistance;
+    public boolean isTwoRefresh() {
+        return isTwoRefresh;
     }
 
     public TwoRefreshHeader(Context context, PullRefreshLayout pullRefreshLayout) {
@@ -49,17 +74,36 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         layoutParams.gravity = Gravity.BOTTOM;
         rlContainer.setLayoutParams(layoutParams);
 
-        ImageView ivTwoRefresh = new ImageView(getContext());
-        ivTwoRefresh.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.img3));
-        ivTwoRefresh.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        tvTitle = new TextView(getContext());
+        tvTitle.setTextSize(20);
+        tvTitle.setGravity(Gravity.CENTER);
+        tvTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+        tvTitle.setText("倒计时3秒进入新的世界");
         FrameLayout.LayoutParams ivLp = new LayoutParams(-1, -1);
         ivLp.gravity = Gravity.CENTER;
-        addView(ivTwoRefresh, ivLp);
+        tvTitle.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        tvTitle.setAlpha(0F);
+        addView(tvTitle, ivLp);
 
-        ivTwoRefresh.setOnClickListener(new OnClickListener() {
+        animationInit();
+
+        tvTitle.setOnClickListener(this);
+    }
+
+    private void animationInit() {
+        alphaInAnimation = ObjectAnimator.ofFloat(tvTitle, "alpha", 0, 1);
+        alphaInAnimation.setDuration(TWO_REFRESH_DURING);
+        alphaOutAnimation = ObjectAnimator.ofFloat(tvTitle, "alpha", 1, 0);
+        alphaOutAnimation.setDuration(TWO_REFRESH_DURING);
+
+        translateYAnimation = ValueAnimator.ofFloat(0, 0);
+        translateYAnimation.setDuration(TWO_REFRESH_DURING);
+        translateYAnimation.setInterpolator(new ViscousInterpolator());
+        translateYAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "new world", Toast.LENGTH_SHORT).show();
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float m = (float) animation.getAnimatedValue();
+                pullRefreshLayout.moveChildren((int) m);
             }
         });
     }
@@ -67,29 +111,65 @@ public class TwoRefreshHeader extends HeaderOrFooter {
     @Override
     public void onPullChange(float percent) {
         super.onPullChange(percent);
+        twoRefreshMoveDell(percent);
+
         if (!pullRefreshLayout.isHoldingTrigger()) {
             if (pullRefreshLayout.getMoveDistance() >= twoRefreshDistance) {
-                if (!tv.getText().toString().equals(twoRefreshText)) {
-                    tv.setText(twoRefreshText);
+                if (!tv.getText().toString().equals(TWO_REFRESH_TEXT)) {
+                    tv.setText(TWO_REFRESH_TEXT);
                 }
-            } else if (tv.getText().toString().equals(twoRefreshText)) {
+            } else if (tv.getText().toString().equals(TWO_REFRESH_TEXT)) {
                 tv.setText("release loading");
             }
         } else if (pullRefreshLayout.getMoveDistance() >= getHeight()) {
             pullRefreshLayout.setDispatchPullTouchAble(true);
+            isTwoRefresh = true;
+        }
+    }
+
+    private void twoRefreshMoveDell(float percent) {
+        if (!isTwoRefresh) {
+            return;
+        }
+        if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) {
+            pullRefreshLayout.refreshComplete();
+        }
+        if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDistance) {
+            if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
+                translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
+                translateYAnimation.start();
+            } else if (translateYAnimation.isRunning()) {
+                translateYAnimation.cancel();
+            }
+        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
+            pullRefreshLayout.refreshComplete();
         }
     }
 
     @Override
     public void onPullHolding() {
-        Log.e("onPullHolding", "onPullHolding: "+pullRefreshLayout.getMoveDistance()+"   "+twoRefreshDistance+"   "+getHeight());
+        super.onPullHolding();
         if (pullRefreshLayout.getMoveDistance() >= twoRefreshDistance) {
             pullRefreshLayout.setPullDownMaxDistance(getHeight() * 2);
             pullRefreshLayout.setRefreshTriggerDistance(getHeight());
-            pullRefreshLayout.setRefreshAnimationDuring(twoRefreshDuring);
+            pullRefreshLayout.setRefreshAnimationDuring(TWO_REFRESH_DURING);
             pullRefreshLayout.setDispatchPullTouchAble(false);
+            alphaInAnimation.start();
+
+            tvTitle.setText("倒计时3秒进入新的世界");
+            countDownTimer.start();
         }
-        super.onPullHolding();
+    }
+
+    @Override
+    public void onPullFinish() {
+        super.onPullFinish();
+        isTwoRefresh = false;
+        countDownTimer.cancel();
+
+        if (tvTitle.getAlpha() > 0) {
+            alphaOutAnimation.start();
+        }
     }
 
     @Override
@@ -99,5 +179,28 @@ public class TwoRefreshHeader extends HeaderOrFooter {
         pullRefreshLayout.setRefreshTriggerDistance(firstRefreshTriggerDistance);
         pullRefreshLayout.setRefreshAnimationDuring(REFRESH_FIRST_DURING);
         pullRefreshLayout.setDispatchPullTouchAble(true);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        countDownTimer.cancel();
+
+        if (alphaInAnimation.isRunning()) {
+            alphaInAnimation.cancel();
+        }
+        if (alphaOutAnimation.isRunning()) {
+            alphaOutAnimation.cancel();
+        }
+        if (translateYAnimation.isRunning()) {
+            translateYAnimation.cancel();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (!pullRefreshLayout.isLayoutDragMoved()) {
+            Toast.makeText(getContext(), "new world", Toast.LENGTH_SHORT).show();
+        }
     }
 }
