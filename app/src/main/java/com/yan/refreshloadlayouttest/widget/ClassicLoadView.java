@@ -124,7 +124,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "you just touched me", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext().getApplicationContext(), "you just touched me", Toast.LENGTH_SHORT).show();
             }
         });
         loadingView = (AVLoadingIndicatorView) findViewById(R.id.loading_view);

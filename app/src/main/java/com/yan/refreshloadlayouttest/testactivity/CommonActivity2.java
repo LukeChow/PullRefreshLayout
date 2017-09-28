@@ -93,28 +93,28 @@ public class CommonActivity2 extends CommonActivity1 {
         findViewById(R.id.iv1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext().getApplicationContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
 
         findViewById(R.id.iv2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext().getApplicationContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
 
         findViewById(R.id.iv3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext().getApplicationContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
 
         findViewById(R.id.iv4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext().getApplicationContext(), v.getId() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }

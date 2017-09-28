@@ -158,28 +158,28 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
 
             tvTitle.setText("倒计时3秒进入新的世界");
             countDownTimer.start();
+            pullRefreshLayout.setTwinkEnable(false);
         }
     }
 
     @Override
     public void onPullFinish() {
         super.onPullFinish();
-        isTwoRefresh = false;
-        countDownTimer.cancel();
+        if (isTwoRefresh) {
+            isTwoRefresh = false;
+            countDownTimer.cancel();
+            pullRefreshLayout.setTwinkEnable(true);
+            if (tvTitle.getAlpha() > 0) {
+                alphaOutAnimation.start();
+            }
 
-        if (tvTitle.getAlpha() > 0) {
-            alphaOutAnimation.start();
+            pullRefreshLayout.setPullDownMaxDistance(getHeight());
+            pullRefreshLayout.setRefreshTriggerDistance(firstRefreshTriggerDistance);
+            pullRefreshLayout.setRefreshAnimationDuring(REFRESH_FIRST_DURING);
+            pullRefreshLayout.setDispatchPullTouchAble(true);
         }
     }
 
-    @Override
-    public void onPullReset() {
-        super.onPullReset();
-        pullRefreshLayout.setPullDownMaxDistance(getHeight());
-        pullRefreshLayout.setRefreshTriggerDistance(firstRefreshTriggerDistance);
-        pullRefreshLayout.setRefreshAnimationDuring(REFRESH_FIRST_DURING);
-        pullRefreshLayout.setDispatchPullTouchAble(true);
-    }
 
     @Override
     protected void onDetachedFromWindow() {
@@ -200,7 +200,7 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (!pullRefreshLayout.isLayoutDragMoved()) {
-            Toast.makeText(getContext(), "new world", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "new world", Toast.LENGTH_SHORT).show();
         }
     }
 }
