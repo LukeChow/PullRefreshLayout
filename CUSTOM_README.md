@@ -9,7 +9,7 @@
 
 ## 说明
 以上效果均由PullRefreshLayout（稍微详细的说明见：[https://github.com/genius158/PullRefreshLayout](https://github.com/genius158/PullRefreshLayout)）实现。
-#### 1.二级刷新的实现
+#### 1.二级刷新的实现([TwoRefreshLayout](https://github.com/genius158/PullRefreshLayout/blob/master/app/src/main/java/com/yan/refreshloadlayouttest/widget/TwoRefreshHeader.java))
 首先创建一个header实现PullRefreshLayout.OnPullListener
 <br/>
 1.初始化部分
@@ -88,7 +88,8 @@ if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDista
 ```
 这里稍微有点复杂，当header显示完全执行setDispatchPullTouchAble(true)，恢复prl默认的手势，并设置二级刷新标识isTwoRefresh为true表示处于二级刷新状态下
 <br/>
-&emsp;&emsp;二级刷新的状态下（if (!isTwoRefresh) { ， 之后）：
+<br/>
+二级刷新的状态下（if (!isTwoRefresh) { ， 之后）：
 <br>
 &emsp;&emsp;if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) { ，这里是拖拽出footer，又处在二级刷新的状态下时候，pullRefreshLayout.refreshComplete()结束二级刷新状态（不结束的话，prl默认的回复动画就不会触发）
 <br>
@@ -98,3 +99,40 @@ if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDista
 <br>
 &emsp;&emsp;最后一个else if 判断处在二级刷新需要结束且又不在onTouch的状态下，结束二级刷新
 
+#### 2.[SlidingDownHeader](https://github.com/genius158/PullRefreshLayout/blob/master/app/src/main/java/com/yan/refreshloadlayouttest/widget/SlidingDownHeader.java)
+说明：SlidingDownHeader只支持横向滑动(由于prl在竖直方向做了太多的事情，处理header的纵向滑动考虑的东西会比较多，延展prl的实际意义也就不大，不过不带回弹的话还是好实现)
+<br/>
+实现逻辑与二级刷新基本一致，主要说明一下横向冲突处理
+```
+@Override
+public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (!isSlidingDown) { // 是否处在header展开状态
+        return super.dispatchTouchEvent(ev);
+    }
+    switch (ev.getActionMasked()) {
+        case MotionEvent.ACTION_MOVE:
+            if (pullRefreshLayout.isLayoutDragMoved()) {//prl是否移动，也就是touch事件为纵向
+                ev.setAction(MotionEvent.ACTION_CANCEL);// 取消header的事件分发
+                return super.dispatchTouchEvent(ev);
+            } else if (pullRefreshLayout.isDragHorizontal()) {//prl是否处在横向拖动状态
+                pullRefreshLayout.setDispatchPullTouchAble(false);//不执行prl默认的事件分发
+            }
+            break;
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_CANCEL:
+            pullRefreshLayout.setDispatchPullTouchAble(true);//恢复prl的默认事件分发
+            
+            // 由于在ACTION_MOVE的时候取消了prl的默认事件分发，横向拖拽的标志不会复原
+            // 需要重新分发prl的ACTION_CANCEL事件，重置移动标志为
+            if (pullRefreshLayout.isDragHorizontal()) {
+                MotionEvent event = MotionEvent.obtain(ev);
+                event.setAction(MotionEvent.ACTION_CANCEL);
+                pullRefreshLayout.dispatchTouchEvent(event);
+            }
+            //由于prl重新分发ACTION_CANCEL事件，事件又会传回header，
+            //为了保证横向滑动的继续执行，将ACTION_CANCEL转变为ACTION_UP事件
+            ev.setAction(MotionEvent.ACTION_UP);
+    }
+    return super.dispatchTouchEvent(ev);
+}
+```
