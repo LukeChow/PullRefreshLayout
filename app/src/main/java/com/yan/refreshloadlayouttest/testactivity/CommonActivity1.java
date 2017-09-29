@@ -53,8 +53,9 @@ public class CommonActivity1 extends BaseActivity {
         refreshLayout.setRefreshShowGravity(ShowGravity.FOLLOW, ShowGravity.FOLLOW);
 
         refreshLayout.setHeaderView(new TwoRefreshHeader(getBaseContext(), refreshLayout));
-
-        refreshLayout.setFooterView(new HeaderOrFooter(getBaseContext(), "PacmanIndicator", Color.WHITE, false));
+        HeaderOrFooter footer = new HeaderOrFooter(getBaseContext(), "PacmanIndicator", Color.WHITE, false);
+        footer.setTv("drag");
+        refreshLayout.setFooterView(footer);
 
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override

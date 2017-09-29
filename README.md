@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
-[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.12-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.12-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.13-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.13-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-399%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.9)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -34,7 +34,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 #### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新，单边回弹等），header和footer拽出方式默认8种(PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)，动画可以onPullChange()完全自主设置。
 ps:本库没有做解耦处理（那样会增加.class，大小也会增加），目的是使库足够小，而且本库功能目的明确，不必做无用功。
 
-## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.12-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
+## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.13-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
 compile 'com.yan:pullrefreshlayout:(↖)'
 <br/>
 ## 2.说明  
@@ -65,7 +65,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setLoadMoreEnable(true);// 上拉加载是否可用 default false
     refreshLayout.setTwinkEnable(true);// 回弹是否可用 default true 
     refreshLayout.setAutoLoadingEnable(true);// 自动加载是否可用 default false
-    
+     
     // headerView和footerView需实现PullRefreshLayout.OnPullListener接口调整状态
     refreshLayout.setHeaderView(headerView);// 设置headerView
     refreshLayout.setFooterView(footerView);// 设置footerView
@@ -77,7 +77,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.isRefreshEnable();// 是否开启刷新
     refreshLayout.isLoadMoreEnable();// 是否开启加载更多
     
-    refreshLayout.isMovingDirectDown();// 是否处于向下移动的趋势
+    refreshLayout.isDragMoveTrendDown();// 是否处于向下移动的趋势
     
     refreshLayout.isDragUp();// 是否正在向上拖拽
     refreshLayout.isDragDown();// 是否正在向下拖拽
@@ -86,6 +86,10 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.isOverScrollDown();// 是否正在向下越界回弹
     refreshLayout.isOverScrollUp();// 是否正在向上越界回弹
     
+    refreshLayout.isDragVertical();// 是否开始纵向拖拽
+    refreshLayout.isDragHorizontal();// 是否开始横向拖拽
+    refreshLayout.isLayoutDragMoved();// 刷新控件是否移动
+
     refreshLayout.isHoldingTrigger();// 是否已经触发刷新或加载
     refreshLayout.isHoldingFinishTrigger();// 是否已经触发刷新完毕或加载完毕
      
@@ -96,7 +100,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshlayout.getPullDownLimitDistance();// 得到向下拖拽最大范围（最大距离）
     refreshlayout.getHeaderView();// 得到headerView
     refreshlayout.getFooterView();// 得到FooterView
-    refreshlayout.getTargetView();// TargetView
+    refreshlayout.getTargetView();// 得到TargetView
     
     refreshLayout.setRefreshTriggerDistance(200);// 设置下拉刷新触发位置，默认为header的高度  
     refreshLayout.setLoadTriggerDistance(200);// 设置上拉加载触发位置，默认为footer的高度  
@@ -105,8 +109,9 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 
     refreshLayout.setTargetView(nestedScrollView);// 设置目标view，可以改变滑动判断
    
-    refreshLayout.setDispatchPullTouchAble(false);// 是否阻止pullrefreshLayout的默认事件分发
-    refreshLayout.setDispatchChildrenEventAble(false);// 是否阻止子View的默认事件分发
+    refreshLayout.setDispatchTouchAble(true);// 是否分发部所有事件 default true
+    refreshLayout.setDispatchPullTouchAble(false);// 是否分发pullrefreshLayout的默认事件 default true
+    refreshLayout.setDispatchChildrenEventAble(false);// 是否分发子View的默认事件 default true
     refreshLayout.setFooterFront(true);// 设置footer前置 default false
     refreshLayout.setHeaderFront(true);// 设置header前置 default false
     refreshLayout.setMoveWithFooter(true);// 设置footer跟随移动 default true

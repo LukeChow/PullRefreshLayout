@@ -119,6 +119,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * dispatch Pull Touch Able
      */
+    private boolean dispatchTouchAble = true;
+
+    /**
+     * dispatch Pull Touch Able
+     */
     private boolean dispatchPullTouchAble = true;
 
     /**
@@ -255,8 +260,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         isHeaderHeightSet = ta.hasValue(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance);
         isFooterHeightSet = ta.hasValue(R.styleable.PullRefreshLayout_prl_loadTriggerDistance);
-        refreshTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance, InternalUtils.dipToPx(context, refreshTriggerDistance));
-        loadTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_loadTriggerDistance, InternalUtils.dipToPx(context, loadTriggerDistance));
+        refreshTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_refreshTriggerDistance, PRLCommonUtils.dipToPx(context, refreshTriggerDistance));
+        loadTriggerDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_loadTriggerDistance, PRLCommonUtils.dipToPx(context, loadTriggerDistance));
 
         pullDownMaxDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullDownMaxDistance, 0);
         pullUpMaxDistance = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_pullUpMaxDistance, 0);
@@ -269,8 +274,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         overScrollAdjustValue = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollAdjustValue, overScrollAdjustValue);
         overScrollDampingRatio = ta.getFloat(R.styleable.PullRefreshLayout_prl_overScrollDampingRatio, overScrollDampingRatio);
-        topOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_topOverScrollMaxTriggerOffset, InternalUtils.dipToPx(context, topOverScrollMaxTriggerOffset));
-        bottomOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_downOverScrollMaxTriggerOffset, InternalUtils.dipToPx(context, bottomOverScrollMaxTriggerOffset));
+        topOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_topOverScrollMaxTriggerOffset, PRLCommonUtils.dipToPx(context, topOverScrollMaxTriggerOffset));
+        bottomOverScrollMaxTriggerOffset = ta.getDimensionPixelOffset(R.styleable.PullRefreshLayout_prl_downOverScrollMaxTriggerOffset, PRLCommonUtils.dipToPx(context, bottomOverScrollMaxTriggerOffset));
 
         showGravity.headerShowGravity = ta.getInteger(R.styleable.PullRefreshLayout_prl_headerShowGravity, ShowGravity.FOLLOW);
         showGravity.footerShowGravity = ta.getInteger(R.styleable.PullRefreshLayout_prl_footerShowGravity, ShowGravity.FOLLOW);
@@ -284,7 +289,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private View initRefreshView(Context context, String className, int viewId) {
-        View v = InternalUtils.parseClassName(context, className);
+        View v = PRLCommonUtils.parseClassName(context, className);
         if (v == null) {
             if (viewId != -1) {
                 v = LayoutInflater.from(context).inflate(viewId, null, false);
@@ -323,12 +328,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean dispatchSuperTouchEvent(MotionEvent ev) {
-        return !dispatchChildrenEventAble || super.dispatchTouchEvent(ev);
+        return dispatchChildrenEventAble && super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        return (!dispatchPullTouchAble && super.dispatchTouchEvent(ev)) || generalPullHelper.dispatchTouchEvent(ev);
+        return dispatchTouchAble && ((!dispatchPullTouchAble && super.dispatchTouchEvent(ev)) || generalPullHelper.dispatchTouchEvent(ev));
     }
 
     @Override
@@ -484,7 +489,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((WebView) targetView).flingScroll(0, velocity);
         } else if (targetView instanceof RecyclerView && !isTargetNested && !isScrollAbleViewBackScroll) {
             ((RecyclerView) targetView).fling(0, velocity);
-        } else if (!InternalUtils.canChildScrollUp(targetView) && !InternalUtils.canChildScrollDown(targetView)
+        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
                 || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof RecyclerView) {
             // this case just dell overScroll normal,without any operation
         } else {
@@ -791,7 +796,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private long getOverScrollTime(int distance) {
-        float ratio = Math.abs((float) distance / InternalUtils.getWindowHeight(getContext()));
+        float ratio = Math.abs((float) distance / PRLCommonUtils.getWindowHeight(getContext()));
         return Math.max(overScrollMinDuring, (long) ((Math.pow(2000 * ratio, 0.44)) * overScrollAdjustValue));
     }
 
@@ -984,11 +989,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean isTargetAbleScrollUp() {
-        return InternalUtils.canChildScrollUp(targetView);
+        return PRLCommonUtils.canChildScrollUp(targetView);
     }
 
     public boolean isTargetAbleScrollDown() {
-        return InternalUtils.canChildScrollDown(targetView);
+        return PRLCommonUtils.canChildScrollDown(targetView);
     }
 
     /**
@@ -1580,6 +1585,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (generalPullHelper.dragState != 0) {
             super.dispatchTouchEvent(MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
         }
+    }
+
+    public void setDispatchTouchAble(boolean dispatchTouchAble) {
+        this.dispatchTouchAble = dispatchTouchAble;
     }
 
     public void setDispatchPullTouchAble(boolean dispatchPullTouchAble) {

@@ -15,13 +15,13 @@ import java.lang.reflect.Constructor;
 /**
  * Created by yan on 2017/5/21.
  */
-class InternalUtils {
+public class PRLCommonUtils {
 
     /**
      * @return Whether it is possible for the child view of this layout to
      * scroll up. Override this if the child view is a custom view.
      */
-    static boolean canChildScrollUp(View targetView) {
+    public static boolean canChildScrollUp(View targetView) {
         if (Build.VERSION.SDK_INT < 14) {
             if (targetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) targetView;
@@ -40,7 +40,7 @@ class InternalUtils {
      * @return Whether it is possible for the child view of this layout to
      * scroll down. Override this if the child view is a custom view.
      */
-    static boolean canChildScrollDown(View targetView) {
+    public static boolean canChildScrollDown(View targetView) {
         if (Build.VERSION.SDK_INT < 14) {
             if (targetView instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) targetView;
@@ -61,14 +61,14 @@ class InternalUtils {
      * @param context
      * @return
      */
-    static int getWindowHeight(Context context) {
+    public static int getWindowHeight(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
     }
 
-    static int dipToPx(Context context, float value) {
+    public static int dipToPx(Context context, float value) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -22,37 +21,24 @@ public class HeaderOrFooter extends PullRefreshView {
     private AVLoadingIndicatorView loadingView;
     protected FrameLayout rlContainer;
 
-    private String animationName;
-
     private boolean isStateFinish;
-    private int color;
     private boolean isHolding;
 
     public HeaderOrFooter(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(getContext()).inflate(contentView(), this, true);
         initView();
-        color = ContextCompat.getColor(context, R.color.colorPrimary);
-        this.animationName = "LineScaleIndicator";
-        loadingView.setIndicator(animationName);
-        loadingView.setIndicatorColor(color);
+        loadingView.setIndicator("LineScaleIndicator");
+        loadingView.setIndicatorColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        tv.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
     }
 
     public HeaderOrFooter(Context context) {
-        super(context);
-        initView();
-        color = ContextCompat.getColor(context, R.color.colorPrimary);
-        this.animationName = "LineScaleIndicator";
-        loadingView.setIndicator(animationName);
-        loadingView.setIndicatorColor(color);
+        this(context, "LineScaleIndicator", ContextCompat.getColor(context, R.color.colorPrimary), false);
     }
 
     public HeaderOrFooter(Context context, String animationName) {
-        super(context);
-        color = ContextCompat.getColor(context, R.color.colorPrimary);
-        this.animationName = animationName;
-        loadingView.setIndicator(animationName);
-        loadingView.setIndicatorColor(color);
+        this(context, animationName, ContextCompat.getColor(context, R.color.colorPrimary), false);
     }
 
     public HeaderOrFooter(Context context, String animationName, int color) {
@@ -61,13 +47,18 @@ public class HeaderOrFooter extends PullRefreshView {
 
     public HeaderOrFooter(Context context, String animationName, int color, boolean withBg) {
         super(context);
-        this.color = color;
         loadingView.setIndicator(animationName);
         loadingView.setIndicatorColor(color);
         tv.setTextColor(color);
         if (withBg) {
             setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         }
+    }
+
+    public void setTv(String title) {
+       if (tv!=null) {
+           tv.setText(title);
+       }
     }
 
     @Override

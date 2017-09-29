@@ -95,7 +95,7 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
 
     @Override
     public void onPullChange(float percent) {
-        if (!isSlidingDown && pullRefreshLayout.isHoldingTrigger() && pullRefreshLayout.getMoveDistance() >= getHeight()) {
+        if (!isSlidingDown && pullRefreshLayout.isHoldingTrigger() && !pullRefreshLayout.isHoldingFinishTrigger() && pullRefreshLayout.getMoveDistance() >= getHeight()) {
             isSlidingDown = true;
             pullRefreshLayout.setDispatchPullTouchAble(true);
         }
@@ -103,7 +103,7 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
         if (!isSlidingDown) {
             return;
         }
-        if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) {
+        if (percent <= 0) {
             pullRefreshLayout.refreshComplete();
         }
         if (pullRefreshLayout.getMoveDistance() > getHeight() - SLIDING_OFFSET) {
@@ -113,7 +113,7 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
             } else if (translateYAnimation.isRunning()) {
                 translateYAnimation.cancel();
             }
-        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp() && !pullRefreshLayout.isHoldingFinishTrigger()) {
+        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp() ) {
             pullRefreshLayout.refreshComplete();
         }
     }
@@ -140,15 +140,14 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
     @Override
     public void onPullFinish() {
         isSlidingDown = false;
-        pullRefreshLayout.setTwinkEnable(true);
-        pullRefreshLayout.setDispatchPullTouchAble(true);
-        pullRefreshLayout.setRefreshTriggerDistance(SLIDING_OFFSET);
     }
 
     @Override
     public void onPullReset() {
+        pullRefreshLayout.setTwinkEnable(true);
+        pullRefreshLayout.setDispatchPullTouchAble(true);
+        pullRefreshLayout.setRefreshTriggerDistance(SLIDING_OFFSET);
     }
-
 
 
     @Override

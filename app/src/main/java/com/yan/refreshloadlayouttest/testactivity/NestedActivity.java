@@ -1,7 +1,6 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,7 +87,7 @@ public class NestedActivity extends BaseActivity {
                         datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
                         adapter.notifyItemInserted(datas.size());
                         if (refreshLayout.getMoveDistance() < 0) {
-                            refreshLayout.setDispatchChildrenEventAble(false);
+                            refreshLayout.setDispatchTouchAble(false);
                         }
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
