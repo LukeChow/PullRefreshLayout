@@ -88,7 +88,7 @@ if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDista
 ```
 这里稍微有点复杂，当header显示完全执行setDispatchPullTouchAble(true)，恢复prl默认的手势，并设置二级刷新标识isTwoRefresh为true表示处于二级刷新状态下
 <br/>
-二级刷新的状态下（if (!isTwoRefresh) { ， 之后）：
+  二级刷新的状态下（if (!isTwoRefresh) { ， 之后）：
 <br>
 if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) { ，这里是拖拽出footer，又处在二级刷新的状态下时候，pullRefreshLayout.refreshComplete()结束二级刷新状态（不结束的话，prl默认的回复动画就不会触发）
 <br>
@@ -96,5 +96,5 @@ if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDista
 <br>
 if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) { ，这里判断是否处在onTouch（手指触摸屏幕）状态，如果没有且二级刷新不需要结束，则执行translateYAnimation的回复动画，使得header回到完全显示的状态；如果处在onTouch状态，如果translateYAnimation正在执行，则cancel掉translateYAnimation
 <br>
-最后一个else if 判断处在二级刷新需要结束且要不在onTouch的状态下，结束二级刷新
+最后一个else if 判断处在二级刷新需要结束且又不在onTouch的状态下，结束二级刷新
 
