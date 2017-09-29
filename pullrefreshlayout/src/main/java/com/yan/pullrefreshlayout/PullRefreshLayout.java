@@ -333,7 +333,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        return dispatchTouchAble && ((!dispatchPullTouchAble && super.dispatchTouchEvent(ev)) || generalPullHelper.dispatchTouchEvent(ev));
+        try {//dell Exception - java.lang.IllegalArgumentException: pointerIndex out of range
+            return dispatchTouchAble && ((!dispatchPullTouchAble && super.dispatchTouchEvent(ev)) || generalPullHelper.dispatchTouchEvent(ev));
+        } catch (IllegalArgumentException ex) {
+            // ex.printStackTrace();
+        }
+        return false;
     }
 
     @Override

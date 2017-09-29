@@ -140,11 +140,11 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
     @Override
     public void onPullFinish() {
         isSlidingDown = false;
+        pullRefreshLayout.setTwinkEnable(true);
     }
 
     @Override
     public void onPullReset() {
-        pullRefreshLayout.setTwinkEnable(true);
         pullRefreshLayout.setDispatchPullTouchAble(true);
         pullRefreshLayout.setRefreshTriggerDistance(SLIDING_OFFSET);
     }

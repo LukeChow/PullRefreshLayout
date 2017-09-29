@@ -130,10 +130,7 @@ public class NestedFrameLayout extends FrameLayout implements NestedScrollingChi
             }
             case MotionEventCompat.ACTION_POINTER_UP:
                 onSecondaryPointerUp(evto);
-                try {
-                    mLastMotionY = (int) evto.getY(evto.findPointerIndex(mActivePointerId));
-                } catch (Exception e) {
-                }
+                mLastMotionY = (int) evto.getY(evto.findPointerIndex(mActivePointerId));
                 break;
         }
 
