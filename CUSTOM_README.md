@@ -29,9 +29,9 @@ translateYAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
     }
 });
 ```
-换行之前：先设置header的高度宽度为match_parent，再记住PullRefreshLayout（以下简称prl）设置的初始一级刷新的距离（因为二级刷新需要重新设置刷新触发距离）。
+&emsp;&emsp;换行之前：先设置header的高度宽度为match_parent，再记住PullRefreshLayout（以下简称prl）设置的初始一级刷新的距离（因为二级刷新需要重新设置刷新触发距离）。
 <br/>
-换行之后：translateYAnimation是一个回复动画，当header显示完全后，由于prl处于刷新状态下并不会执行refresh动画，所以需要translateYAnimation来实现refresh动画的效果
+&emsp;&emsp;换行之后：translateYAnimation是一个回复动画，当header显示完全后，由于prl处于刷新状态下并不会执行refresh动画，所以需要translateYAnimation来实现refresh动画的效果
 <br/>
 <br/>
 2.一级刷新触发的时候
@@ -49,17 +49,17 @@ public void onPullHolding() {
 ```
 说明： onPullHolding()的执行在refresh动画开始之前，而onRefresh()在refresh动画开始时执行
 <br/>
-if语句判读的是是否处可以触发二级刷新，
+&emsp;&emsp;if语句判读的是是否处可以触发二级刷新，
 <br/>
-setPullDownMaxDistance(getHeight() * 2)这里重设向下拖拽的最大距离，这样prl在header完全显示的情况下仍可以向下拖拽
+&emsp;&emsp;setPullDownMaxDistance(getHeight() * 2)这里重设向下拖拽的最大距离，这样prl在header完全显示的情况下仍可以向下拖拽
 <br/>
-setRefreshTriggerDistance(getHeight())这里就是二级刷新的核心，更改了刷新触发的拖拽距离，这样refresh动画就会呈现完全展开的样式
+&emsp;&emsp;setRefreshTriggerDistance(getHeight())这里就是二级刷新的核心，更改了刷新触发的拖拽距离，这样refresh动画就会呈现完全展开的样式
 <br/>
-setRefreshAnimationDuring(TWO_REFRESH_DURING)设置refresh动画的时间
+&emsp;&emsp;setRefreshAnimationDuring(TWO_REFRESH_DURING)设置refresh动画的时间
 <br/>
-setDispatchPullTouchAble(false)为了保证refresh动画不被打断，使得header完全显示出来
+&emsp;&emsp;setDispatchPullTouchAble(false)为了保证refresh动画不被打断，使得header完全显示出来
 <br/>
-setTwinkEnable(false)处于二级刷新状态下取消回弹，使得回复动画不会混乱
+&emsp;&emsp;setTwinkEnable(false)处于二级刷新状态下取消回弹，使得回复动画不会混乱
 <br/>
 <br/>
 3.prl移动执行的逻辑,onPullChange(percent)
@@ -90,11 +90,11 @@ if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDista
 <br/>
 &emsp;&emsp;二级刷新的状态下（if (!isTwoRefresh) { ， 之后）：
 <br>
-if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) { ，这里是拖拽出footer，又处在二级刷新的状态下时候，pullRefreshLayout.refreshComplete()结束二级刷新状态（不结束的话，prl默认的回复动画就不会触发）
+&emsp;&emsp;if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) { ，这里是拖拽出footer，又处在二级刷新的状态下时候，pullRefreshLayout.refreshComplete()结束二级刷新状态（不结束的话，prl默认的回复动画就不会触发）
 <br>
-if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDistance) { ，二级刷新是否需要结束的判断，
+&emsp;&emsp;if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDistance) { ，二级刷新是否需要结束的判断，
 <br>
-if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) { ，这里判断是否处在onTouch（手指触摸屏幕）状态，如果没有且二级刷新不需要结束，则执行translateYAnimation的回复动画，使得header回到完全显示的状态；如果处在onTouch状态，如果translateYAnimation正在执行，则cancel掉translateYAnimation
+&emsp;&emsp;if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) { ，这里判断是否处在onTouch（手指触摸屏幕）状态，如果没有且二级刷新不需要结束，则执行translateYAnimation的回复动画，使得header回到完全显示的状态；如果处在onTouch状态，如果translateYAnimation正在执行，则cancel掉translateYAnimation
 <br>
-最后一个else if 判断处在二级刷新需要结束且又不在onTouch的状态下，结束二级刷新
+&emsp;&emsp;最后一个else if 判断处在二级刷新需要结束且又不在onTouch的状态下，结束二级刷新
 
