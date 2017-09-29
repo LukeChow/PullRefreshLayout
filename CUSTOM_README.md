@@ -129,6 +129,7 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
                 event.setAction(MotionEvent.ACTION_CANCEL);
                 pullRefreshLayout.dispatchTouchEvent(event);
             }
+            
             //由于prl重新分发ACTION_CANCEL事件，事件又会传回header，
             //为了保证横向滑动的继续执行，将ACTION_CANCEL转变为ACTION_UP事件
             ev.setAction(MotionEvent.ACTION_UP);
