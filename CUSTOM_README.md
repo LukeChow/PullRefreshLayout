@@ -136,3 +136,5 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
     return super.dispatchTouchEvent(ev);
 }
 ```
+<br/>
+调用prl.setHeaderShowGravity(ShowGravity.CENTER)可以更改header的拽出方式（默认8种），也就是效果图2、3、4 ，其余的就不展示了
