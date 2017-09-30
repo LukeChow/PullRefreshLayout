@@ -118,24 +118,9 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
                 ev.setAction(MotionEvent.ACTION_CANCEL);// 取消header的事件分发
                 return super.dispatchTouchEvent(ev);
             } else if (pullRefreshLayout.isDragHorizontal()) {//prl是否处在横向拖动状态
-                pullRefreshLayout.setDispatchPullTouchAble(false);//不执行prl默认的事件分发
+                pullRefreshLayout.requestPullDisallowInterceptTouchEvent(true);//prl不拦截事件
             }
             break;
-        case MotionEvent.ACTION_UP:
-        case MotionEvent.ACTION_CANCEL:
-            pullRefreshLayout.setDispatchPullTouchAble(true);//恢复prl的默认事件分发
-            
-            // 由于在ACTION_MOVE的时候取消了prl的默认事件分发，横向拖拽的标志不会复原
-            // 需要重新分发prl的ACTION_CANCEL事件，重置移动标志为
-            if (pullRefreshLayout.isDragHorizontal()) {
-                MotionEvent event = MotionEvent.obtain(ev);
-                event.setAction(MotionEvent.ACTION_CANCEL);
-                pullRefreshLayout.dispatchTouchEvent(event);
-            }
-            
-            //由于prl重新分发ACTION_CANCEL事件，事件又会传回header，
-            //为了保证横向滑动的继续执行，将ACTION_CANCEL转变为ACTION_UP事件
-            ev.setAction(MotionEvent.ACTION_UP);
     }
     return super.dispatchTouchEvent(ev);
 }

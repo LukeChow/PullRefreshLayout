@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yan.refreshloadlayouttest.widget.PullScrollableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.yan.refreshloadlayouttest.widget.PercentImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/top"
+        app:ratio="0.4" />
+
+    <com.yan.pullrefreshlayout.PullRefreshLayout
+        android:id="@+id/prl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/nsv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="20sp" />
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+                <com.yan.refreshloadlayouttest.widget.PercentImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/item"
+                    app:ratio="0.539" />
+
+            </LinearLayout>
+
+        </ScrollView>
+    </com.yan.pullrefreshlayout.PullRefreshLayout>
+</com.yan.refreshloadlayouttest.widget.PullScrollableLayout>
