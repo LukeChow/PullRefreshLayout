@@ -52,6 +52,7 @@ class GeneralPullHelper {
      * - use by prl to get know need to Intercept event
      */
     boolean isDisallowIntercept;
+    private boolean lastDisallowIntercept;
 
     /**
      * is ReDispatch TouchEvent
@@ -123,73 +124,76 @@ class GeneralPullHelper {
 
                 isLayoutDragMoved = false;
                 isDisallowIntercept = false;
+                lastDisallowIntercept = false;
 
                 prl.onStartScroll();
                 prl.dispatchSuperTouchEvent(ev);
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if (isDisallowIntercept) {
-                    break;
-                }
+                if (!isDisallowIntercept) {
+                    final int pointerIndex = ev.findPointerIndex(activePointerId);
+                    if (ev.findPointerIndex(activePointerId) == -1) {
+                        break;
+                    }
+                    int tempY = (int) (ev.getY(pointerIndex) + 0.5f);
+                    if (lastDisallowIntercept) {
+                        lastDragEventY = tempY;
+                    }
+                    int deltaY = lastDragEventY - tempY;
+                    lastDragEventY = tempY;
 
-                final int pointerIndex = ev.findPointerIndex(activePointerId);
-                if (ev.findPointerIndex(activePointerId) == -1) {
-                    break;
-                }
-                int tempY = (int) (ev.getY(pointerIndex) + 0.5f);
-                int deltaY = lastDragEventY - tempY;
-                lastDragEventY = tempY;
-
-                if (!isDragVertical || !prl.isTargetNestedScrollingEnabled() || (!prl.isMoveWithContent && prl.moveDistance != 0)) {
-                    dellDirection(deltaY);
-                }
-
-                int movingX = (int) (ev.getX(pointerIndex) + 0.5f) - actionDownPointX;
-                int movingY = (int) (ev.getY(pointerIndex) + 0.5f) - actionDownPointY;
-                if (!isDragVertical && Math.abs(movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
-                    final ViewParent parent = prl.getParent();
-                    if (parent != null) {
-                        parent.requestDisallowInterceptTouchEvent(true);
+                    if (!isDragVertical || !prl.isTargetNestedScrollingEnabled() || (!prl.isMoveWithContent && prl.moveDistance != 0)) {
+                        dellDirection(deltaY);
                     }
 
-                    isDragVertical = true;
-                    reDispatchMoveEventDrag(ev, deltaY);
-                    lastDragEventY = (int) ev.getY(pointerIndex);
-                } else if (!isDragVertical && !isDragHorizontal && Math.abs(movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
-                    isDragHorizontal = true;
-                }
+                    int movingX = (int) (ev.getX(pointerIndex) + 0.5f) - actionDownPointX;
+                    int movingY = (int) (ev.getY(pointerIndex) + 0.5f) - actionDownPointY;
+                    if (!isDragVertical && Math.abs(movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
+                        final ViewParent parent = prl.getParent();
+                        if (parent != null) {
+                            parent.requestDisallowInterceptTouchEvent(true);
+                        }
 
-                if (isDragVertical) {
-                    // ---------- | make sure that the pullRefreshLayout is moved|----------
-                    if (lastMoveDistance == Integer.MAX_VALUE) {
+                        isDragVertical = true;
+                        reDispatchMoveEventDrag(ev, deltaY);
+                        lastDragEventY = (int) ev.getY(pointerIndex);
+                    } else if (!isDragVertical && !isDragHorizontal && Math.abs(movingX) > touchSlop && Math.abs(movingX) > Math.abs(movingY)) {
+                        isDragHorizontal = true;
+                    }
+
+                    if (isDragVertical) {
+                        // ---------- | make sure that the pullRefreshLayout is moved|----------
+                        if (lastMoveDistance == Integer.MAX_VALUE) {
+                            lastMoveDistance = prl.moveDistance;
+                        }
+                        if (lastMoveDistance != prl.moveDistance) {
+                            isLayoutDragMoved = true;
+                        }
                         lastMoveDistance = prl.moveDistance;
-                    }
-                    if (lastMoveDistance != prl.moveDistance) {
-                        isLayoutDragMoved = true;
-                    }
-                    lastMoveDistance = prl.moveDistance;
 
-                    reDispatchMoveEventDragging(ev, deltaY);
+                        reDispatchMoveEventDragging(ev, deltaY);
 
-                    // make sure that can nested to work or the targetView is move with content
-                    // dell the touch logic
-                    if (!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent) {
-                        if (!prl.isMoveWithContent && prl.isTargetNestedScrollingEnabled()) {
-                            // when nested scroll the nested event is delay than this logic
-                            // so we need adjust the deltaY
-                            deltaY = (isDragMoveTrendDown ? -1 : 1) * Math.abs(deltaY);
-                        }
-                        prl.onPreScroll(deltaY, childConsumed);
-                        deltaY = prl.parentOffsetInWindow[1] >= Math.abs(deltaY) ? 0 : deltaY;
-                        prl.onScroll(deltaY - (childConsumed[1] - lastChildConsumedY));
-                        lastChildConsumedY = childConsumed[1];
+                        // make sure that can nested to work or the targetView is move with content
+                        // dell the touch logic
+                        if (!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent) {
+                            if (!prl.isMoveWithContent && prl.isTargetNestedScrollingEnabled()) {
+                                // when nested scroll the nested event is delay than this logic
+                                // so we need adjust the deltaY
+                                deltaY = (isDragMoveTrendDown ? -1 : 1) * Math.abs(deltaY);
+                            }
+                            prl.onPreScroll(deltaY, childConsumed);
+                            deltaY = prl.parentOffsetInWindow[1] >= Math.abs(deltaY) ? 0 : deltaY;
+                            prl.onScroll(deltaY - (childConsumed[1] - lastChildConsumedY));
+                            lastChildConsumedY = childConsumed[1];
 
-                        // -------------------| event reset |--------------------
-                        if (!prl.isMoveWithContent) {
-                            ev.offsetLocation(0, childConsumed[1]);
+                            // -------------------| event reset |--------------------
+                            if (!prl.isMoveWithContent) {
+                                ev.offsetLocation(0, childConsumed[1]);
+                            }
                         }
                     }
                 }
+                lastDisallowIntercept = isDisallowIntercept;
                 break;
 
             case MotionEventCompat.ACTION_POINTER_DOWN: {
