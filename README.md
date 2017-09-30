@@ -259,7 +259,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.0.10 ： insert methods getHeaderView(),getFooterView),getTargetView()
  
-## 4.问题 FAQ
+## 4.问题 FAQ(对于本库的使用有问题，都可以在github上提issue，本人重度github控，一天最最少半小时泡在github上)
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
  <br/>
  官方描述如下：
