@@ -7,8 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 
@@ -93,18 +93,13 @@ public class FunGameHitBlockHeader extends FunGameView {
         initView(context, null);
     }
 
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         blockHorizontalNum = BLOCK_HORIZONTAL_NUM;
-        speed = dipToPx(SPEED);
+        speed = dipToPx(getContext(), SPEED);
 
         blockPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         blockPaint.setStyle(Paint.Style.FILL);
-        BALL_RADIUS = dipToPx(4);
+        BALL_RADIUS = dipToPx(getContext(),4);
     }
 
     @Override

@@ -25,12 +25,13 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.*;
 import android.view.animation.Interpolator;
 
 import java.util.ArrayList;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 /**
  * Fancy progress indicator for Material theme.
@@ -148,11 +149,6 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         ring.setArrowDimensions(arrowWidth * screenDensity, arrowHeight * screenDensity);
         ring.setInsets((int) mWidth, (int) mHeight);
         setUp(mWidth);
-    }
-
-    private int dipToPx(Context context, float value) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
     private void setUp(final double diameter) {

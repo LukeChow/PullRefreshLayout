@@ -10,19 +10,18 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.pathview.PathsDrawable;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,13 +61,8 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
         this.initView(context, null);
     }
 
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     protected void initView(Context context, AttributeSet attrs) {
-        setMinimumHeight(dipToPx(80));
+        setMinimumHeight(dipToPx(getContext(),80));
 
         LinearLayout layout = new LinearLayout(context);
         layout.setId(android.R.id.widget_frame);
@@ -93,8 +87,8 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
         mProgressView = new ImageView(context);
         mProgressView.animate().setInterpolator(new LinearInterpolator());
-        LayoutParams lpProgress = new LayoutParams(dipToPx(20), dipToPx(20));
-        lpProgress.rightMargin = dipToPx(20);
+        LayoutParams lpProgress = new LayoutParams(dipToPx(getContext(),20), dipToPx(getContext(),20));
+        lpProgress.rightMargin = dipToPx(getContext(),20);
         lpProgress.addRule(CENTER_VERTICAL);
         lpProgress.addRule(LEFT_OF, android.R.id.widget_frame);
         addView(mProgressView, lpProgress);
@@ -213,7 +207,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
     @Override
     public void onPullHolding() {
-        Log.e("onPullHolding", "onPullHolding: " );
+        Log.e("onPullHolding", "onPullHolding: ");
         mHeaderText.setText(REFRESH_HEADER_REFRESHING);
         mProgressView.setVisibility(VISIBLE);
         mArrowView.setVisibility(GONE);
@@ -239,7 +233,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
     @Override
     public void onPullFinish() {
-        Log.e("onPullFinish", "onPullFinish: " );
+        Log.e("onPullFinish", "onPullFinish: ");
         if (mProgressDrawable != null) {
             mProgressDrawable.stop();
         } else {
@@ -254,7 +248,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
     @Override
     public void onPullReset() {
-        Log.e("onPullReset", "onPullReset: " );
+        Log.e("onPullReset", "onPullReset: ");
         onPullHoldUnTrigger();
     }
 }

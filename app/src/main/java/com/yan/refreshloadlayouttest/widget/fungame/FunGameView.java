@@ -7,12 +7,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.WindowManager;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
-
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 /**
  * Created by Hitomis on 2016/3/9.
  * email:196425254@qq.com
@@ -123,14 +122,9 @@ public abstract class FunGameView extends FunGameHeader {
         drawBoundary(canvas, width, height);
         drawText(canvas, width, height);
         drawGame(canvas, width, height);
+
         super.dispatchDraw(canvas);
     }
-
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     /**
      * 绘制文字内容
      *
@@ -140,19 +134,19 @@ public abstract class FunGameView extends FunGameHeader {
         switch (status) {
             case STATUS_GAME_PREPAR:
             case STATUS_GAME_PLAY:
-                textPaint.setTextSize(dipToPx(25));
+                textPaint.setTextSize(dipToPx(getContext(),25));
                 promptText(canvas, textLoading, width, height);
                 break;
             case STATUS_GAME_FINISHED:
-                textPaint.setTextSize(dipToPx(20));
+                textPaint.setTextSize(dipToPx(getContext(),20));
                 promptText(canvas, textLoadingFinished, width, height);
                 break;
             case STATUS_GAME_FAIL:
-                textPaint.setTextSize(dipToPx(20));
+                textPaint.setTextSize(dipToPx(getContext(),20));
                 promptText(canvas, textLoadingFail, width, height);
                 break;
             case STATUS_GAME_OVER:
-                textPaint.setTextSize(dipToPx(25));
+                textPaint.setTextSize(dipToPx(getContext(),25));
                 promptText(canvas, textGameOver, width, height);
                 break;
         }

@@ -14,8 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -23,6 +21,7 @@ import android.view.animation.AccelerateInterpolator;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.pathview.PathsDrawable;
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 /**
  * DropboxRefresh
@@ -71,11 +70,6 @@ public class DropboxHeader extends View implements PullRefreshLayout.OnPullListe
                 resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec));
     }
 
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         mPath = new Path();
         mPaint = new Paint();
@@ -83,7 +77,7 @@ public class DropboxHeader extends View implements PullRefreshLayout.OnPullListe
         mPaint.setAntiAlias(true);
         mAccentColor = ContextCompat.getColor(context, R.color.colorWhite);
         setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-        setMinimumHeight(dipToPx(150));
+        setMinimumHeight(dipToPx(getContext(),150));
 
         PathsDrawable drawable1 = new PathsDrawable();
         drawable1.parserPaths(

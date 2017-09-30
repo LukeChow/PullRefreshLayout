@@ -14,7 +14,7 @@ import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.NestedFrameLayout;
 
 import java.util.ArrayList;
-
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 /**
  * from https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
  */
@@ -64,8 +64,8 @@ public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLa
 
     private void initView() {
         setWillNotDraw(false);
-        mLineWidth = (int) dipToPx(1);
-        mDropHeight = (int) dipToPx(40);
+        mLineWidth = (int) dipToPx(getContext(),1);
+        mDropHeight = (int) dipToPx(getContext(),40);
         mHorizontalRandomness = getContext().getResources().getDisplayMetrics().widthPixels / 2;
     }
 
@@ -115,11 +115,11 @@ public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLa
     }
 
     private int getTopOffset() {
-        return (int) (getPaddingTop() + dipToPx(10));
+        return (int) (getPaddingTop() + dipToPx(getContext(),10));
     }
 
     private int getBottomOffset() {
-        return (int) (getPaddingBottom() + dipToPx(10));
+        return (int) (getPaddingBottom() + dipToPx(getContext(),10));
     }
 
     public void initWithString(String str) {
@@ -145,11 +145,6 @@ public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLa
         initWithPointList(pointList);
     }
 
-    private float dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     public float getScale() {
         return mScale;
     }
@@ -166,8 +161,8 @@ public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLa
         mItemList.clear();
         for (int i = 0; i < pointList.size(); i++) {
             float[] line = pointList.get(i);
-            PointF startPoint = new PointF(dipToPx(line[0]) * mScale, dipToPx(line[1]) * mScale);
-            PointF endPoint = new PointF(dipToPx(line[2]) * mScale, dipToPx(line[3]) * mScale);
+            PointF startPoint = new PointF(dipToPx(getContext(),line[0]) * mScale, dipToPx(getContext(),line[1]) * mScale);
+            PointF endPoint = new PointF(dipToPx(getContext(),line[2]) * mScale, dipToPx(getContext(),line[3]) * mScale);
 
             drawWidth = Math.max(drawWidth, startPoint.x);
             drawWidth = Math.max(drawWidth, endPoint.x);

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
@@ -70,18 +70,13 @@ public class FunGameHeader extends FunGameBase {
         topMaskView = createMaskTextView(context, topMaskViewText, topMaskTextSize, Gravity.BOTTOM);
         bottomMaskView = createMaskTextView(context, bottomMaskViewText, bottomMaskTextSize, Gravity.TOP);
 
-        DIVIDING_LINE_SIZE = Math.max(1, dipToPx(0.5f));
+        DIVIDING_LINE_SIZE = Math.max(1, dipToPx(getContext(), 0.5f));
         post(new Runnable() {
             @Override
             public void run() {
                 coverMaskView();
             }
         });
-    }
-
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
     private TextView createMaskTextView(Context context, String text, int textSize, int gravity) {

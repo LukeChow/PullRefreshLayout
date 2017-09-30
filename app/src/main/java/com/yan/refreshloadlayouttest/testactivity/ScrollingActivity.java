@@ -8,14 +8,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.house.StoreHouseHeader;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 import java.util.ArrayList;
 
@@ -63,16 +63,11 @@ public class ScrollingActivity extends BaseActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private float dipToPx(float value) {
-        DisplayMetrics metrics = getBaseContext().getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     private void initRefreshLayout() {
         this.refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        findViewById(R.id.container).setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimaryDark));
+        findViewById(R.id.container).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
         StoreHouseHeader header = new StoreHouseHeader(getBaseContext());
-        header.setPadding(0, (int) dipToPx(20), 0, (int) dipToPx(20));
+        header.setPadding(0, dipToPx(getApplicationContext(), 20), 0, dipToPx(getApplicationContext(), 20));
         header.initWithString("PullRefreshLayout");
         refreshLayout.setHeaderView(header);
 

@@ -117,18 +117,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean autoLoadingEnable = false;
 
     /**
-     * dispatch Pull Touch Able
+     * dispatch control
+     * dispatchTouchAble:is able prl dispatch touch event
+     * dispatchPullTouchAble:is able prl dell pull logic
+     * dispatchChildrenEventAble:is the views in prl able to dispatch touch event
      */
     private boolean dispatchTouchAble = true;
-
-    /**
-     * dispatch Pull Touch Able
-     */
     private boolean dispatchPullTouchAble = true;
-
-    /**
-     * dispatch Children Event Able
-     */
     private boolean dispatchChildrenEventAble = true;
 
     /**

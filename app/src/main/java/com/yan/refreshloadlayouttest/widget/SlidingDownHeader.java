@@ -2,8 +2,6 @@ package com.yan.refreshloadlayouttest.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,8 @@ import android.view.ViewGroup;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ViscousInterpolator;
 import com.yan.refreshloadlayouttest.App;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 /**
  * Created by yan on 2017/9/16.
@@ -20,17 +20,12 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
     private PullRefreshLayout pullRefreshLayout;
     private View targetView;
 
-    private final int SLIDING_OFFSET = dipToPx(60);
+    private final int SLIDING_OFFSET = dipToPx(App.getAppContext(), 60);
     private final int SLIDING_DURING = 400;
 
     private boolean isSlidingDown;
 
     private ValueAnimator translateYAnimation;
-
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = App.getAppContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
 
     public void setTargetView(View target) {
         this.targetView = target;
@@ -113,7 +108,7 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
             } else if (translateYAnimation.isRunning()) {
                 translateYAnimation.cancel();
             }
-        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp() ) {
+        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
             pullRefreshLayout.refreshComplete();
         }
     }

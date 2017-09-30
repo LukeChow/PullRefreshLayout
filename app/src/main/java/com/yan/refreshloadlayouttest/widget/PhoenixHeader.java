@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -17,6 +15,8 @@ import android.view.animation.Transformation;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.pathview.PathsDrawable;
+
+import static com.yan.pullrefreshlayout.PRLCommonUtils.dipToPx;
 
 /**
  * Phoenix
@@ -112,19 +112,14 @@ public class PhoenixHeader extends View implements PullRefreshLayout.OnPullListe
         initView(context, null);
     }
 
-    private int dipToPx(float value) {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         mMatrix = new Matrix();
-        mSunSize = dipToPx(40);
+        mSunSize = dipToPx(context, 40);
         setupAnimation();
         setupPathsDrawable();
-        setMinimumHeight(dipToPx(100));
-        pullRefreshLayout.setRefreshTriggerDistance(dipToPx(100));
-        pullRefreshLayout.setPullDownMaxDistance(dipToPx(150));
+        setMinimumHeight(dipToPx(context, 100));
+        pullRefreshLayout.setRefreshTriggerDistance(dipToPx(context, 100));
+        pullRefreshLayout.setPullDownMaxDistance(dipToPx(context, 150));
         int primaryColor = 0;
         int accentColor = 0;
         if (primaryColor != 0) {
