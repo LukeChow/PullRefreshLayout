@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 /**
  * support general view to pull refresh
@@ -42,8 +43,15 @@ class GeneralPullHelper {
 
     /**
      * is Refresh Layout has moved
+     * - use by prl to get kwon the layout moved
      */
     boolean isLayoutDragMoved;
+
+    /**
+     * is Disallow Intercept
+     * - use by prl to get know need to Intercept event
+     */
+    boolean isDisallowIntercept;
 
     /**
      * is ReDispatch TouchEvent
@@ -114,11 +122,15 @@ class GeneralPullHelper {
                 lastDragEventY = actionDownPointY = (int) (ev.getY() + 0.5f);
 
                 isLayoutDragMoved = false;
+                isDisallowIntercept = false;
 
                 prl.onStartScroll();
                 prl.dispatchSuperTouchEvent(ev);
                 return true;
             case MotionEvent.ACTION_MOVE:
+                if (isDisallowIntercept) {
+                    break;
+                }
                 final int pointerIndex = ev.findPointerIndex(activePointerId);
                 if (ev.findPointerIndex(activePointerId) == -1) {
                     break;
@@ -134,6 +146,11 @@ class GeneralPullHelper {
                 int movingX = (int) (ev.getX(pointerIndex) + 0.5f) - actionDownPointX;
                 int movingY = (int) (ev.getY(pointerIndex) + 0.5f) - actionDownPointY;
                 if (!isDragVertical && Math.abs(movingY) > touchSlop && Math.abs(movingY) > Math.abs(movingX)) {
+                    final ViewParent parent = prl.getParent();
+                    if (parent != null) {
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
+
                     isDragVertical = true;
                     reDispatchMoveEventDrag(ev, deltaY);
                     lastDragEventY = (int) ev.getY(pointerIndex);
