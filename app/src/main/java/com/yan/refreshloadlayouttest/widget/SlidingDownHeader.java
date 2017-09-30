@@ -49,24 +49,13 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
         if (!isSlidingDown) {
             return super.dispatchTouchEvent(ev);
         }
-        switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_MOVE:
-                if (pullRefreshLayout.isLayoutDragMoved()) {
-                    ev.setAction(MotionEvent.ACTION_CANCEL);
-                    return super.dispatchTouchEvent(ev);
-                } else if (pullRefreshLayout.isDragHorizontal()) {
-                    pullRefreshLayout.setDispatchPullTouchAble(false);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                pullRefreshLayout.setDispatchPullTouchAble(true);
-                if (pullRefreshLayout.isDragHorizontal()) {
-                    MotionEvent event = MotionEvent.obtain(ev);
-                    event.setAction(MotionEvent.ACTION_CANCEL);
-                    pullRefreshLayout.dispatchTouchEvent(event);
-                }
-                ev.setAction(MotionEvent.ACTION_UP);
+        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
+            if (pullRefreshLayout.isLayoutDragMoved()) {
+                ev.setAction(MotionEvent.ACTION_CANCEL);
+                return super.dispatchTouchEvent(ev);
+            } else if (pullRefreshLayout.isDragHorizontal()) {
+                pullRefreshLayout.requestPullDisallowInterceptTouchEvent(true);
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
