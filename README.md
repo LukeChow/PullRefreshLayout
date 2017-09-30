@@ -279,7 +279,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 <br/>
 <br/>
 
-友情提示： （ 来自[pjh520](https://github.com/pjh520)的的提点  ）如果你使用了scrollView，它的直接子View请不要设置marginTop会影响滑动判断，这点也是刷新库的通病。。。
+友情提示： （ 来自[pjh520](https://github.com/pjh520)的的提点  ）如果你使用了scrollView，它的直接子View请不要设置纵向的margin会影响滑动判断，这点也是刷新库的通病。。。
 
 
 
