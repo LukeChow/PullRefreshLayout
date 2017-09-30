@@ -417,9 +417,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean b) {
+        generalPullHelper.isDisallowIntercept = b;
         if ((android.os.Build.VERSION.SDK_INT >= 21 || !(targetView instanceof AbsListView)) && (targetView == null || ViewCompat.isNestedScrollingEnabled(targetView))) {
             super.requestDisallowInterceptTouchEvent(b);
-            generalPullHelper.isDisallowIntercept = b;
         }
     }
 

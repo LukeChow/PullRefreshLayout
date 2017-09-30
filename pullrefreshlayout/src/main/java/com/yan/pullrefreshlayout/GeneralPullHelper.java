@@ -131,6 +131,7 @@ class GeneralPullHelper {
                 if (isDisallowIntercept) {
                     break;
                 }
+
                 final int pointerIndex = ev.findPointerIndex(activePointerId);
                 if (ev.findPointerIndex(activePointerId) == -1) {
                     break;
