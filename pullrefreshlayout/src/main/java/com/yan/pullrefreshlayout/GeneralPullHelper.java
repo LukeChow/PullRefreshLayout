@@ -156,7 +156,7 @@ class GeneralPullHelper {
                     // make sure that can nested to work or the targetView is move with content
                     // dell the touch logic
                     if (!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent) {
-                        if (!prl.isMoveWithContent) {
+                        if (!prl.isMoveWithContent && prl.isTargetNestedScrollingEnabled()) {
                             // when nested scroll the nested event is delay than this logic
                             // so we need adjust the deltaY
                             deltaY = (isDragMoveTrendDown ? -1 : 1) * Math.abs(deltaY);
