@@ -9,6 +9,9 @@
 
 ## 说明
 以上效果均由PullRefreshLayout（稍微详细的说明见：[https://github.com/genius158/PullRefreshLayout](https://github.com/genius158/PullRefreshLayout)）实现。
+使用PullRefreshLayout，自定义header和footer你可以实现很多你想的到的功能，以下是两个小例子
+
+##### 回弹刷新库(PullRefreshLayout)说明：个人最用心，用时写的一个库（出发点：其他的库回弹效果都并不理想，便想起了做这一个库），个人水平有限，开发的过程总是曲折的，大概3个多月后才正式在公司的项目中使用本库，其中也相应的修改了很多小问题，到现在应该相对很稳定了吧（>_<|||）（至少目前个人的项目用着是没有问题了的）
 #### 1.二级刷新的实现([TwoRefreshLayout](https://github.com/genius158/PullRefreshLayout/blob/master/app/src/main/java/com/yan/refreshloadlayouttest/widget/TwoRefreshHeader.java))
 首先创建一个header实现PullRefreshLayout.OnPullListener
 <br/>

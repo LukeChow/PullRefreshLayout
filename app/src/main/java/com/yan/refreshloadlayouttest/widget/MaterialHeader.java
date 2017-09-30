@@ -129,7 +129,6 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         // 使得回弹复原
         refreshLayout.cancelAllAnimation();
         refreshLayout.moveChildren(0);
-        setTranslationY(0);
     }
 
     @Override
