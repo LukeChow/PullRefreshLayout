@@ -1,7 +1,5 @@
 package com.yan.refreshloadlayouttest.widget;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,15 +17,6 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
     private PullRefreshLayout refreshLayout;
 
     private final ValueAnimator scaleAnimation = ValueAnimator.ofFloat(1, 0);
-
-    private final AnimatorListenerAdapter listenerAdapter = new AnimatorListenerAdapter() {
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            if (!refreshLayout.isRefreshing() && !refreshLayout.isLoading()) {
-                reset();
-            }
-        }
-    };
 
     private final ValueAnimator.AnimatorUpdateListener updateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
@@ -50,9 +39,8 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         mDrawable.setBackgroundColor(Color.WHITE);
         mDrawable.setCallback(this);
 
-        scaleAnimation.setDuration(200);
+        scaleAnimation.setDuration(180);
         scaleAnimation.addUpdateListener(updateListener);
-        scaleAnimation.addListener(listenerAdapter);
     }
 
     @Override
@@ -131,9 +119,15 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
 
     @Override
     public void onPullReset() {
-        if (!scaleAnimation.isRunning()) {
-            reset();
-        }
+        mDrawable.stop();
+        mScale = 1f;
+        scaleAnimation.cancel();
+
+        setTranslationY(0);
+        refreshLayout.moveChildren(0);
+
+        refreshLayout.setMoveWithHeader(true);
+        refreshLayout.setMoveWithFooter(true);
     }
 
     @Override
@@ -142,14 +136,6 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         mDrawable.stop();
         clearAnimation();
         scaleAnimation.cancel();
-    }
-
-    private void reset() {
-        setTranslationY(0);
-        mDrawable.stop();
-        mScale = 1f;
-        refreshLayout.setMoveWithHeader(true);
-        refreshLayout.setMoveWithFooter(true);
     }
 
 }

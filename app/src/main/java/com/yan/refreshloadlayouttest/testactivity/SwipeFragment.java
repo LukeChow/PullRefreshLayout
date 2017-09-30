@@ -6,40 +6,38 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.App;
+import com.yan.pullrefreshlayout.ShowGravity;
 import com.yan.refreshloadlayouttest.R;
-import com.yan.refreshloadlayouttest.widget.PhoenixHeader;
-import com.yan.refreshloadlayouttest.widget.fungame.FunGameBattleCityHeader;
-import com.yan.refreshloadlayouttest.widget.fungame.FunGameHeader;
-import com.yan.refreshloadlayouttest.widget.fungame.FunGameHitBlockHeader;
+import com.yan.refreshloadlayouttest.widget.MaterialHeader;
 
 import java.lang.ref.WeakReference;
-
-import static android.content.ContentValues.TAG;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RefreshFragment extends Fragment {
+public class SwipeFragment extends Fragment implements PullRefreshLayout.OnRefreshListener {
     private PullRefreshLayout refreshLayout;
     private View root;
 
-    public static RefreshFragment getInstance(int index) {
-        RefreshFragment refreshFragment = new RefreshFragment();
+    public static SwipeFragment getInstance(int index) {
+        SwipeFragment refreshFragment = new SwipeFragment();
         Bundle args = new Bundle();
         args.putInt("index", index);
         refreshFragment.setArguments(args);
         return refreshFragment;
     }
 
-    public RefreshFragment() {
+    public SwipeFragment() {
         // Required empty public constructor
     }
 
@@ -48,44 +46,68 @@ public class RefreshFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (root == null) {
-            root = inflater.inflate(R.layout.fragment_refresh, container, false);
-            init();
+            if (loadRoot(inflater, container)) {
+                init();
+            }
         }
         return root;
     }
 
-    private void init() {
-        refreshLayout = (PullRefreshLayout) root.findViewById(R.id.refreshLayout);
-        initHeader(refreshLayout);
-        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
-            @Override
-            public void onRefresh() {
-                Log.e(TAG, "refreshLayout onRefresh: ");
-                refreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (refreshLayout != null) {
-                            refreshLayout.refreshComplete();
-                        }
-                    }
-                }, 3000);
-            }
-        });
-        setImages();
-    }
-
-    private void initHeader(PullRefreshLayout refreshLayout) {
+    private boolean loadRoot(LayoutInflater inflater, ViewGroup containe) {
         switch (getArguments().getInt("index")) {
             case 1:
-                refreshLayout.setHeaderView(new PhoenixHeader(getContext(), refreshLayout));
+                root = inflater.inflate(R.layout.fragment_swipe1, containe, false);
+                initRecyclerView();
                 break;
             case 2:
-                refreshLayout.setHeaderView(new FunGameHitBlockHeader(getContext(), refreshLayout));
+                root = inflater.inflate(R.layout.activity_nested, containe, false);
+                initRecyclerView();
                 break;
             case 3:
-                refreshLayout.setHeaderView(new FunGameBattleCityHeader(getContext(), refreshLayout));
+                root = inflater.inflate(R.layout.common_refresh, containe, false);
+                setImages();
                 break;
+            case 4:
+                root = inflater.inflate(R.layout.memory_test, containe, false);
+                setImages();
+                return false;
         }
+        return true;
+    }
+
+    private void init() {
+        refreshLayout = (PullRefreshLayout) root.findViewById(R.id.refreshLayout);
+        refreshLayout.setTwinkEnable(true);
+        refreshLayout.setLoadMoreEnable(true);
+        refreshLayout.setAutoLoadingEnable(false);
+
+        refreshLayout.setRefreshTriggerDistance(300);
+        refreshLayout.setLoadTriggerDistance(300);
+        refreshLayout.setPullDownMaxDistance(500);
+        refreshLayout.setPullUpMaxDistance(500);
+        refreshLayout.setHeaderView(new MaterialHeader(getContext().getApplicationContext(), refreshLayout, 500F / 300));// 触发距离/拖动范围
+        refreshLayout.setHeaderShowGravity(ShowGravity.FOLLOW);
+        refreshLayout.setHeaderFront(true);
+        refreshLayout.setFooterView(new MaterialHeader(getContext().getApplicationContext(), refreshLayout, 500F / 300));
+        refreshLayout.setFooterShowGravity(ShowGravity.FOLLOW);
+        refreshLayout.setFooterFront(true);
+        refreshLayout.setMoveWithContent(false);
+        refreshLayout.setOnRefreshListener(this);
+    }
+
+    private void initRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ArrayList<SimpleItem> datas = new ArrayList<>();
+        datas.add(new SimpleItem(R.drawable.img1, "夏目友人帐"));
+        datas.add(new SimpleItem(R.drawable.img2, "夏目友人帐"));
+        datas.add(new SimpleItem(R.drawable.img3, "夏目友人帐"));
+        datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
+        datas.add(new SimpleItem(R.drawable.img5, "夏目友人帐"));
+        datas.add(new SimpleItem(R.drawable.img6, "夏目友人帐"));
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), datas);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setImages() {
@@ -106,6 +128,8 @@ public class RefreshFragment extends Fragment {
     }
 
     private void onLazyLoad() {
+        if (refreshLayout == null) return;
+
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -114,6 +138,37 @@ public class RefreshFragment extends Fragment {
                 }
             }
         }, 300);
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout != null) {
+                    refreshLayout.refreshComplete();
+                }
+            }
+        }, 3000);
+    }
+
+    @Override
+    public void onLoading() {
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (refreshLayout!=null) {
+                    refreshLayout.loadMoreComplete();
+                }
+            }
+        }, 3000);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        refreshLayout = null;
+        root = null;
     }
 
     /**
@@ -142,15 +197,15 @@ public class RefreshFragment extends Fragment {
     private LazyHandler lazyHandler = new LazyHandler(this);
 
     private static class LazyHandler extends Handler {
-        private WeakReference<RefreshFragment> reference;
+        private WeakReference<SwipeFragment> reference;
 
-        private LazyHandler(RefreshFragment refreshFragment) {
+        private LazyHandler(SwipeFragment refreshFragment) {
             reference = new WeakReference<>(refreshFragment);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            RefreshFragment rf = reference.get();
+            SwipeFragment rf = reference.get();
             if (rf != null) {
                 if (msg.what == 1) {
                     if (!rf.isActivityCreate) {
@@ -177,12 +232,5 @@ public class RefreshFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isLazyLoad", isLazyLoad);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        refreshLayout = null;
-        root = null;
     }
 }

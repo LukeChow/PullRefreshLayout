@@ -12,6 +12,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        App.getRefWatcher(getApplicationContext()).watch(this);
+//        App.getRefWatcher(getApplicationContext()).watch(this);
     }
 }

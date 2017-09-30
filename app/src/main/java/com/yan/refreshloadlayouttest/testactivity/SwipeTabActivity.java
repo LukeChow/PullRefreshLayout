@@ -13,7 +13,7 @@ import com.yan.refreshloadlayouttest.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabActivity extends BaseActivity {
+public class SwipeTabActivity extends BaseActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,9 +59,9 @@ public class TabActivity extends BaseActivity {
             }
         });
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(RefreshFragment.getInstance(1));
-        fragments.add(RefreshFragment.getInstance(2));
-        fragments.add(RefreshFragment.getInstance(3));
+        fragments.add(SwipeFragment.getInstance(1));
+        fragments.add(SwipeFragment.getInstance(2));
+        fragments.add(SwipeFragment.getInstance(3));
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -75,5 +75,14 @@ public class TabActivity extends BaseActivity {
         });
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        navigation.getMenu().getItem(0).setTitle("behavior");
+        navigation.getMenu().getItem(1).setTitle("RecyclerView");
+        navigation.getMenu().getItem(2).setTitle("ScrollView");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

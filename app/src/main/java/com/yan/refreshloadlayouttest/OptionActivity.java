@@ -11,10 +11,10 @@ import com.yan.refreshloadlayouttest.testactivity.CommonActivity2;
 import com.yan.refreshloadlayouttest.testactivity.CommonActivity3;
 import com.yan.refreshloadlayouttest.testactivity.CommonActivity4;
 import com.yan.refreshloadlayouttest.testactivity.NestedActivity;
-import com.yan.refreshloadlayouttest.testactivity.NestedActivity2;
 import com.yan.refreshloadlayouttest.testactivity.ScrollingActivity;
 import com.yan.refreshloadlayouttest.testactivity.ScrollingActivity2;
 import com.yan.refreshloadlayouttest.testactivity.SlidingDownActivity;
+import com.yan.refreshloadlayouttest.testactivity.SwipeTabActivity;
 import com.yan.refreshloadlayouttest.testactivity.TabActivity;
 
 public class OptionActivity extends BaseActivity {
@@ -32,7 +32,7 @@ public class OptionActivity extends BaseActivity {
                             startActivity(new Intent(getBaseContext(), NestedActivity.class));
                             break;
                         case 1:
-                            startActivity(new Intent(getBaseContext(), NestedActivity2.class));
+                            startActivity(new Intent(getBaseContext(), SwipeTabActivity.class));
                             break;
                         case 2:
                             startActivity(new Intent(getBaseContext(), CommonActivity1.class));

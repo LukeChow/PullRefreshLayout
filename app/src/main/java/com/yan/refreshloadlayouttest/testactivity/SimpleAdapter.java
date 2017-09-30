@@ -34,7 +34,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
     private Context context;
     private List<SimpleItem> datas;
 
-    public SimpleAdapter(Activity context, List<SimpleItem> datas) {
+    public SimpleAdapter(Context context, List<SimpleItem> datas) {
         this.context = context.getApplicationContext();
         this.datas = datas;
     }

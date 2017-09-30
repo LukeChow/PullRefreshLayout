@@ -27,7 +27,7 @@
             android:name=".testactivity.NestedActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".testactivity.NestedActivity2"
+            android:name=".testactivity.SwipeTabActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".testactivity.CommonActivity1"
