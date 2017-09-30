@@ -123,11 +123,13 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
         mScale = 1f;
         scaleAnimation.cancel();
 
-        setTranslationY(0);
-        refreshLayout.moveChildren(0);
-
         refreshLayout.setMoveWithHeader(true);
         refreshLayout.setMoveWithFooter(true);
+
+        // 使得回弹复原
+        refreshLayout.cancelAllAnimation();
+        refreshLayout.moveChildren(0);
+        setTranslationY(0);
     }
 
     @Override
