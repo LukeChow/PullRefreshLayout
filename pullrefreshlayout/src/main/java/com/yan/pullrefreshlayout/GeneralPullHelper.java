@@ -43,7 +43,7 @@ class GeneralPullHelper {
 
     /**
      * is Refresh Layout has moved
-     * - use by prl to get kwon the layout moved
+     * - use by prl to get know the layout moved
      */
     boolean isLayoutDragMoved;
 
