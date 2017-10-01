@@ -1,6 +1,8 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
@@ -13,6 +15,12 @@ public class DiDiActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_didi);
         final PullRefreshLayout prl = (PullRefreshLayout) findViewById(R.id.prl);
+        findViewById(R.id.click).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "item touched", Toast.LENGTH_SHORT).show();
+            }
+        });
         prl.setHeaderView(new DiDiHeader(getApplicationContext(), prl));
         prl.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override

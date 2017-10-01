@@ -2,9 +2,12 @@ package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.pullrefreshlayout.ShowGravity;
@@ -19,6 +22,8 @@ public class DiDiHeader extends NestedFrameLayout implements PullRefreshLayout.O
     private ClassicsHeader loadingView;
     private View fixedHeader;
 
+    private boolean isNeedDispatchTouchEvent;
+
     public DiDiHeader(Context context, PullRefreshLayout prl) {
         super(context);
         setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
@@ -28,6 +33,12 @@ public class DiDiHeader extends NestedFrameLayout implements PullRefreshLayout.O
         scrollInit();
         LayoutInflater.from(context).inflate(R.layout.didi_header, this, true);
         fixedHeader = findViewById(R.id.fixed_top);
+        fixedHeader.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext().getApplicationContext(), "you touch the header", Toast.LENGTH_SHORT).show();
+            }
+        });
         loadingView = (ClassicsHeader) findViewById(R.id.loading);
     }
 
@@ -42,6 +53,21 @@ public class DiDiHeader extends NestedFrameLayout implements PullRefreshLayout.O
                         , fixedHeader.getHeight()
                         , target.getPaddingRight()
                         , target.getPaddingBottom());
+
+                target.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            isNeedDispatchTouchEvent = true;
+                        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && prl.isDragVertical()) {
+                            isNeedDispatchTouchEvent = false;
+                        }
+                        if (isNeedDispatchTouchEvent) {
+                            DiDiHeader.this.dispatchTouchEvent(event);
+                        }
+                        return false;
+                    }
+                });
 
                 if (target instanceof NestedScrollView) {
                     ((NestedScrollView) target).setOnScrollChangeListener(DiDiHeader.this);
@@ -84,8 +110,5 @@ public class DiDiHeader extends NestedFrameLayout implements PullRefreshLayout.O
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         setTranslationY(-scrollY);
-        if (getTranslationY() >= 0) {
-            setTranslationY(0);
-        }
     }
 }
