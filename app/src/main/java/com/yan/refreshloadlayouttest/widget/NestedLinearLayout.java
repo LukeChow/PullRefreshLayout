@@ -14,7 +14,6 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 /**

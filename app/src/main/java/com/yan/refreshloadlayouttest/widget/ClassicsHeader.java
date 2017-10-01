@@ -61,8 +61,17 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
         this.initView(context, null);
     }
 
+    public ClassicsHeader(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.initView(context, attrs);
+        mHeaderText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorFF666666));
+        mArrowDrawable.parserColors(0xff666666);
+        mLastUpdateText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorFF999999));
+        mProgressDrawable.setColor(ContextCompat.getColor(getContext(), R.color.colorFF666666));
+    }
+
     protected void initView(Context context, AttributeSet attrs) {
-        setMinimumHeight(dipToPx(getContext(),80));
+        setMinimumHeight(dipToPx(getContext(), 80));
 
         LinearLayout layout = new LinearLayout(context);
         layout.setId(android.R.id.widget_frame);
@@ -87,8 +96,8 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
 
         mProgressView = new ImageView(context);
         mProgressView.animate().setInterpolator(new LinearInterpolator());
-        LayoutParams lpProgress = new LayoutParams(dipToPx(getContext(),20), dipToPx(getContext(),20));
-        lpProgress.rightMargin = dipToPx(getContext(),20);
+        LayoutParams lpProgress = new LayoutParams(dipToPx(getContext(), 20), dipToPx(getContext(), 20));
+        lpProgress.rightMargin = dipToPx(getContext(), 20);
         lpProgress.addRule(CENTER_VERTICAL);
         lpProgress.addRule(LEFT_OF, android.R.id.widget_frame);
         addView(mProgressView, lpProgress);

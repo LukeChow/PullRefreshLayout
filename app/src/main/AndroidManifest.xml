@@ -55,6 +55,9 @@
         <activity
             android:name=".testactivity.SlidingDownActivity"
             android:label="@string/title_activity_tab"></activity>
+        <activity
+            android:name=".testactivity.DiDiActivity"
+            android:label="@string/title_activity_tab"></activity>
     </application>
 
 </manifest>
