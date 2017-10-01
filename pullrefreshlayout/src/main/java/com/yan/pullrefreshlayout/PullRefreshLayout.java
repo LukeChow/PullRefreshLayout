@@ -11,6 +11,7 @@ import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ListViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -492,10 +493,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((ScrollView) targetView).fling(velocity);
         } else if (targetView instanceof WebView && !isScrollAbleViewBackScroll) {
             ((WebView) targetView).flingScroll(0, velocity);
-        } else if (targetView instanceof RecyclerView && !isTargetNested && !isScrollAbleViewBackScroll) {
+        } else if (targetView instanceof RecyclerView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
             ((RecyclerView) targetView).fling(0, velocity);
+        } else if (targetView instanceof NestedScrollView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
+            ((NestedScrollView) targetView).fling(velocity);
         } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
-                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof NestedScrollingChild) {
+                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof RecyclerView || targetView instanceof NestedScrollView) {
             // this case just dell overScroll normal,without any operation
         } else {
             // the target is able to scrollUp or scrollDown but have not the fling method
