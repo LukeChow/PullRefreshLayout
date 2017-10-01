@@ -22,7 +22,7 @@ header和状态切换演示gif
 ![嵌套滑动](gif/behavior3.gif) 
 <br/>
 
-滴滴，支付宝刷新（不包括loading动画）
+滴滴，支付宝刷新（看刷新的位置,不包括loading动画）
 <br/>
 ![滴滴](gif/didi1.gif) 
 ![支付宝](gif/didi2.gif) 
