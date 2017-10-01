@@ -495,7 +495,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         } else if (targetView instanceof RecyclerView && !isTargetNested && !isScrollAbleViewBackScroll) {
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
-                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof RecyclerView) {
+                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof NestedScrollingChild) {
             // this case just dell overScroll normal,without any operation
         } else {
             // the target is able to scrollUp or scrollDown but have not the fling method
