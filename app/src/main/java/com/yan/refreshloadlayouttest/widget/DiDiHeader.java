@@ -22,6 +22,7 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
     private PullRefreshLayout prl;
     private ClassicsHeader loadingView;
     private View fixedHeader;
+    private boolean isNeedDispatchTouchEvent;
 
     public DiDiHeader(Context context, final PullRefreshLayout prl) {
         super(context);
@@ -47,12 +48,6 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
         loadingView = (ClassicsHeader) findViewById(R.id.loading);
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.e("", "dispatchTouchEvent: " + ev.getActionMasked());
-        return super.dispatchTouchEvent(ev);
-    }
-
     private void scrollInit() {
         post(new Runnable() {
             @Override
@@ -67,12 +62,18 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
                 target.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            isNeedDispatchTouchEvent = true;//这里重置是否需要分发事件的标志位
+                        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && prl.isDragVertical()) {
+                            isNeedDispatchTouchEvent = false;//如果prl处在纵向拖动，则取消header的事件分发
+                        }
+                        if (isNeedDispatchTouchEvent) {
                             DiDiHeader.this.dispatchTouchEvent(event);
+                        }
                         return false;
                     }
                 });
                 if (target instanceof NestedScrollView) {
-                    ((NestedScrollView) target).setNestedScrollingEnabled(false);
                     ((NestedScrollView) target).setOnScrollChangeListener(DiDiHeader.this);
                     ((NestedScrollView) target).setClipToPadding(false);
                 }//else if target instanceof RecyclerView ...
