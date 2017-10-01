@@ -11,12 +11,23 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/fixed_top" />
 
-    <com.yan.refreshloadlayouttest.widget.PercentImageView
+    <FrameLayout
         android:id="@+id/fixed_top"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/zfb_top"
-        app:ratio="0.78502" />
+        android:layout_height="wrap_content">
+
+        <com.yan.refreshloadlayouttest.widget.PercentImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/zfb_top"
+            app:ratio="0.78502" />
+
+        <View
+            android:id="@+id/test"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+
+    </FrameLayout>
 
 </RelativeLayout>

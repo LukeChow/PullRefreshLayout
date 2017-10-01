@@ -12,7 +12,7 @@
 
 #### 问题
 想实现，在整体都可以滚动的，滚动区域实现刷新，正经的做事很麻烦的事情，用两个ScrollView嵌套，那么滑动冲突处理，会让你绞尽脑汁，
-用behavior，应为滑动（没有触摸的时候）是不会传递的，是做不到像整体滑动那样平滑的过度的，然而使用PullRefreshLayout，自定义header，你可以轻易的实现这个效果
+用behavior,nestedScroll，因为滑动（没有触摸的时候）是不会传递的，是做不到像整体滑动那样平滑的过度的，然而使用PullRefreshLayout，自定义header，你可以轻易的实现这个效果
 
 #### 1.滴滴刷新([DiDiHeader](https://github.com/genius158/PullRefreshLayout/blob/master/app/src/main/java/com/yan/refreshloadlayouttest/widget/DiDiHeader.java))
 首先创建一个header实现PullRefreshLayout.OnPullListener
@@ -64,8 +64,9 @@ post(new Runnable() {//这里是为了保证prl初始化完成，同时方便获
         if (target instanceof NestedScrollView) {
             //设置滑动监听，
             ((NestedScrollView) target).setOnScrollChangeListener(DiDiHeader.this);
-            //滑动监听的具体代码如下
-            // setTranslationY(-scrollY);使得header跟随滚动布局target滑动
+            //滑动监听的具体代码:
+            //scrollTo(0, scrollY);使得header跟随滚动布局target滑动
+            //(view.setTranslationY(-scrollY)不会更新header的点击位置,可能是header被其他view完全覆盖,所以系统默认不更新)
             
             //设置不切割子View
             ((NestedScrollView) target).setClipToPadding(false);
@@ -75,14 +76,7 @@ post(new Runnable() {//这里是为了保证prl初始化完成，同时方便获
         target.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    isNeedDispatchTouchEvent = true;//这里重置是否需要分发事件的标志位
-                } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE && prl.isDragVertical()) {
-                    isNeedDispatchTouchEvent = false;//如果prl处在纵向拖动，则取消header的事件分发
-                }
-                if (isNeedDispatchTouchEvent) {
-                    DiDiHeader.this.dispatchTouchEvent(event);
-                }
+                DiDiHeader.this.dispatchTouchEvent(event);//因为header在最底层,主动给header进行事件分发
                 return false;
             }
         });

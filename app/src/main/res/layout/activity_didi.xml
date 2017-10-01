@@ -17,8 +17,8 @@
 
 
             <com.yan.refreshloadlayouttest.widget.PercentImageView
-                android:layout_width="match_parent"
                 android:id="@+id/click"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/zfb_bottom"
                 app:ratio="1.3846" />
