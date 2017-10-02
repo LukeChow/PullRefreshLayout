@@ -1075,6 +1075,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             super.onAnimationEnd(animation);
             handleAction();
             onStopNestedScroll(null);
+            overScrollState = 0;
+            isOverScrollTrigger = false;
         }
     };
 
@@ -1107,10 +1109,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     void onStartScroll() {
         abortScroller();
-
         cancelAllAnimation();
-        overScrollState = 0;
-        isOverScrollTrigger = false;
         isScrollAbleViewBackScroll = false;
     }
 
@@ -1713,5 +1712,20 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public boolean isLayoutDragMoved() {
         return generalPullHelper.isLayoutDragMoved;
+    }
+
+    public boolean isLayoutMoving() {
+        if (startRefreshAnimator != null && startRefreshAnimator.isRunning()) {
+            return true;
+        } else if (resetHeaderAnimator != null && resetHeaderAnimator.isRunning()) {
+            return true;
+        } else if (startLoadMoreAnimator != null && startLoadMoreAnimator.isRunning()) {
+            return true;
+        } else if (resetFooterAnimator != null && resetFooterAnimator.isRunning()) {
+            return true;
+        } else if (overScrollAnimator != null && overScrollAnimator.isRunning()) {
+            return true;
+        }
+        return false;
     }
 }

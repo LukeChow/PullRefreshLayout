@@ -1,6 +1,6 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
-[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.17-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.17-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
+[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.18-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.0.18-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-399%20%7C%2036%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.0.9)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -40,7 +40,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 #### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新，单边回弹等），header和footer拽出方式默认8种(PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)，动画可以onPullChange()完全自主设置。
 ps:本库没有做解耦处理（那样会增加.class，大小也会增加），目的是使库足够小，而且本库功能目的明确，不必做无用功。
 
-## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.17-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
+## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.0.18-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
 compile 'com.yan:pullrefreshlayout:(↖)'
 <br/>
 ## 2.说明  
@@ -95,6 +95,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.isDragVertical();// 是否开始纵向拖拽
     refreshLayout.isDragHorizontal();// 是否开始横向拖拽
     refreshLayout.isLayoutDragMoved();// 刷新控件是否移动
+    
+    refreshLayout.isLayoutMoving();// prl是否正在移动（也就是判断有没有动画正在执行）
 
     refreshLayout.isHoldingTrigger();// 是否已经触发刷新或加载
     refreshLayout.isHoldingFinishTrigger();// 是否已经触发刷新完毕或加载完毕
@@ -128,6 +130,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.cancelTouchEvent();//主动执行ACTION_CANCEL事件
   
     refreshLayout.moveChildren(0);// 移动子view
+    
+    refreshLayout.requestPullDisallowInterceptTouchEvent();// touch事件交给子View
    
     refreshLayout.setOnDragIntercept(PullRefreshLayout.OnDragIntercept);// 设置滑动判定 见 BEHAIVOR2
     public static class OnDragIntercept {

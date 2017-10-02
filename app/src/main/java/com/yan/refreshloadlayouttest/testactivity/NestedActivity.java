@@ -23,6 +23,8 @@ public class NestedActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private ClassicLoadView classicLoadView;
 
+    private DataNotifyHandler dataNotifyHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,8 @@ public class NestedActivity extends BaseActivity {
         adapter = new SimpleAdapter(this, datas);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        dataNotifyHandler = new DataNotifyHandler(this, refreshLayout, adapter);
     }
 
     private void initRefreshLayout() {
@@ -84,19 +88,22 @@ public class NestedActivity extends BaseActivity {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
-                        adapter.notifyItemInserted(datas.size());
-                        if (refreshLayout.getMoveDistance() < 0) {
-                            refreshLayout.setDispatchTouchAble(false);
-                        }
-                        refreshLayout.postDelayed(new Runnable() {
-                            @Override
+                        dataNotifyHandler.notifyDataSetChanged(new Runnable() {
                             public void run() {
-                                recyclerView.scrollBy(0, -refreshLayout.getMoveDistance());
-                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
-                                classicLoadView.startBackAnimation();
+                                datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
+                                if (refreshLayout.getMoveDistance() < 0) {
+                                    refreshLayout.setDispatchTouchAble(false);
+                                }
+                                refreshLayout.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        recyclerView.scrollBy(0, -refreshLayout.getMoveDistance());
+                                        ClassicLoadView classicLoadView = refreshLayout.getFooterView();
+                                        classicLoadView.startBackAnimation();
+                                    }
+                                }, 150);
                             }
-                        }, 150);
+                        });
                     }
                 }, 1000);
             }
