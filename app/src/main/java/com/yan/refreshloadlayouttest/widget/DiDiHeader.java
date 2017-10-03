@@ -46,17 +46,6 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
         });
         loadingView = (ClassicsHeader) findViewById(R.id.loading);
     }
-//
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        prl.getTargetView().dispatchTouchEvent(ev);
-//        return super.dispatchTouchEvent(ev);
-//    }
-//
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        return true;
-//    }
 
     private void scrollInit() {
         post(new Runnable() {
