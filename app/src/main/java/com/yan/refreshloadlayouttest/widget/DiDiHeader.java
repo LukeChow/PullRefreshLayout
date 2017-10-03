@@ -2,6 +2,8 @@ package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,6 +60,8 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
                         , fixedHeader.getHeight()
                         , target.getPaddingRight()
                         , target.getPaddingBottom());
+                ((ViewGroup) target).setClipToPadding(false);
+
                 target.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -74,8 +78,10 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
                 });
                 if (target instanceof NestedScrollView) {
                     ((NestedScrollView) target).setOnScrollChangeListener(DiDiHeader.this);
-                    ((NestedScrollView) target).setClipToPadding(false);
-                }//else if target instanceof RecyclerView ...
+                } else if (target instanceof RecyclerView) {
+                    ((RecyclerView) target).addOnScrollListener(getRvOnScrollListener());
+                    ((RecyclerView) target).scrollToPosition(0);
+                }
             }
         });
     }
@@ -108,6 +114,19 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
     @Override
     public void onPullReset() {
         loadingView.onPullReset();
+    }
+
+    private RecyclerView.OnScrollListener getRvOnScrollListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                View offsetView = getChildAt(0);
+                offsetView.setTranslationY(offsetView.getTranslationY() - dy > 0
+                        ? 0 :
+                        offsetView.getTranslationY() - dy
+                );
+            }
+        };
     }
 
     @Override

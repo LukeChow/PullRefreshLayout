@@ -6,30 +6,8 @@
     android:layout_height="match_parent"
     app:prl_headerShowGravity="placeholder">
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <com.yan.refreshloadlayouttest.widget.PercentImageView
-                android:id="@+id/click"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/zfb_bottom"
-                app:ratio="1.3846" />
-
-            <com.yan.refreshloadlayouttest.widget.PercentImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/zfb_bottom"
-                app:ratio="1.3846" />
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent"/>
 </com.yan.pullrefreshlayout.PullRefreshLayout>

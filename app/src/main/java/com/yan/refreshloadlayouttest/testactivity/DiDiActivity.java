@@ -1,7 +1,10 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
@@ -15,12 +18,6 @@ public class DiDiActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_didi);
         final PullRefreshLayout prl = (PullRefreshLayout) findViewById(R.id.prl);
-        findViewById(R.id.click).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "item touched", Toast.LENGTH_SHORT).show();
-            }
-        });
         prl.setHeaderView(new DiDiHeader(getApplicationContext(), prl));
         prl.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override
@@ -31,6 +28,22 @@ public class DiDiActivity extends BaseActivity {
                         prl.refreshComplete();
                     }
                 }, 3000);
+            }
+        });
+
+        RecyclerView rvData = (RecyclerView) findViewById(R.id.rv_data);
+        rvData.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        rvData.setAdapter(new RecyclerView.Adapter() {
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return new RecyclerView.ViewHolder(getLayoutInflater().inflate(R.layout.didi_item, parent, false)) {
+                };
+            }
+
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            }
+
+            public int getItemCount() {
+                return 2;
             }
         });
     }
