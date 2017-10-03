@@ -2,7 +2,6 @@ package com.yan.refreshloadlayouttest.widget;
 
 import android.content.Context;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,6 +46,17 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
         });
         loadingView = (ClassicsHeader) findViewById(R.id.loading);
     }
+//
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        prl.getTargetView().dispatchTouchEvent(ev);
+//        return super.dispatchTouchEvent(ev);
+//    }
+//
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        return true;
+//    }
 
     private void scrollInit() {
         post(new Runnable() {
@@ -113,6 +123,6 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
 
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        scrollTo(0, scrollY);
+        getChildAt(0).setTranslationY(-scrollY);//scrollTo() 有明显的延迟,改为移动子view
     }
 }
