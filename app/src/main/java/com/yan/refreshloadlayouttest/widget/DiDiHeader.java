@@ -120,11 +120,7 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                View offsetView = getChildAt(0);
-                offsetView.setTranslationY(offsetView.getTranslationY() - dy > 0
-                        ? 0 :
-                        offsetView.getTranslationY() - dy
-                );
+                getChildAt(0).setTranslationY(Math.max(Math.min(0, getChildAt(0).getTranslationY() - dy), -fixedHeader.getHeight()));
             }
         };
     }
