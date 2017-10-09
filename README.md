@@ -54,6 +54,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.autoRefresh(ture);// 自动刷新,同时是否触发刷新回调
     refreshLayout.autoLoading();// 自动加载
     refreshLayout.autoLoading(ture);// 自动加载,同时是否触发加载回调
+    
     refreshLayout.setOverScrollDampingRatio(0.35f);//  值越大overscroll衰减越小（如何运作：overscroll移动偏移量*0.35） default 0.35F
     refreshLayout.setScrollInterpolator(interpolator);// 设置scroller的插值器
     refreshLayout.setAnimationMainInterpolator(interpolator);// 除了回弹其他所有动画的插值器 default ViscousInterpolator
@@ -78,9 +79,6 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     // headerView和footerView需实现PullRefreshLayout.OnPullListener接口调整状态
     refreshLayout.setHeaderView(headerView);// 设置headerView
     refreshLayout.setFooterView(footerView);// 设置footerView
-    
-    refreshLayout.isLayoutMoving();// 是否处于移动的过程中
-    refreshLayout.isRefreshing();// 是否处于刷新加载状态
     
     refreshLayout.isTwinkEnable();// 是否开启回弹
     refreshLayout.isRefreshEnable();// 是否开启刷新
