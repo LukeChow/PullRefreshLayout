@@ -152,8 +152,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     * , PLACEHOLDER
     */
     refreshLayout.setRefreshShowGravity(RefreshShowHelper.CENTER,RefreshShowHelper.CENTER);
-    refreshLayout.setHeaderShowGravity(RefreshShowHelper.CENTER)// header出现动画
-    refreshLayout.setFooterShowGravity(RefreshShowHelper.CENTER)// footer出现动画
+    refreshLayout.setHeaderShowGravity(RefreshShowHelper.CENTER)// header拽出方式
+    refreshLayout.setFooterShowGravity(RefreshShowHelper.CENTER)// footer拽出方式
     // PullRefreshLayout.OnPullListener
         public interface OnPullListener {
             // 刷新或加载过程中位置相刷新或加载触发位置的百分比，时刻调用
