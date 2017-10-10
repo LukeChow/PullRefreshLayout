@@ -49,16 +49,30 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
         if (!isSlidingDown) {
             return super.dispatchTouchEvent(ev);
         }
-        if (ev.getActionMasked() == MotionEvent.ACTION_MOVE) {
-            if (pullRefreshLayout.isLayoutDragMoved()) {
-                ev.setAction(MotionEvent.ACTION_CANCEL);
-                return super.dispatchTouchEvent(ev);
-            } else if (pullRefreshLayout.isDragHorizontal()) {
-                pullRefreshLayout.requestPullDisallowInterceptTouchEvent(true);
-            }
-        } else if ((ev.getActionMasked() == MotionEvent.ACTION_UP || ev.getActionMasked() == MotionEvent.ACTION_CANCEL)
-                && pullRefreshLayout.getMoveDistance() <= getHeight() - SLIDING_OFFSET && isSlidingDown) {
-            pullRefreshLayout.refreshComplete();
+
+        switch (ev.getActionMasked()) {
+            case MotionEvent.ACTION_MOVE:
+                if (translateYAnimation.isRunning()) {
+                    translateYAnimation.cancel();
+                }
+
+                if (pullRefreshLayout.isLayoutDragMoved()) {
+                    ev.setAction(MotionEvent.ACTION_CANCEL);
+                } else if (pullRefreshLayout.isDragHorizontal()) {
+                    pullRefreshLayout.requestPullDisallowInterceptTouchEvent(true);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (isSlidingDown) {
+                    if (pullRefreshLayout.getMoveDistance() <= getHeight() - SLIDING_OFFSET) {
+                        pullRefreshLayout.refreshComplete();
+                    } else if (pullRefreshLayout.getMoveDistance() < getHeight()) {
+                        translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
+                        translateYAnimation.start();
+                    }
+                }
+                break;
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -85,21 +99,6 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
         if (!isSlidingDown && pullRefreshLayout.isHoldingTrigger() && !pullRefreshLayout.isHoldingFinishTrigger() && pullRefreshLayout.getMoveDistance() >= getHeight()) {
             isSlidingDown = true;
             pullRefreshLayout.setDispatchPullTouchAble(true);
-        }
-
-        if (!isSlidingDown) {
-            return;
-        }
-
-        if (pullRefreshLayout.getMoveDistance() > getHeight() - SLIDING_OFFSET) {
-            if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-                if (!translateYAnimation.isRunning()) {
-                    translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
-                    translateYAnimation.start();
-                }
-            } else if (translateYAnimation.isRunning()) {
-                translateYAnimation.cancel();
-            }
         }
     }
 

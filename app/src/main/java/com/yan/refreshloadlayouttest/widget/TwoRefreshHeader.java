@@ -110,9 +110,25 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if ((ev.getActionMasked() == MotionEvent.ACTION_UP || ev.getActionMasked() == MotionEvent.ACTION_CANCEL)
-                && pullRefreshLayout.getMoveDistance() <= getHeight() - firstRefreshTriggerDistance && isTwoRefresh) {
-            pullRefreshLayout.refreshComplete();
+        if (!isTwoRefresh) {
+            return super.dispatchTouchEvent(ev);
+        }
+
+        switch (ev.getActionMasked()) {
+            case MotionEvent.ACTION_MOVE:
+                if (translateYAnimation.isRunning()) {
+                    translateYAnimation.cancel();
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (pullRefreshLayout.getMoveDistance() <= getHeight() - firstRefreshTriggerDistance) {
+                    pullRefreshLayout.refreshComplete();
+                } else if (pullRefreshLayout.getMoveDistance() < getHeight()) {
+                    translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
+                    translateYAnimation.start();
+                }
+                break;
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -120,8 +136,6 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
     @Override
     public void onPullChange(float percent) {
         super.onPullChange(percent);
-        twoRefreshMoveDell(percent);
-
         if (!pullRefreshLayout.isHoldingTrigger()) {
             if (pullRefreshLayout.getMoveDistance() >= twoRefreshDistance) {
                 if (!tv.getText().toString().equals(TWO_REFRESH_TEXT)) {
@@ -133,23 +147,6 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
         } else if (pullRefreshLayout.getMoveDistance() >= getHeight()) {
             pullRefreshLayout.setDispatchPullTouchAble(true);
             isTwoRefresh = true;
-        }
-    }
-
-    private void twoRefreshMoveDell(float percent) {
-        if (!isTwoRefresh) {
-            return;
-        }
-
-        if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDistance) {
-            if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-                if (!translateYAnimation.isRunning()) {
-                    translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
-                    translateYAnimation.start();
-                }
-            } else if (translateYAnimation.isRunning()) {
-                translateYAnimation.cancel();
-            }
         }
     }
 
