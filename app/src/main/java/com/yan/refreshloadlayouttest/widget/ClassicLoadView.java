@@ -99,7 +99,6 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
             refreshLayout.setAutoLoadingEnable(false);
             refreshLayout.loadMoreComplete();
             tv.setText("no more data");
-            loadingView.smoothToHide();
         }
     }
 
@@ -136,10 +135,12 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     @Override
     public void onPullChange(float percent) {
         onPullHolding();
+
         // 判断是否处在 拖拽的状态
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp() || !refreshLayout.isLoadMoreEnable()) {
             return;
         }
+
         if (!refreshLayout.isHoldingTrigger() && (percent < 0)) {
             refreshLayout.autoLoading();
         }
@@ -165,8 +166,8 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     public void onPullFinish() {
         if (refreshLayout.isLoadMoreEnable()) {
             tv.setText("loading finish");
-            loadingView.smoothToHide();
         }
+        loadingView.smoothToHide();
     }
 
     @Override

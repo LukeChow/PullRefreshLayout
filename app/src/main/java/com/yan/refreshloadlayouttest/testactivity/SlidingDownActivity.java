@@ -42,7 +42,7 @@ public class SlidingDownActivity extends BaseActivity {
         final List<TextView> tvs = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             TextView textView = new TextView(getBaseContext());
-            textView.setText("Hwo to code Horizontal SlidingDownPanelLayout - Tip" + i);
+            textView.setText("How to code Horizontal SlidingDownPanelLayout - Tip" + i);
             textView.setTextColor(ContextCompat.getColor(getApplication(), R.color.colorWhite));
             textView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
             textView.setGravity(Gravity.CENTER);
