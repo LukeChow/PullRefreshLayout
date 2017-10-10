@@ -56,6 +56,9 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
             } else if (pullRefreshLayout.isDragHorizontal()) {
                 pullRefreshLayout.requestPullDisallowInterceptTouchEvent(true);
             }
+        } else if ((ev.getActionMasked() == MotionEvent.ACTION_UP || ev.getActionMasked() == MotionEvent.ACTION_CANCEL)
+                && pullRefreshLayout.getMoveDistance() <= getHeight() - SLIDING_OFFSET && isSlidingDown) {
+            pullRefreshLayout.refreshComplete();
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -87,18 +90,16 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
         if (!isSlidingDown) {
             return;
         }
-        if (percent <= 0) {
-            pullRefreshLayout.refreshComplete();
-        }
+
         if (pullRefreshLayout.getMoveDistance() > getHeight() - SLIDING_OFFSET) {
             if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-                translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
-                translateYAnimation.start();
+                if (!translateYAnimation.isRunning()) {
+                    translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
+                    translateYAnimation.start();
+                }
             } else if (translateYAnimation.isRunning()) {
                 translateYAnimation.cancel();
             }
-        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-            pullRefreshLayout.refreshComplete();
         }
     }
 

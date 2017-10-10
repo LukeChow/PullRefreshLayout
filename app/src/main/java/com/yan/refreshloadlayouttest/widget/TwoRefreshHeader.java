@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -108,6 +109,15 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if ((ev.getActionMasked() == MotionEvent.ACTION_UP || ev.getActionMasked() == MotionEvent.ACTION_CANCEL)
+                && pullRefreshLayout.getMoveDistance() <= getHeight() - firstRefreshTriggerDistance && isTwoRefresh) {
+            pullRefreshLayout.refreshComplete();
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public void onPullChange(float percent) {
         super.onPullChange(percent);
         twoRefreshMoveDell(percent);
@@ -130,18 +140,16 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
         if (!isTwoRefresh) {
             return;
         }
-        if (percent <= 0 && !pullRefreshLayout.isHoldingFinishTrigger()) {
-            pullRefreshLayout.refreshComplete();
-        }
+
         if (pullRefreshLayout.getMoveDistance() > getHeight() - firstRefreshTriggerDistance) {
             if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-                translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
-                translateYAnimation.start();
+                if (!translateYAnimation.isRunning()) {
+                    translateYAnimation.setFloatValues(pullRefreshLayout.getMoveDistance(), getHeight());
+                    translateYAnimation.start();
+                }
             } else if (translateYAnimation.isRunning()) {
                 translateYAnimation.cancel();
             }
-        } else if (!pullRefreshLayout.isDragDown() && !pullRefreshLayout.isDragUp()) {
-            pullRefreshLayout.refreshComplete();
         }
     }
 
