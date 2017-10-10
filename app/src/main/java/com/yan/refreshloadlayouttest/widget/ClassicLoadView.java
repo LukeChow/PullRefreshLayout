@@ -111,8 +111,6 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
 
         if (objectAnimator != null) {
             objectAnimator.cancel();
-            objectAnimator.removeAllListeners();
-            objectAnimator.removeAllUpdateListeners();
             objectAnimator = null;
         }
     }
@@ -142,7 +140,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp() || !refreshLayout.isLoadMoreEnable()) {
             return;
         }
-        if (!refreshLayout.isHoldingTrigger() && !refreshLayout.isLoading() && (percent < 0)) {
+        if (!refreshLayout.isHoldingTrigger() && (percent < 0)) {
             refreshLayout.autoLoading();
         }
     }

@@ -1146,12 +1146,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     void onStopScroll() {
-        // just make that custom header and footer easier
-        if (generalPullHelper.isLayoutDragMoved) {
-            onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
-            onFooterPullChange((float) moveDistance / refreshTriggerDistance);
-        }
-
         removeDelayRunnable();
         if (!pullTwinkEnable) {
             handleAction();
@@ -1162,6 +1156,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             postDelayed(delayHandleActionRunnable, 50);
         } else if ((scroller != null && scroller.isFinished())) {
             handleAction();
+        }
+
+        // just make that custom header and footer easier
+        if (generalPullHelper.isLayoutDragMoved) {
+            onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
+            onFooterPullChange((float) moveDistance / loadTriggerDistance);
         }
     }
 
