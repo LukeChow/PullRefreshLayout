@@ -537,7 +537,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void autoLoadingTrigger() {
-        if (!isAutoLoadingTrigger && autoLoadingEnable && refreshState == 0 && onRefreshListener != null) {
+        if (!isAutoLoadingTrigger && autoLoadingEnable && !isHoldingTrigger && onRefreshListener != null) {
             isAutoLoadingTrigger = true;
             onRefreshListener.onLoading();
         }
@@ -1407,7 +1407,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void autoLoading(boolean withAction) {
-        if (isLoading() || isRefreshing() || pullContentLayout == null || !pullLoadMoreEnable) {
+        if (isHoldingTrigger || pullContentLayout == null || !pullLoadMoreEnable) {
             return;
         }
         startLoadMore(moveDistance, withAction);
