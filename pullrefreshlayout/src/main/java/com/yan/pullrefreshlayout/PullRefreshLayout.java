@@ -537,7 +537,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void autoLoadingTrigger() {
-        if (!isAutoLoadingTrigger && autoLoadingEnable && !isRefreshing() && !isLoading() && onRefreshListener != null) {
+        if (!isAutoLoadingTrigger && autoLoadingEnable && refreshState == 0 && onRefreshListener != null) {
             isAutoLoadingTrigger = true;
             onRefreshListener.onLoading();
         }
@@ -584,7 +584,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         tempDistance = Math.min(tempDistance, pullDownMaxDistance);
         tempDistance = Math.max(tempDistance, -pullUpMaxDistance);
 
-        if (!pullTwinkEnable && ((refreshState == 1 && tempDistance < 0) || (refreshState == 2 && tempDistance > 0))) {
+        if (!pullTwinkEnable && ((isRefreshing() && tempDistance < 0) || (isLoading() && tempDistance > 0))) {
             if (moveDistance == 0) {
                 return;
             }
@@ -671,13 +671,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * decide on the action refresh or loadMore
      */
     private void handleAction() {
-        if (pullRefreshEnable && refreshState != 2 && !isResetTrigger && moveDistance >= refreshTriggerDistance) {
+        if (pullRefreshEnable && !isLoading() && !isResetTrigger && moveDistance >= refreshTriggerDistance) {
             startRefresh(moveDistance, true);
-        } else if (pullLoadMoreEnable && refreshState != 1 && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
+        } else if (pullLoadMoreEnable && !isRefreshing() && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
             startLoadMore(moveDistance, true);
-        } else if ((refreshState == 0 && moveDistance > 0) || (refreshState == 1 && (moveDistance < 0 || isResetTrigger))) {
+        } else if ((refreshState == 0 && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
-        } else if ((refreshState == 0 && moveDistance < 0) || (refreshState == 2 && moveDistance > 0) || isResetTrigger) {
+        } else if ((refreshState == 0 && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
             resetFootView(moveDistance);
         }
     }
@@ -1004,7 +1004,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      */
     private final AnimatorListenerAdapter resetHeaderAnimationListener = new PullAnimatorListenerAdapter() {
         protected void animationStart() {
-            if (isResetTrigger && refreshState == 1 && !isHoldingFinishTrigger && onHeaderPullFinish()) {
+            if (isResetTrigger && isRefreshing() && !isHoldingFinishTrigger && onHeaderPullFinish()) {
                 isHoldingFinishTrigger = true;
             }
         }
@@ -1018,7 +1018,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private final AnimatorListenerAdapter resetFooterAnimationListener = new PullAnimatorListenerAdapter() {
         protected void animationStart() {
-            if (isResetTrigger && refreshState == 2 && !isHoldingFinishTrigger && onFooterPullFinish()) {
+            if (isResetTrigger && isLoading() && !isHoldingFinishTrigger && onFooterPullFinish()) {
                 isHoldingFinishTrigger = true;
             }
         }
@@ -1160,8 +1160,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         // just make that custom header and footer easier
         if (generalPullHelper.isLayoutDragMoved) {
-            onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
-            onFooterPullChange((float) moveDistance / loadTriggerDistance);
+            if (isRefreshing() || moveDistance > 0 && !isLoading()) {
+                onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
+            } else if (isLoading() || moveDistance < 0 && !isRefreshing()) {
+                onFooterPullChange((float) moveDistance / loadTriggerDistance);
+            }
         }
     }
 
@@ -1386,14 +1389,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void refreshComplete() {
-        if (!dellDetachComplete() && refreshState != 2) {
+        if (!dellDetachComplete() && !isLoading()) {
             isResetTrigger = true;
             resetHeaderView(moveDistance);
         }
     }
 
     public void loadMoreComplete() {
-        if (!dellDetachComplete() && refreshState != 1) {
+        if (!dellDetachComplete() && !isRefreshing()) {
             isResetTrigger = true;
             resetFootView(moveDistance);
         }
