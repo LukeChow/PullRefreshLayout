@@ -599,17 +599,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             if (moveDistance >= refreshTriggerDistance) {
                 if (pullStateControl) {
                     pullStateControl = false;
-                    if (refreshState == 0) {
-                        onHeaderPullHoldTrigger();
-                    }
+                    onHeaderPullHoldTrigger();
                 }
                 return;
             }
             if (!pullStateControl) {
                 pullStateControl = true;
-                if (refreshState == 0) {
-                    onHeaderPullHoldUnTrigger();
-                }
+                onHeaderPullHoldUnTrigger();
             }
             return;
         }
@@ -617,17 +613,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (moveDistance <= -loadTriggerDistance) {
             if (pullStateControl) {
                 pullStateControl = false;
-                if (refreshState == 0) {
-                    onFooterPullHoldTrigger();
-                }
+                onFooterPullHoldTrigger();
             }
             return;
         }
         if (!pullStateControl) {
             pullStateControl = true;
-            if (refreshState == 0) {
-                onFooterPullHoldUnTrigger();
-            }
+            onFooterPullHoldUnTrigger();
         }
     }
 
@@ -905,19 +897,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void onHeaderPullChange(float ratio) {
-        if (headerView != null && headerView instanceof OnPullListener) {
+        if (headerView != null && headerView instanceof OnPullListener && !isLoading()) {
             ((OnPullListener) headerView).onPullChange(ratio);
         }
     }
 
     private void onHeaderPullHoldTrigger() {
-        if (headerView != null && headerView instanceof OnPullListener) {
+        if (headerView != null && headerView instanceof OnPullListener && refreshState == 0) {
             ((OnPullListener) headerView).onPullHoldTrigger();
         }
     }
 
     private void onHeaderPullHoldUnTrigger() {
-        if (headerView != null && headerView instanceof OnPullListener) {
+        if (headerView != null && headerView instanceof OnPullListener && refreshState == 0) {
             ((OnPullListener) headerView).onPullHoldUnTrigger();
         }
     }
@@ -947,19 +939,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void onFooterPullChange(float ratio) {
-        if (footerView != null && footerView instanceof OnPullListener) {
+        if (footerView != null && footerView instanceof OnPullListener && !isRefreshing()) {
             ((OnPullListener) footerView).onPullChange(ratio);
         }
     }
 
     private void onFooterPullHoldTrigger() {
-        if (footerView != null && footerView instanceof OnPullListener) {
+        if (footerView != null && footerView instanceof OnPullListener && refreshState == 0) {
             ((OnPullListener) footerView).onPullHoldTrigger();
         }
     }
 
     private void onFooterPullHoldUnTrigger() {
-        if (footerView != null && footerView instanceof OnPullListener) {
+        if (footerView != null && footerView instanceof OnPullListener && refreshState == 0) {
             ((OnPullListener) footerView).onPullHoldUnTrigger();
         }
     }
@@ -1157,9 +1149,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         // just make that custom header and footer easier
         if (generalPullHelper.isLayoutDragMoved) {
-            if (isRefreshing() || moveDistance > 0 && !isLoading()) {
+            if (isRefreshing() || moveDistance > 0) {
                 onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
-            } else if (isLoading() || moveDistance < 0 && !isRefreshing()) {
+            } else if (isLoading() || moveDistance < 0) {
                 onFooterPullChange((float) moveDistance / loadTriggerDistance);
             }
         }
