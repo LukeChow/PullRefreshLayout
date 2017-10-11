@@ -37,7 +37,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="带头部的recyclerView"
+                        android:text="带头部的recyclerView(状态切换)"
                         android:textColor="#212121" />
                 </android.support.v7.widget.CardView>
 
@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="普通的view(TextView、ViewGroup),带二级刷新"
+                        android:text="二级刷新 演示"
                         android:textColor="#212121" />
                 </android.support.v7.widget.CardView>
 
@@ -79,8 +79,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:padding="10dp"
-                        android:text="支持ScrollView,带自动加载(没有充满屏幕)"
+                        android:text="自动加载（加载完成footer不隐藏，可跟随滑动）"
                         android:textColor="#212121" />
                 </android.support.v7.widget.CardView>
 
