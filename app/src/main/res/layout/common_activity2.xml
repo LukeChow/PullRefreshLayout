@@ -11,16 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-
-android:clipToPadding="false"
-            android:paddingTop="1px"
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
             android:background="#f1f1f1"
-            android:gravity="center">
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:overScrollMode="never"
+            android:paddingTop="1px">
 
             <LinearLayout
                 android:id="@+id/ll"
@@ -102,7 +101,7 @@ android:clipToPadding="false"
                         android:scaleType="centerCrop" />
                 </android.support.v7.widget.CardView>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

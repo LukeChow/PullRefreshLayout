@@ -1,6 +1,7 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
 import com.yan.refreshloadlayouttest.widget.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
@@ -20,19 +22,19 @@ public class CommonActivity2 extends CommonActivity1 {
         return R.layout.common_activity2;
     }
 
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private LinearLayout linearLayout;
 
     protected void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
-        scrollView = (ScrollView) findViewById(R.id.sv);
+        scrollView = (NestedScrollView) findViewById(R.id.sv);
         linearLayout = (LinearLayout) findViewById(R.id.ll);
         setImages();
         refreshLayout.setTwinkEnable(true);
         refreshLayout.setAutoLoadingEnable(true);
         refreshLayout.setLoadMoreEnable(true);
         refreshLayout.setHeaderView(new HeaderWithAutoLoading(getBaseContext(), "LineSpinFadeLoaderIndicator", refreshLayout));
-        refreshLayout.setFooterView(new ClassicLoadView(getApplicationContext(), refreshLayout));
+        refreshLayout.setFooterView(new ClassicHoldLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
         refreshLayout.setTargetView(scrollView);
 
@@ -44,6 +46,8 @@ public class CommonActivity2 extends CommonActivity1 {
                     public void run() {
                         Log.e("onRefresh", "onRefresh run: ");
                         refreshLayout.refreshComplete();
+                        ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
+                        classicLoadView.holdReset();
                     }
                 }, 3000);
             }
@@ -56,21 +60,21 @@ public class CommonActivity2 extends CommonActivity1 {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (linearLayout.getChildCount() > 12) {
-                            ClassicLoadView classicLoadView = refreshLayout.getFooterView();
+                        if (linearLayout.getChildCount() > 5) {
+                            ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
                             classicLoadView.loadFinish();
                             return;
                         }
 
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
-                        if (refreshLayout.getMoveDistance()<0) {
+                        if (refreshLayout.getMoveDistance() < 0) {
                             refreshLayout.setDispatchTouchAble(false);
                         }
                         refreshLayout.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 scrollView.scrollBy(0, -refreshLayout.getMoveDistance());
-                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
+                                ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
                                 classicLoadView.startBackAnimation();
                             }
                         }, 150);
