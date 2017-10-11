@@ -19,7 +19,7 @@ public class HeaderWithAutoLoading extends HeaderOrFooter {
     @Override
     public void onPullReset() {
         super.onPullReset();
-        ClassicLoadView classicLoadView = refreshLayout.getFooterView();
-        classicLoadView.onPullReset();
+        PullRefreshLayout.OnPullListener onPullListener = refreshLayout.getFooterView();
+        onPullListener.onPullReset();
     }
 }
