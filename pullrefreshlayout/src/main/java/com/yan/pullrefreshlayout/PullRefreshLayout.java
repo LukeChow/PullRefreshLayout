@@ -303,24 +303,21 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void initContentView() {
-        for (int i = 0; i < getChildCount(); i++) {
-            if (getChildAt(i) != footerView && getChildAt(i) != headerView) {
-                pullContentLayout = getChildAt(i);
-
-                // ---------| targetView ready |----------
-                if (targetViewId != -1) {
-                    targetView = findViewById(targetViewId);
-                }
-                if (targetView == null) {
-                    targetView = pullContentLayout;
-                }
-
-                setHeaderView(headerView);
-                setFooterView(footerView);
-                return;
-            }
+        if (getChildCount() == 0) {
+            throw new RuntimeException("PullRefreshLayout should have a child");
         }
-        throw new RuntimeException("PullRefreshLayout should have a child");
+        pullContentLayout = getChildAt(0);
+
+        // ---------| targetView ready |----------
+        if (targetViewId != -1) {
+            targetView = findViewById(targetViewId);
+        }
+        if (targetView == null) {
+            targetView = pullContentLayout;
+        }
+
+        setHeaderView(headerView);
+        setFooterView(footerView);
     }
 
     public boolean dispatchSuperTouchEvent(MotionEvent ev) {
@@ -492,8 +489,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (targetView instanceof NestedScrollView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
             ((NestedScrollView) targetView).fling(velocity);
-        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
-                || targetView instanceof ListView && !isScrollAbleViewBackScroll || targetView instanceof RecyclerView || targetView instanceof NestedScrollView) {
+        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView) || targetView instanceof ListView && !isScrollAbleViewBackScroll
+                || targetView instanceof RecyclerView || targetView instanceof NestedScrollView) {
             // this case just dell overScroll normal,without any operation
         } else {
             // the target is able to scrollUp or scrollDown but have not the fling method
