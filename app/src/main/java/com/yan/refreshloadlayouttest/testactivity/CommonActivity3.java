@@ -8,7 +8,6 @@ import android.widget.ListView;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.DropboxHeader;
-import com.yan.refreshloadlayouttest.widget.WithoutTwinkFooter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,6 @@ public class CommonActivity3 extends BaseActivity {
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setHeaderView(new DropboxHeader(getBaseContext(), refreshLayout));
-        refreshLayout.setFooterView(new WithoutTwinkFooter(getBaseContext(), refreshLayout));
         refreshLayout.setLoadMoreEnable(false);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListenerAdapter() {
             @Override

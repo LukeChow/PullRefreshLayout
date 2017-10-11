@@ -45,6 +45,9 @@ public class CommonActivity2 extends CommonActivity1 {
                     @Override
                     public void run() {
                         Log.e("onRefresh", "onRefresh run: ");
+                        while (linearLayout.getChildCount() > 4) {
+                            linearLayout.removeView(linearLayout.getChildAt(linearLayout.getChildCount() - 1));
+                        }
                         refreshLayout.refreshComplete();
                         ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
                         classicLoadView.holdReset();
@@ -60,7 +63,7 @@ public class CommonActivity2 extends CommonActivity1 {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (linearLayout.getChildCount() > 5) {
+                        if (linearLayout.getChildCount() > 6) {
                             ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
                             classicLoadView.loadFinish();
                             return;
