@@ -22,6 +22,11 @@ Nested Scroll
 ![Nested Scroll](gif/behavior3.gif) 
 <br/>
 
+hold footer
+<br/>
+![hold footer](gif/load_hold.gif) 
+<br/>
+ 
 Refresh header show in scroll part [Detail](https://github.com/genius158/PullRefreshLayout/blob/master/CUSTOM_DIDI_README.md)
 <br/>
 ![DIDI](gif/didi1.gif) 

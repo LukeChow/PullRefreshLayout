@@ -29,6 +29,11 @@ header和状态切换演示gif
 ![支付宝](gif/didi2.gif) 
 <br/>
 
+加载更多，加载完成，保持footer
+<br/>
+![保持footer](gif/load_hold.gif) 
+<br/>
+ 
 fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 <br/>
 ![fun header](gif/fun_header.gif) 
