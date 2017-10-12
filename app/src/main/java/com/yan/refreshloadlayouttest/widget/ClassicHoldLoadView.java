@@ -65,7 +65,15 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
                         }
                     });
                 } else if (target instanceof RecyclerView) {
-                    //...
+                    ((RecyclerView) target).addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                            if (refreshLayout.isRefreshing()) {
+                                return;
+                            }
+                            setTargetTranslationY();
+                        }
+                    });
                 }
 
                 setTargetTranslationY();
@@ -142,7 +150,7 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
             tv.setText("no more data");
             loadingView.setVisibility(GONE);
 
-            if (refreshLayout.getMoveDistance()<0) {
+            if (refreshLayout.getMoveDistance() < 0) {
                 int offsetY = Math.min(tv.getHeight(), -refreshLayout.getMoveDistance());
                 target.scrollBy(0, offsetY);
                 refreshLayout.moveChildren(refreshLayout.getMoveDistance() + offsetY);
@@ -165,7 +173,15 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
         if (target instanceof NestedScrollView) {
             setTranslationY(Math.max(getHeight(), ((NestedScrollView) target).getChildAt(0).getHeight()) - target.getScrollY() + refreshLayout.getMoveDistance());
         } else if (refreshLayout.getTargetView() instanceof RecyclerView) {
-            //...
+            RecyclerView rv = (RecyclerView) target;
+            RecyclerView.LayoutManager layoutManager = rv.getLayoutManager();
+            RecyclerView.ViewHolder viewHolder = rv.findViewHolderForAdapterPosition(layoutManager.getItemCount() - 1);
+            float offset = 0;
+            if (viewHolder != null) {
+                offset = viewHolder.itemView.getBottom() - getHeight();
+                Log.e("offset", "setTargetTranslationY: " + offset);
+            }
+            setTranslationY(getHeight() + refreshLayout.getMoveDistance() + offset);
         }
     }
 

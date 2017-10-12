@@ -91,17 +91,8 @@ public class NestedActivity extends BaseActivity {
                         dataNotifyHandler.notifyDataSetChanged(new Runnable() {
                             public void run() {
                                 datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
-                                if (refreshLayout.getMoveDistance() < 0) {
-                                    refreshLayout.setDispatchTouchAble(false);
-                                }
-                                refreshLayout.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        recyclerView.scrollBy(0, -refreshLayout.getMoveDistance());
-                                        ClassicLoadView classicLoadView = refreshLayout.getFooterView();
-                                        classicLoadView.startBackAnimation();
-                                    }
-                                }, 150);
+                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
+                                classicLoadView.startBackAnimation();
                             }
                         });
                     }
