@@ -596,28 +596,28 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         if (moveDistance >= 0) {
             onHeaderPullChange((float) moveDistance / refreshTriggerDistance);
-            if (moveDistance >= refreshTriggerDistance) {
+            if (!isHoldingTrigger && moveDistance >= refreshTriggerDistance) {
                 if (pullStateControl) {
                     pullStateControl = false;
                     onHeaderPullHoldTrigger();
                 }
                 return;
             }
-            if (!pullStateControl) {
+            if (!isHoldingTrigger && !pullStateControl) {
                 pullStateControl = true;
                 onHeaderPullHoldUnTrigger();
             }
             return;
         }
         onFooterPullChange((float) moveDistance / loadTriggerDistance);
-        if (moveDistance <= -loadTriggerDistance) {
+        if (!isHoldingTrigger && moveDistance <= -loadTriggerDistance) {
             if (pullStateControl) {
                 pullStateControl = false;
                 onFooterPullHoldTrigger();
             }
             return;
         }
-        if (!pullStateControl) {
+        if (!isHoldingTrigger && !pullStateControl) {
             pullStateControl = true;
             onFooterPullHoldUnTrigger();
         }
@@ -664,9 +664,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             startRefresh(moveDistance, true);
         } else if (pullLoadMoreEnable && !isRefreshing() && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
             startLoadMore(moveDistance, true);
-        } else if ((refreshState == 0 && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
+        } else if ((!isHoldingTrigger && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
-        } else if ((refreshState == 0 && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
+        } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
             resetFootView(moveDistance);
         }
     }
@@ -903,13 +903,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void onHeaderPullHoldTrigger() {
-        if (headerView != null && headerView instanceof OnPullListener && refreshState == 0) {
+        if (headerView != null && headerView instanceof OnPullListener) {
             ((OnPullListener) headerView).onPullHoldTrigger();
         }
     }
 
     private void onHeaderPullHoldUnTrigger() {
-        if (headerView != null && headerView instanceof OnPullListener && refreshState == 0) {
+        if (headerView != null && headerView instanceof OnPullListener) {
             ((OnPullListener) headerView).onPullHoldUnTrigger();
         }
     }
@@ -945,13 +945,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void onFooterPullHoldTrigger() {
-        if (footerView != null && footerView instanceof OnPullListener && refreshState == 0) {
+        if (footerView != null && footerView instanceof OnPullListener) {
             ((OnPullListener) footerView).onPullHoldTrigger();
         }
     }
 
     private void onFooterPullHoldUnTrigger() {
-        if (footerView != null && footerView instanceof OnPullListener && refreshState == 0) {
+        if (footerView != null && footerView instanceof OnPullListener) {
             ((OnPullListener) footerView).onPullHoldUnTrigger();
         }
     }
