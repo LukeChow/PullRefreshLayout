@@ -1,4 +1,4 @@
-# PullRefreshLayout(This is a mall, bouncy, refresh lib)
+# PullRefreshLayout(A mall, bouncy, refresh, loadMore lib)
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.02-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout) 
 [![Latest Version](https://img.shields.io/badge/Latest%20Version-2.1.03-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion) 
 [![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
@@ -34,9 +34,17 @@ fun header from https://github.com/scwang90/SmartRefreshLayout
 <br/>
  
 ## 1.Summary
-#### Main Features:Perfect support synchronous NestedScrolling width RecyclerView、AppBarLayout、CoordinatorLayout. OverScroll animations is better than that libs.
-1.Support all basic views(Include RecyclerView、NestedScrollView, TextView、ListView、ScrollerView、webView、LinearLayout etc.).
-#### 2.You can custom header and footer to realize various functions（Auto trigger loading、Fixed header、Secondary refresh etc.），header and footer dragging out (PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)。
+#### Main Features:
+#### 1.Perfect support synchronous NestedScrolling width RecyclerView、AppBarLayout、CoordinatorLayout.
+#### 2.Support all basic views(Include RecyclerView、NestedScrollView, TextView、ListView、ScrollerView、webView、LinearLayout etc.)
+#### 3.Support cross-border rebound OverScroll animations is better than other libs.
+#### 4.Support load more.
+#### 5.Support custom rebound animation interpolator, to achieve a variety of cool animation effects
+#### 6.Support preview in the Android Studio xml editor.
+#### etc.
+
+
+#### 2.You can custom header and footer to realize various functions（Auto trigger loading、Fixed header、Secondary refresh etc.），the ways header and footer dragging out (PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)。
 ps:This design is to make the lib small enough
 
 ## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1,02-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
