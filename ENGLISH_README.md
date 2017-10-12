@@ -34,13 +34,14 @@ fun header from https://github.com/scwang90/SmartRefreshLayout
 <br/>
  
 ## 1.Summary
-### 1.Main Features:
+#### 1.Main Features:
 - 1.Perfect support synchronous NestedScrolling width RecyclerView、AppBarLayout、CoordinatorLayout.
 - 2.Support all basic views(Include RecyclerView、NestedScrollView, TextView、ListView、ScrollerView、webView、LinearLayout etc.)
 - 3.Support cross-border rebound OverScroll animations is better than other libs.
-- 4.Support load more.
-- 5.Support custom rebound animation interpolator, to achieve a variety of cool animation effects
-- 6.Support preview in the Android Studio xml editor.
+- 4.The touch event dell like Tencent QQ.
+- 5.Support load more.
+- 6.Support custom rebound animation interpolator, to achieve a variety of cool animation effects
+- 7.Support preview in the Android Studio xml editor.
 - etc.
 
 
