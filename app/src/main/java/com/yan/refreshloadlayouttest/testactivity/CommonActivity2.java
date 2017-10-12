@@ -41,6 +41,9 @@ public class CommonActivity2 extends CommonActivity1 {
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
+                classicLoadView.holdReset();
+
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -49,8 +52,6 @@ public class CommonActivity2 extends CommonActivity1 {
                             linearLayout.removeView(linearLayout.getChildAt(linearLayout.getChildCount() - 1));
                         }
                         refreshLayout.refreshComplete();
-                        ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
-                        classicLoadView.holdReset();
                     }
                 }, 3000);
             }
