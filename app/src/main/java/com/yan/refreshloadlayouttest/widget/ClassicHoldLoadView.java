@@ -142,10 +142,12 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
             tv.setText("no more data");
             loadingView.setVisibility(GONE);
 
-            int offsetY = Math.min(tv.getHeight(), -refreshLayout.getMoveDistance());
-            target.scrollBy(0, offsetY);
-            refreshLayout.moveChildren(refreshLayout.getMoveDistance() + offsetY);
-            setTargetTranslationY();
+            if (refreshLayout.getMoveDistance()<0) {
+                int offsetY = Math.min(tv.getHeight(), -refreshLayout.getMoveDistance());
+                target.scrollBy(0, offsetY);
+                refreshLayout.moveChildren(refreshLayout.getMoveDistance() + offsetY);
+                setTargetTranslationY();
+            }
 
             refreshLayout.loadMoreComplete();
         }
