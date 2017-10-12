@@ -136,39 +136,39 @@ public class ShowGravity {
                 case CENTER:
                 case CENTER_FOLLOW:
                     prl.headerView.layout(paddingLeft + lp.leftMargin
-                            , -prl.headerView.getMeasuredHeight() / 2
+                            , top + paddingTop - prl.headerView.getMeasuredHeight() / 2
                             , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
-                            , prl.headerView.getMeasuredHeight() / 2);
+                            , top + paddingTop + prl.headerView.getMeasuredHeight() / 2);
                     break;
             }
         }
         if (prl.footerView != null) {
             int paddingLeft = prl.getPaddingLeft();
-            int paddingTop = prl.getPaddingTop();
+            int paddingBottom = prl.getPaddingBottom();
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) prl.footerView.getLayoutParams();
             switch (footerShowGravity) {
                 case FOLLOW:
                 case FOLLOW_PLACEHOLDER:
                 case FOLLOW_CENTER:
                     prl.footerView.layout(lp.leftMargin + paddingLeft
-                            , bottom + lp.topMargin + paddingTop
+                            , bottom - lp.topMargin - paddingBottom
                             , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-                            , bottom + lp.topMargin + paddingTop + prl.footerView.getMeasuredHeight());
+                            , bottom - lp.topMargin - paddingBottom + prl.footerView.getMeasuredHeight());
                     break;
                 case PLACEHOLDER:
                 case PLACEHOLDER_CENTER:
                 case PLACEHOLDER_FOLLOW:
                     prl.footerView.layout(lp.leftMargin + paddingLeft
-                            , bottom + lp.topMargin + paddingTop - prl.footerView.getMeasuredHeight()
+                            , bottom - lp.bottomMargin - paddingBottom - prl.footerView.getMeasuredHeight()
                             , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-                            , bottom + lp.topMargin + paddingTop);
+                            , bottom - lp.bottomMargin - paddingBottom);
                     break;
                 case CENTER:
                 case CENTER_FOLLOW:
                     prl.footerView.layout(lp.leftMargin + paddingLeft
-                            , bottom - prl.footerView.getMeasuredHeight() / 2
+                            , bottom - paddingBottom - prl.footerView.getMeasuredHeight() / 2
                             , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-                            , bottom + prl.footerView.getMeasuredHeight() / 2);
+                            , bottom - paddingBottom + prl.footerView.getMeasuredHeight() / 2);
                     break;
             }
         }

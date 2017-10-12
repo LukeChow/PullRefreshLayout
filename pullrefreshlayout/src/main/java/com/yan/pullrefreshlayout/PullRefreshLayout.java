@@ -85,12 +85,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private int bottomOverScrollMaxTriggerOffset = 65;
 
     /**
-     * over Scroll Min During
+     * over scroll min during
      */
     private int overScrollMinDuring = 60;
 
     /**
-     * targetViewId
+     * target view id
      */
     private int targetViewId = -1;
 
@@ -100,7 +100,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private float dragDampingRatio = 0.6F;
 
     /**
-     * overScrollAdjustValue
+     * over scroll adjust value
      */
     private float overScrollAdjustValue = 1F;
 
@@ -128,7 +128,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean dispatchChildrenEventAble = true;
 
     /**
-     * move With
+     * move with
      * isMoveWithContent:- use by generalHelper dell touch logic
      */
     private boolean isMoveWithFooter = true;
@@ -195,12 +195,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean refreshWithAction = true;
 
     /**
-     * isScrollAbleViewBackScroll
+     * is scroll able when view scroll back
      */
     private boolean isScrollAbleViewBackScroll = false;
 
     /**
-     * is isTargetNested
+     * is is target nested
      */
     private boolean isTargetNested = false;
 
@@ -490,7 +490,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         } else if (targetView instanceof NestedScrollView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
             ((NestedScrollView) targetView).fling(velocity);
         } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView) || targetView instanceof ListView && !isScrollAbleViewBackScroll
-                || targetView instanceof RecyclerView || targetView instanceof NestedScrollView) {
+                || targetView instanceof RecyclerView
+                || targetView instanceof NestedScrollView) {
             // this case just dell overScroll normal,without any operation
         } else {
             // the target is able to scrollUp or scrollDown but have not the fling method
