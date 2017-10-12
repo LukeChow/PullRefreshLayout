@@ -34,7 +34,7 @@ fun header from https://github.com/scwang90/SmartRefreshLayout
 <br/>
  
 ## 1.Summary
-#### 1.Main Features:
+### 1.Main Features:
 - 1.Perfect support synchronous NestedScrolling width RecyclerView、AppBarLayout、CoordinatorLayout.
 - 2.Support all basic views(Include RecyclerView、NestedScrollView, TextView、ListView、ScrollerView、webView、LinearLayout etc.)
 - 3.Support cross-border rebound OverScroll animations is better than other libs.
@@ -45,7 +45,7 @@ fun header from https://github.com/scwang90/SmartRefreshLayout
 - etc.
 
 
-#### 2.You can custom header and footer to realize various functions（Auto trigger loading、Fixed header、Secondary refresh etc.），the ways header and footer dragging out (PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)。
+### 2.You can custom header and footer to realize various functions（Auto trigger loading、Fixed header、Secondary refresh etc.），the ways header and footer dragging out (PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)。
 ps:This design is to make the lib small enough
 
 ## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1,02-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
