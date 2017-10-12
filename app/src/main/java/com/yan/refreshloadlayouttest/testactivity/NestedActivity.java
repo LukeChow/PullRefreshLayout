@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
+import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
 import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 import com.yan.refreshloadlayouttest.R;
 
@@ -21,7 +22,7 @@ public class NestedActivity extends BaseActivity {
     private SimpleAdapter adapter;
     private View vState;
     private RecyclerView recyclerView;
-    private ClassicLoadView classicLoadView;
+    private ClassicHoldLoadView classicLoadView;
 
     private DataNotifyHandler dataNotifyHandler;
 
@@ -55,7 +56,7 @@ public class NestedActivity extends BaseActivity {
     private void initRefreshLayout() {
         refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setLoadTriggerDistance((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getResources().getDisplayMetrics()));
-        refreshLayout.setFooterView(classicLoadView = new ClassicLoadView(getApplicationContext(), refreshLayout));
+        refreshLayout.setFooterView(classicLoadView = new ClassicHoldLoadView(getApplicationContext(), refreshLayout));
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,6 +70,9 @@ public class NestedActivity extends BaseActivity {
                             refreshLayout.setFooterView(classicLoadView);
                             refreshLayout.setLoadMoreEnable(true);
                             refreshLayout.setAutoLoadingEnable(true);
+
+                            classicLoadView.holdReset();
+
                         } else {
                             refreshLayout.setTargetView(vState);
                             vState.setVisibility(View.VISIBLE);
@@ -90,8 +94,11 @@ public class NestedActivity extends BaseActivity {
                     public void run() {
                         dataNotifyHandler.notifyDataSetChanged(new Runnable() {
                             public void run() {
+                                if (datas.size() > 10) {
+                                    classicLoadView.loadFinish();
+                                    return;
+                                }
                                 datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
-                                ClassicLoadView classicLoadView = refreshLayout.getFooterView();
                                 classicLoadView.startBackAnimation();
                             }
                         });

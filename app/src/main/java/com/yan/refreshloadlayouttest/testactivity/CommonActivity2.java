@@ -71,17 +71,8 @@ public class CommonActivity2 extends CommonActivity1 {
                         }
 
                         linearLayout.addView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.simple_item, null));
-                        if (refreshLayout.getMoveDistance() < 0) {
-                            refreshLayout.setDispatchTouchAble(false);
-                        }
-                        refreshLayout.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollView.scrollBy(0, -refreshLayout.getMoveDistance());
-                                ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
-                                classicLoadView.startBackAnimation();
-                            }
-                        }, 150);
+                        ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
+                        classicLoadView.startBackAnimation();
                     }
                 }, 2000);
             }

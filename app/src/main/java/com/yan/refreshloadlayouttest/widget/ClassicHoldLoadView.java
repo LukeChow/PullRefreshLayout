@@ -120,24 +120,32 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
     // 自定义回复动画
     public void startBackAnimation() {
         // 记录refreshLayout移动距离
-        int moveDistance = refreshLayout.getMoveDistance();
+        final int moveDistance = refreshLayout.getMoveDistance();
         if (moveDistance >= 0) {// moveDistance大于等于0时不主动处理
             refreshLayout.loadMoreComplete();
             refreshLayout.setDispatchTouchAble(true);
             loadingView.smoothToHide();
             return;
         }
-        // 设置事件为ACTION_CANCEL
-        refreshLayout.cancelTouchEvent();
+
         // 阻止refreshLayout的事件分发
         refreshLayout.setDispatchTouchAble(false);
-        // 再设置内容移动到0的位置
-        refreshLayout.moveChildren(0);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 设置事件为ACTION_CANCEL
+                refreshLayout.cancelTouchEvent();
+                // 再设置内容移动到0的位置
+                refreshLayout.moveChildren(0);
+                refreshLayout.getTargetView().scrollBy(0, -moveDistance);
 
-        // 调用自定义footer动画
-        animationInit();
-        objectAnimator.setFloatValues(getHeight() + moveDistance, getHeight());
-        objectAnimator.start();
+                // 调用自定义footer动画
+                animationInit();
+                objectAnimator.setFloatValues(getHeight() + moveDistance, getHeight());
+                objectAnimator.start();
+            }
+        }, 150);
+
     }
 
     public void loadFinish() {
