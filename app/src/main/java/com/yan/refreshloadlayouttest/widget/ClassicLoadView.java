@@ -52,7 +52,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     private void animationInit() {
         if (objectAnimator != null) return;
 
-        objectAnimator = ObjectAnimator.ofFloat(this, "y", 0, 0);
+        objectAnimator = ObjectAnimator.ofFloat(this, "translationY", 0, 0);
         objectAnimator.setDuration(300);
         objectAnimator.setInterpolator(new ViscousInterpolator(8));
 
@@ -94,7 +94,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
 
                 // 调用自定义footer动画
                 animationInit();
-                objectAnimator.setFloatValues(getY(), getY() - moveDistance);
+                objectAnimator.setFloatValues(getHeight() + moveDistance, getHeight());
                 objectAnimator.start();
             }
         }, 150);

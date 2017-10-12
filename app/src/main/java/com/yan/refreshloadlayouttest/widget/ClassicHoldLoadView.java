@@ -142,7 +142,6 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
                 // 调用自定义footer动画
                 animationInit();
 
-                Log.e("objectAnimator", "run: " + getY() + "    " + getHeight());
                 objectAnimator.setFloatValues(getHeight() + moveDistance, getHeight());
                 objectAnimator.start();
             }
