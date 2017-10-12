@@ -1,15 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_marginTop="8dp"
         android:id="@+id/iv"
-        android:src="#eab566"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:scaleType="centerCrop" />
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:scaleType="centerCrop"
+        android:src="#eab566" />
 
     <TextView
         android:id="@+id/id_num"

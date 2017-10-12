@@ -66,7 +66,7 @@ public class CommonActivity2 extends CommonActivity1 {
                     public void run() {
                         if (linearLayout.getChildCount() > 6) {
                             ClassicHoldLoadView classicLoadView = refreshLayout.getFooterView();
-                            classicLoadView.loadFinish();
+                            classicLoadView.loadFinish(true);
                             return;
                         }
 

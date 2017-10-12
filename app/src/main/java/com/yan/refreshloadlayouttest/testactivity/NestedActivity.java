@@ -95,7 +95,7 @@ public class NestedActivity extends BaseActivity {
                         dataNotifyHandler.notifyDataSetChanged(new Runnable() {
                             public void run() {
                                 if (datas.size() > 10) {
-                                    classicLoadView.loadFinish();
+                                    classicLoadView.loadFinish(true);
                                     return;
                                 }
                                 datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
