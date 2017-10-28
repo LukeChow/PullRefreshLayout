@@ -423,9 +423,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             if (pullTwinkEnable && ((overScrollFlingState() == 1 && overScrollBackDell(1, currScrollOffset))
                     || (overScrollFlingState() == 2 && overScrollBackDell(2, currScrollOffset)))) {
                 return;
-
-                // ListView scroll back scroll to normal
             } else if (isScrollAbleViewBackScroll && (pullContentLayout instanceof ListView)) {
+                // ListView scroll back scroll to normal
                 ListViewCompat.scrollListBy((ListView) pullContentLayout, currScrollOffset);
             }
 
@@ -481,7 +480,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (targetView instanceof NestedScrollView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
             ((NestedScrollView) targetView).fling(velocity);
-        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView) || targetView instanceof ListView && !isScrollAbleViewBackScroll
+        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
+                || (targetView instanceof ListView && !isScrollAbleViewBackScroll)
                 || targetView instanceof RecyclerView
                 || targetView instanceof NestedScrollView) {
             // this case just dell overScroll normal,without any operation
