@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PullRefreshLayout.iml" filepath="$PROJECT_DIR$/PullRefreshLayout.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../test/RefreshLayout/PullRefreshLayout.iml" filepath="$PROJECT_DIR$/../../test/RefreshLayout/PullRefreshLayout.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RefreshLayout.iml" filepath="$PROJECT_DIR$/RefreshLayout.iml" />
+      <module fileurl="file://F:\test\RefreshLayout\PullRefreshLayout.iml" filepath="F:\test\RefreshLayout\PullRefreshLayout.iml" />
+      <module fileurl="file://F:\androidspace\PullRefreshLayout\RefreshLayout.iml" filepath="F:\androidspace\PullRefreshLayout\RefreshLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pullrefreshlayout/pullrefreshlayout.iml" filepath="$PROJECT_DIR$/pullrefreshlayout/pullrefreshlayout.iml" />
     </modules>

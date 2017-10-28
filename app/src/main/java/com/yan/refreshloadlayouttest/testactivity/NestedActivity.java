@@ -24,8 +24,6 @@ public class NestedActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private ClassicHoldLoadView classicLoadView;
 
-    private DataNotifyHandler dataNotifyHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +47,6 @@ public class NestedActivity extends BaseActivity {
         adapter = new SimpleAdapter(this, datas);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        dataNotifyHandler = new DataNotifyHandler(this, refreshLayout, adapter);
     }
 
     private void initRefreshLayout() {
@@ -92,16 +88,13 @@ public class NestedActivity extends BaseActivity {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        dataNotifyHandler.notifyDataSetChanged(new Runnable() {
-                            public void run() {
-                                if (datas.size() > 10) {
-                                    classicLoadView.loadFinish(true);
-                                    return;
-                                }
-                                datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
-                                classicLoadView.startBackAnimation();
-                            }
-                        });
+                        if (datas.size() > 10) {
+                            classicLoadView.loadFinish(true);
+                            return;
+                        }
+                        datas.add(new SimpleItem(R.drawable.img4, "夏目友人帐"));
+                        adapter.notifyItemInserted(datas.size());
+                        classicLoadView.startBackAnimation();
                     }
                 }, 1000);
             }

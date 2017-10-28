@@ -1382,6 +1382,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public void refreshComplete() {
         if (!dellDetachComplete() && !isLoading()) {
             isResetTrigger = true;
+            if (resetHeaderAnimator != null && resetHeaderAnimator.isRunning()) {
+                resetHeaderAnimationListener.onAnimationStart(null);
+                return;
+            }
             resetHeaderView(moveDistance);
         }
     }
@@ -1389,6 +1393,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public void loadMoreComplete() {
         if (!dellDetachComplete() && !isRefreshing()) {
             isResetTrigger = true;
+            if (resetFooterAnimator != null && resetFooterAnimator.isRunning()) {
+                resetFooterAnimationListener.onAnimationStart(null);
+                return;
+            }
             resetFootView(moveDistance);
         }
     }
