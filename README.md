@@ -74,8 +74,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
     refreshLayout.setTopOverScrollMaxTriggerOffset(300);// 用于控制顶部的overscroll的距离 default 65dp
     refreshLayout.setBottomOverScrollMaxTriggerOffset(300);// 用于控制底部overscroll的距离 default 65dp
-    refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离 默认 控件高度
-    refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离 默认 控件高度
+    refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离(大于等于0) 默认 控件高度
+    refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离(大于等于0) 默认 控件高度
 
     refreshLayout.setRefreshEnable(false);// 下拉刷新是否可用 default true
     refreshLayout.setLoadMoreEnable(true);// 上拉加载是否可用 default false
