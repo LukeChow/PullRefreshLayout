@@ -43,7 +43,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 #### 本库的主要特点:完美契合嵌套滑动，和与其他回弹刷新库相比更加真实的回弹效果、即使控件不可滑动,也有惯性缓冲效果(ps:如何触发——比如下拉到一定距离不放，往回滑动，即可看到效果),切换状态见NestedActivity
 1.对所有基础控件(包括，嵌套滑动例如RecyclerView、NestedScrollView，普通的TextView、ListView、ScrollerView、webView、LinearLayout等)提供下拉刷新、上拉加载的支持
 ，且实现无痕过度，和与其他库相比更真实的回弹效果(（即使不是滑动控件）也有惯性缓冲效果)。
-#### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新，单边回弹等），header和footer拽出方式默认8种(PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)，动画可以onPullChange()完全自主设置。
+#### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新等），header和footer拽出方式默认8种(PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)，动画可以onPullChange()完全自主设置。
 ps:本库没有做解耦处理（那样会增加.class，大小也会增加），目的是使库足够小，而且本库功能目的明确，不必做无用功。
 
 ## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1,04-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
@@ -74,8 +74,8 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.setOverScrollAdjustValue(1f);// 用于控制overscroll时间 default 1f ,越大overscroll的时间越长
     refreshLayout.setTopOverScrollMaxTriggerOffset(300);// 用于控制顶部的overscroll的距离 default 65dp
     refreshLayout.setBottomOverScrollMaxTriggerOffset(300);// 用于控制底部overscroll的距离 default 65dp
-    refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离 控件 高度
-    refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离 控件 高度
+    refreshLayout.setPullUpMaxDistance(300);// 用于控制向上移动的最大距离 默认 控件高度
+    refreshLayout.setPullDownMaxDistance(300);// 用于控制向下移动的最大距离 默认 控件高度
 
     refreshLayout.setRefreshEnable(false);// 下拉刷新是否可用 default true
     refreshLayout.setLoadMoreEnable(true);// 上拉加载是否可用 default false
