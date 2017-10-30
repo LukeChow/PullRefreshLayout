@@ -290,9 +290,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 ```
     @Override
     public boolean isTargetAbleScrollUp() {
-        //其实也并不是很好用，用滑动监听，计算滚动距离更靠谱
-        return layoutManager.getChildAt(0) == null || layoutManager.getChildAt(0).getTop() != 0;
-    }
+          ...  
 ```
 
 <br/>
