@@ -295,10 +295,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void initContentView() {
-        if (getChildCount() == 0) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) != headerView && getChildAt(i) != footerView) {
+                pullContentLayout = getChildAt(i);
+                break;
+            }
+        }
+        if (pullContentLayout == null) {
             throw new RuntimeException("PullRefreshLayout should have a child");
         }
-        pullContentLayout = getChildAt(0);
 
         // ---------| targetView ready |----------
         if (targetViewId != -1) {
