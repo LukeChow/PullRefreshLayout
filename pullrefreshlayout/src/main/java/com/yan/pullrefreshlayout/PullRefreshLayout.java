@@ -676,15 +676,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (refreshTriggerDistance == -1) {
             return;
         }
+
+        cancelAllAnimation();
+        if (!isHoldingTrigger && onHeaderPullHolding()) {
+            isHoldingTrigger = true;
+        }
         if (headerViewHeight == refreshTriggerDistance) {
             refreshStartAnimationListener.onAnimationEnd(null);
             return;
         }
-        if (!isHoldingTrigger && onHeaderPullHolding()) {
-            isHoldingTrigger = true;
-        }
-        cancelAllAnimation();
-
         if (startRefreshAnimator == null) {
             startRefreshAnimator = getAnimator(headerViewHeight, refreshTriggerDistance, headerAnimationUpdate, refreshStartAnimationListener, readyMainInterpolator());
         } else {
@@ -696,12 +696,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void resetHeaderView(int headerViewHeight) {
+        cancelAllAnimation();
         if (headerViewHeight == 0) {
             resetHeaderAnimationListener.onAnimationStart(null);
             resetHeaderAnimationListener.onAnimationEnd(null);
             return;
         }
-        cancelAllAnimation();
         if (resetHeaderAnimator == null) {
             resetHeaderAnimator = getAnimator(headerViewHeight, 0, headerAnimationUpdate, resetHeaderAnimationListener, readyMainInterpolator());
         } else {
@@ -723,14 +723,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (loadTriggerDistance == -1) {
             return;
         }
+
+        cancelAllAnimation();
+        if (!isHoldingTrigger && onFooterPullHolding()) {
+            isHoldingTrigger = true;
+        }
         if (loadMoreViewHeight == -loadTriggerDistance) {
             loadingStartAnimationListener.onAnimationEnd(null);
             return;
         }
-        if (!isHoldingTrigger && onFooterPullHolding()) {
-            isHoldingTrigger = true;
-        }
-        cancelAllAnimation();
         if (startLoadMoreAnimator == null) {
             startLoadMoreAnimator = getAnimator(loadMoreViewHeight, -loadTriggerDistance, footerAnimationUpdate, loadingStartAnimationListener, readyMainInterpolator());
         } else {
@@ -742,12 +743,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void resetFootView(int loadMoreViewHeight) {
+        cancelAllAnimation();
         if (loadMoreViewHeight == 0) {
             resetFooterAnimationListener.onAnimationStart(null);
             resetFooterAnimationListener.onAnimationEnd(null);
             return;
         }
-        cancelAllAnimation();
         if (resetFooterAnimator == null) {
             resetFooterAnimator = getAnimator(loadMoreViewHeight, 0, footerAnimationUpdate, resetFooterAnimationListener, readyMainInterpolator());
         } else {
