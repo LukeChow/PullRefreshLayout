@@ -1,7 +1,10 @@
 # PullRefreshLayout(这是一个专注回弹和手势操作无阻塞的刷新库，而且够小)
+由于SDK 26.1.0各种兼容库在API14以下都已经不再适配了，相关的兼容方法,兼容的class都已经被废弃了，甚至MD也只支持API14以上，可见google已经测底放弃了android4.0以下的设备，
+所以跟随google大大的脚步，PullRefreshLayout也将MinSdk 上调到API14.
+<br/>
 [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.07-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)
 [![Latest Version](https://img.shields.io/badge/Latest%20Version-2.1.07-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion)
-[![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=11) 
+[![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=14)
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-411%20%7C%2037%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.1.0)
 ## [ENGLISH](ENGLISH_README.md)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
