@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by yan on 2017/7/7.
  * refresh show helper
+ * Created by yan on 2017/7/7
  */
 public class ShowGravity {
 

@@ -27,7 +27,7 @@ import android.widget.OverScroller;
 import android.widget.ScrollView;
 
 /**
- * Created by yan on 2017/4/11.
+ * Created by yan on 2017/4/11
  */
 public class PullRefreshLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
     private final NestedScrollingParentHelper parentHelper;

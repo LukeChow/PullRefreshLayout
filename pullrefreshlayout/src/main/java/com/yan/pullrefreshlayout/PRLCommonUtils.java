@@ -12,11 +12,12 @@ import android.widget.ListView;
 import java.lang.reflect.Constructor;
 
 /**
- * Created by yan on 2017/5/21.
+ * Created by yan on 2017/5/21
  */
 public class PRLCommonUtils {
 
     /**
+     * code from SwipeRefreshLayout
      * @return Whether it is possible for the child view of this layout to
      * scroll up. Override this if the child view is a custom view.
      */
@@ -47,7 +48,9 @@ public class PRLCommonUtils {
     public static int getWindowHeight(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        if (windowManager != null) {
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        }
         return displayMetrics.heightPixels;
     }
 

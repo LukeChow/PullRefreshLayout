@@ -9,7 +9,7 @@ import android.view.ViewParent;
 
 /**
  * support general view to pull refresh
- * Created by yan on 2017/6/29.
+ * Created by yan on 2017/6/29
  */
 class GeneralPullHelper {
     private final PullRefreshLayout prl;
