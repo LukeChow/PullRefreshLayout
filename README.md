@@ -2,9 +2,9 @@
 由于SDK 26.1.0各种兼容库在API14以下都已经不再适配了，相关的兼容方法,兼容的class都已经被废弃了，甚至MD也只支持API14以上，可见google已经测底放弃了android4.0以下的设备，
 所以跟随google大大的脚步，PullRefreshLayout也将MinSdk 上调到API14.
 <br/>
-[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.07-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)
-[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.1.07-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion)
-[![MinSdk](https://img.shields.io/badge/MinSdk-11%2B-green.svg)](https://android-arsenal.com/api?level=14)
+[![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.08-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)
+[![Latest Version](https://img.shields.io/badge/Latest%20Version-2.1.08-FFD54F.svg)](https://bintray.com/yan157/maven/pullrefreshlayout/_latestVersion)
+[![MinSdk](https://img.shields.io/badge/MinSdk-14%2B-green.svg)](https://android-arsenal.com/api?level=14)
 [![Methods](https://img.shields.io/badge/Methods%20and%20size-411%20%7C%2037%20KB-e91e63.svg)](http://www.methodscount.com/?lib=com.yan%3Apullrefreshlayout%3A2.1.0)
 ## [ENGLISH](ENGLISH_README.md)
 ### [DEMO下载(跑起来看一看，也许这就是你想要的效果！)](https://github.com/genius158/PullRefreshLayout/raw/master/demo.apk)
@@ -49,7 +49,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 #### 2.本库的主旨就是一切功能皆由header或者footer实现，所以你可以自定义header和footer（实现任何你想的到的功能，自动触发加载更多、固定头部、自动触发刷新（不弹出header）、二级刷新等），header和footer拽出方式默认8种(PLACEHOLDER、FOLLOW、PLACEHOLDER_FOLLOW、CENTER、PLACEHOLDER_CENTER、FOLLOW_CENTER、CENTER_FOLLOW、FOLLOW_PLACEHOLDER)，动画可以onPullChange()完全自主设置。
 ps:本库没有做解耦处理（那样会增加.class，大小也会增加），目的是使库足够小，而且本库功能目的明确，不必做无用功。
 
-## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.07-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
+## gradle  [![Stable Version](https://img.shields.io/badge/Stable%20Version-2.1.08-brightgreen.svg)](https://github.com/genius158/PullRefreshLayout)  ↘
 compile 'com.yan:pullrefreshlayout:(↖)'
 <br/>
 ## 2.说明  
