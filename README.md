@@ -112,13 +112,13 @@ compile 'com.yan:pullrefreshlayout:(↖)'
     refreshLayout.isHoldingFinishTrigger();// 是否已经触发刷新完毕或加载完毕
      
     refreshLayout.getMoveDistance();// 得到refreshlayout的移动距离
-    refreshlayout.getRefreshTriggerDistance();// 得到下拉刷新的触发距离
-    refreshlayout.getLoadingTriggerDistance();// 得到上拉加载的触发距离
-    refreshlayout.getPullUpLimitDistance();// 得到向上拖拽最大范围（最大距离）
-    refreshlayout.getPullDownLimitDistance();// 得到向下拖拽最大范围（最大距离）
-    refreshlayout.getHeaderView();// 得到headerView
-    refreshlayout.getFooterView();// 得到FooterView
-    refreshlayout.getTargetView();// 得到TargetView
+    refreshLayout.getRefreshTriggerDistance();// 得到下拉刷新的触发距离
+    refreshLayout.getLoadingTriggerDistance();// 得到上拉加载的触发距离
+    refreshLayout.getPullUpLimitDistance();// 得到向上拖拽最大范围（最大距离）
+    refreshLayout.getPullDownLimitDistance();// 得到向下拖拽最大范围（最大距离）
+    refreshLayout.getHeaderView();// 得到headerView
+    refreshLayout.getFooterView();// 得到FooterView
+    refreshLayout.getTargetView();// 得到TargetView
     
     refreshLayout.setRefreshTriggerDistance(200);// 设置下拉刷新触发位置，默认为header的高度  
     refreshLayout.setLoadTriggerDistance(200);// 设置上拉加载触发位置，默认为footer的高度  
