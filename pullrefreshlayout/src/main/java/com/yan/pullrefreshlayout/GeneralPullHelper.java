@@ -1,8 +1,6 @@
 package com.yan.pullrefreshlayout;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.VelocityTrackerCompat;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
@@ -83,7 +81,7 @@ class GeneralPullHelper {
     /**
      * last Layout Move Distance
      */
-    private int lastMoveDistance = Integer.MAX_VALUE;
+    private int lastMoveDistance;
 
     /**
      * motion event child consumed
@@ -116,7 +114,7 @@ class GeneralPullHelper {
 
     boolean dispatchTouchEvent(MotionEvent ev) {
         initVelocityTrackerIfNotExists();
-        switch (MotionEventCompat.getActionMasked(ev)) {
+        switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 activePointerId = ev.getPointerId(0);
                 actionDownPointX = (int) (ev.getX() + 0.5f);
@@ -163,7 +161,7 @@ class GeneralPullHelper {
 
                     if (isDragVertical) {
                         // ---------- | make sure that the pullRefreshLayout is moved|----------
-                        if (lastMoveDistance == Integer.MAX_VALUE) {
+                        if (lastMoveDistance == 0) {
                             lastMoveDistance = prl.moveDistance;
                         }
                         if (lastMoveDistance != prl.moveDistance) {
@@ -196,14 +194,14 @@ class GeneralPullHelper {
                 lastDisallowIntercept = isDisallowIntercept;
                 break;
 
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int index = MotionEventCompat.getActionIndex(ev);
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                final int index = ev.getActionIndex();
                 lastDragEventY = (int) ev.getY(index);
                 activePointerId = ev.getPointerId(index);
                 reDispatchPointDownEvent();
                 break;
             }
-            case MotionEventCompat.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 lastDragEventY = (int) ev.getY(ev.findPointerIndex(activePointerId));
                 reDispatchPointUpEvent(ev);
@@ -213,7 +211,7 @@ class GeneralPullHelper {
                 dragState = 0;// get know the touchState first
 
                 velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
-                float velocityY = (isDragMoveTrendDown ? 1 : -1) * Math.abs(VelocityTrackerCompat.getYVelocity(velocityTracker, activePointerId));
+                float velocityY = (isDragMoveTrendDown ? 1 : -1) * Math.abs(velocityTracker.getYVelocity(activePointerId));
                 if (!prl.isTargetNestedScrollingEnabled() && isDragVertical && (Math.abs(velocityY) > minimumFlingVelocity)) {
                     prl.onPreFling(-(int) velocityY);
                 }
@@ -228,7 +226,7 @@ class GeneralPullHelper {
                 isDragHorizontal = false;
                 isDragVertical = false;
 
-                lastMoveDistance = Integer.MAX_VALUE;
+                lastMoveDistance = 0;
                 lastChildConsumedY = 0;
                 childConsumed[1] = 0;
                 activePointerId = -1;
@@ -313,7 +311,7 @@ class GeneralPullHelper {
     }
 
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int actionIndex = MotionEventCompat.getActionIndex(ev);
+        final int actionIndex = ev.getActionIndex();
         if (ev.getPointerId(actionIndex) == activePointerId) {
             final int newPointerIndex = actionIndex == 0 ? 1 : 0;
             lastDragEventY = (int) ev.getY(newPointerIndex);

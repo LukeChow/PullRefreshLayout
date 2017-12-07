@@ -1,14 +1,13 @@
 package com.yan.pullrefreshlayout;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.ListViewCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AbsListView;
+import android.widget.ListView;
 
 import java.lang.reflect.Constructor;
 
@@ -22,18 +21,10 @@ public class PRLCommonUtils {
      * scroll up. Override this if the child view is a custom view.
      */
     public static boolean canChildScrollUp(View targetView) {
-        if (Build.VERSION.SDK_INT < 14) {
-            if (targetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) targetView;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                        .getTop() < absListView.getPaddingTop());
-            } else {
-                return ViewCompat.canScrollVertically(targetView, -1) || targetView.getScrollY() > 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(targetView, -1);
+        if (targetView instanceof ListView) {
+            return ListViewCompat.canScrollList((ListView) targetView, -1);
         }
+        return targetView.canScrollVertically(-1);
     }
 
     /**
@@ -41,18 +32,10 @@ public class PRLCommonUtils {
      * scroll down. Override this if the child view is a custom view.
      */
     public static boolean canChildScrollDown(View targetView) {
-        if (Build.VERSION.SDK_INT < 14) {
-            if (targetView instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) targetView;
-                return absListView.getChildCount() > 0
-                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
-                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
-            } else {
-                return ViewCompat.canScrollVertically(targetView, 1) || targetView.getScrollY() < 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(targetView, 1);
+        if (targetView instanceof ListView) {
+            return ListViewCompat.canScrollList((ListView) targetView, 1);
         }
+        return targetView.canScrollVertically(1);
     }
 
     /**

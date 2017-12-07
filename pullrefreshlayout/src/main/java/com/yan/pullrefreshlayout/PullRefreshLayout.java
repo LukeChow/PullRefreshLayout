@@ -12,7 +12,6 @@ import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.ScrollerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.OverScroller;
 import android.widget.ScrollView;
 
 /**
@@ -209,7 +209,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private OnRefreshListener onRefreshListener;
     private OnDragIntercept onDragIntercept;
 
-    private ScrollerCompat scroller;
+    private OverScroller scroller;
     private Interpolator scrollInterpolator;
 
     private ValueAnimator startRefreshAnimator;
@@ -541,11 +541,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private void readyScroller() {
         if (scroller == null && (pullTwinkEnable || autoLoadingEnable)) {
             if (targetView instanceof RecyclerView) {
-                scroller = ScrollerCompat.create(getContext(), scrollInterpolator == null
+                scroller = new OverScroller(getContext(), scrollInterpolator == null
                         ? scrollInterpolator = getRecyclerDefaultInterpolator() : scrollInterpolator);
                 return;
             }
-            scroller = ScrollerCompat.create(getContext());
+            scroller = new OverScroller(getContext());
         }
     }
 
@@ -1092,9 +1092,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private final ValueAnimator.AnimatorUpdateListener overScrollAnimatorUpdate = new ValueAnimator.AnimatorUpdateListener() {
         public void onAnimationUpdate(ValueAnimator animation) {
             int offsetY = (int) ((Integer) animation.getAnimatedValue() * overScrollDampingRatio);
-            if (ViewCompat.isNestedScrollingEnabled(targetView)) {
-                dispatchNestedScroll(0, 0, 0, offsetY, parentOffsetInWindow);
-            }
+
             onScrollAny(offsetY + parentOffsetInWindow[1]);
         }
     };
@@ -1372,7 +1370,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             showGravity.dellHeaderMoving(moveDistance);
         }
         if (isMoveWithContent) {
-            ViewCompat.setTranslationY(pullContentLayout, moveDistance);
+            pullContentLayout.setTranslationY(moveDistance);
         }
     }
 
@@ -1471,7 +1469,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         dellNestedScrollCheck();
         if ((targetView instanceof RecyclerView) && (pullTwinkEnable || autoLoadingEnable)) {
             if (scrollInterpolator == null) {
-                scroller = ScrollerCompat.create(getContext(), scrollInterpolator = getRecyclerDefaultInterpolator());
+                scroller = new OverScroller(getContext(), scrollInterpolator = getRecyclerDefaultInterpolator());
             }
         }
     }
@@ -1498,7 +1496,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public void setScrollInterpolator(Interpolator interpolator) {
         this.scrollInterpolator = interpolator;
-        scroller = ScrollerCompat.create(getContext(), scrollInterpolator);
+        scroller = new OverScroller(getContext(), scrollInterpolator);
     }
 
     public void setRefreshTriggerDistance(int refreshTriggerDistance) {
