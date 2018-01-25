@@ -18,6 +18,7 @@
         android:layout_marginTop="160dp"
         android:gravity="center"
         android:padding="8dp"
+        android:background="#fefefe"
         android:text="夏目友人帐"
         android:textSize="18sp" />
 

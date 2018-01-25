@@ -14,8 +14,8 @@ import com.yan.refreshloadlayouttest.R;
 
 public class SimpleViewHolder extends RecyclerView.ViewHolder {
 
-    TextView tv;
-    ImageView iv;
+  public   TextView tv;
+    public  ImageView iv;
 
     public SimpleViewHolder(View view) {
         super(view);

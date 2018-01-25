@@ -20,8 +20,8 @@ public class SimpleListAdapter extends BaseAdapter {
     private Context context;
     private List<SimpleItem> simpleItems;
 
-    public SimpleListAdapter(Activity activity, List<SimpleItem> simpleItems) {
-        this.context = activity.getApplicationContext();
+    public SimpleListAdapter(Context context, List<SimpleItem> simpleItems) {
+        this.context = context.getApplicationContext();
         this.simpleItems = simpleItems;
     }
 
