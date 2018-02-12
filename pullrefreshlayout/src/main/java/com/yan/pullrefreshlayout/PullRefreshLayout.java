@@ -200,7 +200,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private boolean isAttachWindow = false;
 
-    //--------------------END|| values can modify int class only ||END------------------
+    //--------------------END|| values can modify in class only ||END------------------
     //--------------------END| values part |END------------------
 
     private final ShowGravity showGravity;
@@ -1410,7 +1410,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void autoLoading(boolean withAction) {
-        if (!pullLoadMoreEnable || isHoldingTrigger || footerView == null) {
+        if (!pullLoadMoreEnable || isHoldingTrigger) {
             return;
         }
         startLoadMore(moveDistance, withAction);
