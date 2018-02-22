@@ -167,8 +167,8 @@ public class TwoRefreshHeader extends HeaderOrFooter implements View.OnClickList
     }
 
     @Override
-    public void onPullFinish() {
-        super.onPullFinish();
+    public void onPullFinish(boolean flag) {
+        super.onPullFinish(flag);
         if (isTwoRefresh) {
             isTwoRefresh = false;
             countDownTimer.cancel();

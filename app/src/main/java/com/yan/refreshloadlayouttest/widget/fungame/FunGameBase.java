@@ -61,7 +61,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     @Override
     public void onPullChange(float percent) {
         if (mManualOperation && !refreshLayout.isDragUp() && !refreshLayout.isDragDown() && refreshLayout.isHoldingFinishTrigger() && percent <= 1) {
-            onPullFinish();
+            onPullFinish(true);
             return;
         }
 
@@ -112,7 +112,7 @@ public class FunGameBase extends NestedFrameLayout implements PullRefreshLayout.
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         if (refreshLayout.isDragDown() || refreshLayout.isDragUp()) {
             refreshLayout.cancelAllAnimation();
         } else {

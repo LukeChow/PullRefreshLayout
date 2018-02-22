@@ -39,6 +39,9 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
         this.refreshLayout = refreshLayout;
         setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
         this.refreshLayout.setFooterFront(true);
+        this.refreshLayout.setLoadMoreEnable(true);
+        this.refreshLayout.setAutoLoadingEnable(true);
+        this.refreshLayout.setAutoLoadingWithAnimation(true);
         this.refreshLayout.setFooterShowGravity(ShowGravity.PLACEHOLDER);
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
         initView();
@@ -238,9 +241,8 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
             tv.setText("loading...");
         }
     }
-
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         if (refreshLayout.isLoadMoreEnable()) {
             tv.setText("loading finish");
         }

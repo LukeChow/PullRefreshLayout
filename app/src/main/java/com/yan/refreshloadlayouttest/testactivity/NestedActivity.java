@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
-import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 import com.yan.refreshloadlayouttest.R;
 
 import java.util.ArrayList;

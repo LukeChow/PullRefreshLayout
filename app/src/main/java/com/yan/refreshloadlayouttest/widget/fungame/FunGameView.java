@@ -275,8 +275,8 @@ public abstract class FunGameView extends FunGameHeader {
     }
 
     @Override
-    public void onPullFinish() {
-        super.onPullFinish();
+    public void onPullFinish(boolean flag) {
+        super.onPullFinish(flag);
         if (mManualOperation) {
             postStatus(FunGameView.STATUS_GAME_FINISHED);
         } else {

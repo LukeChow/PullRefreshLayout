@@ -241,7 +241,7 @@ public class ClassicsHeader extends NestedRelativeLayout implements PullRefreshL
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         Log.e("onPullFinish", "onPullFinish: ");
         if (mProgressDrawable != null) {
             mProgressDrawable.stop();

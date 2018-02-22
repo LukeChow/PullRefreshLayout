@@ -41,6 +41,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         super(context);
         this.refreshLayout = refreshLayout;
         this.refreshLayout.setFooterFront(true);
+        this.refreshLayout.setAutoLoadingWithAnimation(true);
         this.refreshLayout.setFooterShowGravity(ShowGravity.FOLLOW);
         // 设置 布局 为 match_parent
         setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
@@ -170,7 +171,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         if (refreshLayout.isLoadMoreEnable()) {
             tv.setText("loading finish");
         }

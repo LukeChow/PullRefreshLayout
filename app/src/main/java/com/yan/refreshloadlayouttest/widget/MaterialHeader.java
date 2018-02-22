@@ -110,7 +110,7 @@ public class MaterialHeader extends NestedFrameLayout implements PullRefreshLayo
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         mDrawable.stop();
         refreshLayout.setMoveWithHeader(false);
         refreshLayout.setMoveWithFooter(false);

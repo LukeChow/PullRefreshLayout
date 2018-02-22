@@ -14,6 +14,7 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -116,6 +117,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean pullTwinkEnable = true;
     private boolean pullLoadMoreEnable = false;
     private boolean autoLoadingEnable = false;
+    private boolean autoLoadingWithAnimation = false;
 
     /**
      * dispatch control
@@ -181,7 +183,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean isHoldingFinishTrigger = false;
     private boolean isResetTrigger = false;
     private boolean isOverScrollTrigger = false;
-    private boolean isAutoLoadingTrigger = false;
 
     /**
      * refresh with action
@@ -532,9 +533,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void autoLoadingTrigger() {
-        if (!isAutoLoadingTrigger && autoLoadingEnable && !isHoldingTrigger && onRefreshListener != null) {
-            isAutoLoadingTrigger = true;
-            onRefreshListener.onLoading();
+        if (autoLoadingEnable && !isHoldingTrigger && onRefreshListener != null) {
+            if (pullLoadMoreEnable && autoLoadingWithAnimation) {
+                cancelAllAnimation();
+               autoLoading();
+                return;
+            }
+            isHoldingTrigger = true;
+            loadingStartAnimationListener.onAnimationEnd(null);
         }
     }
 
@@ -723,7 +729,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (loadTriggerDistance == -1) {
             return;
         }
-
         cancelAllAnimation();
         if (!isHoldingTrigger && onFooterPullHolding()) {
             isHoldingTrigger = true;
@@ -768,7 +773,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private void resetState() {
         isHoldingFinishTrigger = false;
-        isAutoLoadingTrigger = false;
         isHoldingTrigger = false;
         pullStateControl = true;
         isResetTrigger = false;
@@ -930,9 +934,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return false;
     }
 
-    private boolean onHeaderPullFinish() {
+    private boolean onHeaderPullFinish(boolean flag) {
         if (headerView != null && headerView instanceof OnPullListener) {
-            ((OnPullListener) headerView).onPullFinish();
+            ((OnPullListener) headerView).onPullFinish(flag);
             return true;
         }
         return false;
@@ -972,9 +976,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return false;
     }
 
-    private boolean onFooterPullFinish() {
+    private boolean onFooterPullFinish(boolean flag) {
         if (footerView != null && footerView instanceof OnPullListener) {
-            ((OnPullListener) footerView).onPullFinish();
+            ((OnPullListener) footerView).onPullFinish(flag);
             return true;
         }
         return false;
@@ -999,9 +1003,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     /**
      * state animation
      */
-    private final AnimatorListenerAdapter resetHeaderAnimationListener = new PullAnimatorListenerAdapter() {
+    private final PullAnimatorListenerAdapter resetHeaderAnimationListener = new PullAnimatorListenerAdapter() {
         protected void animationStart() {
-            if (isResetTrigger && isRefreshing() && !isHoldingFinishTrigger && onHeaderPullFinish()) {
+            if (isResetTrigger && isRefreshing() && !isHoldingFinishTrigger && onHeaderPullFinish(isFlag())) {
                 isHoldingFinishTrigger = true;
             }
         }
@@ -1013,9 +1017,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
     };
 
-    private final AnimatorListenerAdapter resetFooterAnimationListener = new PullAnimatorListenerAdapter() {
+    private final PullAnimatorListenerAdapter resetFooterAnimationListener = new PullAnimatorListenerAdapter() {
         protected void animationStart() {
-            if (isResetTrigger && isLoading() && !isHoldingFinishTrigger && onFooterPullFinish()) {
+            if (isResetTrigger && isLoading() && !isHoldingFinishTrigger && onFooterPullFinish(isFlag())) {
                 isHoldingFinishTrigger = true;
             }
         }
@@ -1050,7 +1054,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 if (headerView != null) {
                     headerView.setVisibility(GONE);
                 }
-                if (onRefreshListener != null && refreshWithAction && !isAutoLoadingTrigger) {
+                if (onRefreshListener != null && refreshWithAction) {
                     onRefreshListener.onLoading();
                 }
             }
@@ -1287,7 +1291,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         void onPullHolding();
 
-        void onPullFinish();
+        void onPullFinish(boolean flag);
 
         void onPullReset();
     }
@@ -1323,7 +1327,16 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private class PullAnimatorListenerAdapter extends AnimatorListenerAdapter {
+        private boolean flag = true;
         private boolean isCancel;
+
+        public boolean isFlag() {
+            return flag;
+        }
+
+        public void setFlag(boolean flag) {
+            this.flag = flag;
+        }
 
         public void onAnimationStart(Animator animation) {
             if (!isAttachWindow) {
@@ -1384,8 +1397,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void refreshComplete() {
+        refreshComplete(true);
+    }
+
+    public void refreshComplete(boolean flag) {
         if (!dellDetachComplete() && !isLoading()) {
             isResetTrigger = true;
+            resetHeaderAnimationListener.setFlag(flag);
             if (resetHeaderAnimator != null && resetHeaderAnimator.isRunning()) {
                 resetHeaderAnimationListener.onAnimationStart(null);
                 return;
@@ -1395,8 +1413,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void loadMoreComplete() {
+        loadMoreComplete(true);
+    }
+
+    public void loadMoreComplete(boolean flag) {
         if (!dellDetachComplete() && !isRefreshing()) {
             isResetTrigger = true;
+            resetFooterAnimationListener.setFlag(flag);
             if (resetFooterAnimator != null && resetFooterAnimator.isRunning()) {
                 resetFooterAnimationListener.onAnimationStart(null);
                 return;
@@ -1551,6 +1574,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         autoLoadingEnable = ableAutoLoading;
     }
 
+    /**
+     * pullLoadMoreEnable is true that autoLoadingWithAnimation can work
+     *
+     * @param autoLoadingWithAnimation
+     */
+    public void setAutoLoadingWithAnimation(boolean autoLoadingWithAnimation) {
+        this.autoLoadingWithAnimation = autoLoadingWithAnimation;
+    }
+
     public void setRefreshShowGravity(@ShowGravity.ShowState int headerShowGravity, @ShowGravity.ShowState int footerShowGravity) {
         setHeaderShowGravity(headerShowGravity);
         setFooterShowGravity(footerShowGravity);
@@ -1700,10 +1732,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public boolean isOverScrollTrigger() {
         return isOverScrollTrigger;
-    }
-
-    public boolean isAutoLoadingTrigger() {
-        return isAutoLoadingTrigger;
     }
 
     public boolean isDragVertical() {

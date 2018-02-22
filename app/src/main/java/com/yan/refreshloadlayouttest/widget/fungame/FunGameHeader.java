@@ -174,8 +174,8 @@ public class FunGameHeader extends FunGameBase {
     }
 
     @Override
-    public void onPullFinish() {
-        super.onPullFinish();
+    public void onPullFinish(boolean flag) {
+        super.onPullFinish(flag);
         if (!mManualOperation) {
             postEnd();
         }

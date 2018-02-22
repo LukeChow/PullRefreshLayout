@@ -121,8 +121,8 @@ public class HeaderOrFooter extends PullRefreshView {
     }
 
     @Override
-    public void onPullFinish() {
-        super.onPullFinish();
+    public void onPullFinish(boolean flag) {
+        super.onPullFinish(flag);
         tv.setText("loading finish");
         isStateFinish = true;
         loadingView.smoothToHide();

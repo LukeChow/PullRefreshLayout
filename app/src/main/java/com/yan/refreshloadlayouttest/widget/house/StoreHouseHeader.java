@@ -272,7 +272,7 @@ public class StoreHouseHeader extends NestedFrameLayout implements PullRefreshLa
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         loadFinish();
     }
 

@@ -45,7 +45,7 @@ public class AutoTriggerHeader extends View implements PullRefreshLayout.OnPullL
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
 
     }
 

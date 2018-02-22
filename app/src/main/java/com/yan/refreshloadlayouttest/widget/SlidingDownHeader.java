@@ -122,7 +122,7 @@ public class SlidingDownHeader extends NestedFrameLayout implements PullRefreshL
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         isSlidingDown = false;
         pullRefreshLayout.setTwinkEnable(true);
     }

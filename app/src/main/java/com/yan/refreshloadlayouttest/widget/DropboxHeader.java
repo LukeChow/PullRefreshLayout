@@ -378,7 +378,7 @@ public class DropboxHeader extends View implements PullRefreshLayout.OnPullListe
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         mDropOutPercent = 0;
     }
 

@@ -107,8 +107,8 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
     }
 
     @Override
-    public void onPullFinish() {
-        loadingView.onPullFinish();
+    public void onPullFinish(boolean flag) {
+        loadingView.onPullFinish(false);
     }
 
     @Override

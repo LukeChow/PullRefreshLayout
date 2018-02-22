@@ -317,9 +317,8 @@ public class PhoenixHeader extends View implements PullRefreshLayout.OnPullListe
         super.onDetachedFromWindow();
         clearAnimation();
     }
-
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         isRefreshing = false;
         clearAnimation();
     }

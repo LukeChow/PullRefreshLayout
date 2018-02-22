@@ -48,7 +48,7 @@ public class PlaceHolderHeader extends NestedFrameLayout implements PullRefreshL
     }
 
     @Override
-    public void onPullFinish() {
+    public void onPullFinish(boolean flag) {
         Log.e("onPullFinish", "onPullFinish: "  );
         ((AVLoadingIndicatorView) findViewById(R.id.loading_view)).smoothToHide();
 

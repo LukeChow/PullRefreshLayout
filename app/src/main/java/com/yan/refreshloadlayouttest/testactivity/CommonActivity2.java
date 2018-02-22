@@ -15,7 +15,6 @@ import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
 import com.yan.refreshloadlayouttest.widget.HeaderWithAutoLoading;
 import com.yan.refreshloadlayouttest.R;
-import com.yan.refreshloadlayouttest.widget.ClassicLoadView;
 
 public class CommonActivity2 extends CommonActivity1 {
     protected int getViewId() {
@@ -58,9 +57,6 @@ public class CommonActivity2 extends CommonActivity1 {
 
             @Override
             public void onLoading() {
-                if (!refreshLayout.isTwinkEnable()) {
-                    refreshLayout.autoLoading();
-                }
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
