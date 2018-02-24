@@ -41,7 +41,6 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
         this.refreshLayout.setFooterFront(true);
         this.refreshLayout.setLoadMoreEnable(true);
         this.refreshLayout.setAutoLoadingEnable(true);
-        this.refreshLayout.setAutoLoadingWithAnimation(true);
         this.refreshLayout.setFooterShowGravity(ShowGravity.PLACEHOLDER);
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
         initView();

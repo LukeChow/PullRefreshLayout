@@ -14,7 +14,6 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -117,7 +116,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private boolean pullTwinkEnable = true;
     private boolean pullLoadMoreEnable = false;
     private boolean autoLoadingEnable = false;
-    private boolean autoLoadingWithAnimation = false;
 
     /**
      * dispatch control
@@ -208,18 +206,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private final GeneralPullHelper generalPullHelper;
 
     private OnRefreshListener onRefreshListener;
+
     private OnDragIntercept onDragIntercept;
-
     private OverScroller scroller;
-    private Interpolator scrollInterpolator;
 
+    private Interpolator scrollInterpolator;
     private ValueAnimator startRefreshAnimator;
     private ValueAnimator resetHeaderAnimator;
     private ValueAnimator startLoadMoreAnimator;
     private ValueAnimator resetFooterAnimator;
-    private ValueAnimator overScrollAnimator;
 
+    private ValueAnimator overScrollAnimator;
     private Interpolator animationMainInterpolator;
+
     private Interpolator animationOverScrollInterpolator;
 
     private Runnable delayHandleActionRunnable;
@@ -534,11 +533,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private void autoLoadingTrigger() {
         if (autoLoadingEnable && !isHoldingTrigger && onRefreshListener != null) {
-            if (pullLoadMoreEnable && autoLoadingWithAnimation) {
-                cancelAllAnimation();
-               autoLoading();
-                return;
-            }
             isHoldingTrigger = true;
             loadingStartAnimationListener.onAnimationEnd(null);
         }
@@ -642,7 +636,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void overScrollDell(int type, int offset) {
-        if (pullTwinkEnable // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
+        if (parentOffsetInWindow[1] != 0 || pullTwinkEnable // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
                 && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0
                 || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
             return;
@@ -669,7 +663,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private void handleAction() {
         if (pullRefreshEnable && headerView != null && !isLoading() && !isResetTrigger && moveDistance >= refreshTriggerDistance) {
             startRefresh(moveDistance, true);
-        } else if (pullLoadMoreEnable && footerView != null && !isRefreshing() && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
+        } else if (pullLoadMoreEnable && footerView != null && !generalPullHelper.isDragMoveTrendDown && !isRefreshing() && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
             startLoadMore(moveDistance, true);
         } else if ((!isHoldingTrigger && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
@@ -1574,15 +1568,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         autoLoadingEnable = ableAutoLoading;
     }
 
-    /**
-     * pullLoadMoreEnable is true that autoLoadingWithAnimation can work
-     *
-     * @param autoLoadingWithAnimation
-     */
-    public void setAutoLoadingWithAnimation(boolean autoLoadingWithAnimation) {
-        this.autoLoadingWithAnimation = autoLoadingWithAnimation;
-    }
-
     public void setRefreshShowGravity(@ShowGravity.ShowState int headerShowGravity, @ShowGravity.ShowState int footerShowGravity) {
         setHeaderShowGravity(headerShowGravity);
         setFooterShowGravity(footerShowGravity);
@@ -1696,6 +1681,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     public boolean isRefreshEnable() {
         return pullRefreshEnable;
+    }
+
+    public boolean isAutoLoadingEnable() {
+        return autoLoadingEnable;
     }
 
     public boolean isTwinkEnable() {
