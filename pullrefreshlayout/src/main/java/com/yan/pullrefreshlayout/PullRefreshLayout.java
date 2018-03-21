@@ -662,9 +662,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      */
     private void handleAction() {
         if (pullRefreshEnable && headerView != null && !isLoading() && !isResetTrigger && moveDistance >= refreshTriggerDistance) {
-            startRefresh(moveDistance, true);
+            startRefresh(moveDistance, -1, true);
         } else if (pullLoadMoreEnable && footerView != null && !generalPullHelper.isDragMoveTrendDown && !isRefreshing() && !isResetTrigger && moveDistance <= -loadTriggerDistance) {
-            startLoadMore(moveDistance, true);
+            startLoadMore(moveDistance, -1, true);
         } else if ((!isHoldingTrigger && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
         } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
@@ -672,7 +672,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    private void startRefresh(int headerViewHeight, final boolean withAction) {
+    private void startRefresh(int headerCurrentDistance, int toRefreshDistance, final boolean withAction) {
         if (refreshTriggerDistance == -1) {
             return;
         }
@@ -681,14 +681,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (!isHoldingTrigger && onHeaderPullHolding()) {
             isHoldingTrigger = true;
         }
-        if (headerViewHeight == refreshTriggerDistance) {
+        final int refreshTriggerHeight = (toRefreshDistance != -1 ? toRefreshDistance : refreshTriggerDistance);
+        if (headerCurrentDistance == refreshTriggerHeight) {
             refreshStartAnimationListener.onAnimationEnd(null);
             return;
         }
         if (startRefreshAnimator == null) {
-            startRefreshAnimator = getAnimator(headerViewHeight, refreshTriggerDistance, headerAnimationUpdate, refreshStartAnimationListener, readyMainInterpolator());
+            startRefreshAnimator = getAnimator(headerCurrentDistance, refreshTriggerHeight, headerAnimationUpdate, refreshStartAnimationListener, readyMainInterpolator());
         } else {
-            startRefreshAnimator.setIntValues(headerViewHeight, refreshTriggerDistance);
+            startRefreshAnimator.setIntValues(headerCurrentDistance, refreshTriggerHeight);
         }
         refreshWithAction = withAction;
         startRefreshAnimator.setDuration(refreshAnimationDuring);
@@ -719,7 +720,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         resetState();
     }
 
-    private void startLoadMore(int loadMoreViewHeight, boolean withAction) {
+    private void startLoadMore(int loadCurrentDistance, int toLoadDistance, boolean withAction) {
         if (loadTriggerDistance == -1) {
             return;
         }
@@ -727,14 +728,15 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (!isHoldingTrigger && onFooterPullHolding()) {
             isHoldingTrigger = true;
         }
-        if (loadMoreViewHeight == -loadTriggerDistance) {
+        final int loadTriggerHeight = toLoadDistance != -1 ? toLoadDistance : loadTriggerDistance;
+        if (loadCurrentDistance == -loadTriggerHeight) {
             loadingStartAnimationListener.onAnimationEnd(null);
             return;
         }
         if (startLoadMoreAnimator == null) {
-            startLoadMoreAnimator = getAnimator(loadMoreViewHeight, -loadTriggerDistance, footerAnimationUpdate, loadingStartAnimationListener, readyMainInterpolator());
+            startLoadMoreAnimator = getAnimator(loadCurrentDistance, -loadTriggerHeight, footerAnimationUpdate, loadingStartAnimationListener, readyMainInterpolator());
         } else {
-            startLoadMoreAnimator.setIntValues(loadMoreViewHeight, -loadTriggerDistance);
+            startLoadMoreAnimator.setIntValues(loadCurrentDistance, -loadTriggerHeight);
         }
         refreshWithAction = withAction;
         startLoadMoreAnimator.setDuration(refreshAnimationDuring);
@@ -1423,25 +1425,41 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void autoLoading() {
-        autoLoading(true);
+        autoLoading(true, -1);
     }
 
     public void autoLoading(boolean withAction) {
+        autoLoading(withAction, -1);
+    }
+
+    public void autoLoading(int toLoadDistance) {
+        autoLoading(true, toLoadDistance);
+    }
+
+    public void autoLoading(boolean withAction, int toLoadDistance) {
         if (!pullLoadMoreEnable || isHoldingTrigger) {
             return;
         }
-        startLoadMore(moveDistance, withAction);
-    }
-
-    public void autoRefresh() {
-        autoRefresh(true);
+        startLoadMore(moveDistance, toLoadDistance, withAction);
     }
 
     public void autoRefresh(boolean withAction) {
+        autoRefresh(withAction, -1);
+    }
+
+    public void autoRefresh() {
+        autoRefresh(true, -1);
+    }
+
+    public void autoRefresh(int toRefreshDistance) {
+        autoRefresh(true, toRefreshDistance);
+    }
+
+    public void autoRefresh(boolean withAction, int toRefreshDistance) {
         if (pullRefreshEnable && !isLoading() && headerView != null) {
             cancelAllAnimation();
             resetState();
-            startRefresh(moveDistance, withAction);
+            startRefresh(moveDistance, toRefreshDistance, withAction);
         }
     }
 
