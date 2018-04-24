@@ -14,6 +14,7 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,6 +51,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private View pullContentLayout;
 
     //-------------------------START| values part |START-----------------------------
+
+    private int srollOverDistance = 100;
 
     /**
      * trigger distance
@@ -425,8 +428,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             int currScrollOffset = currY - lastScrollY;
             lastScrollY = currY;
 
-            if (pullTwinkEnable && ((overScrollFlingState() == 1 && overScrollBackDell(1, currScrollOffset))
-                    || (overScrollFlingState() == 2 && overScrollBackDell(2, currScrollOffset)))) {
+//            if (pullTwinkEnable && ((overScrollFlingState() == 1 && overScrollBackDell(1, currScrollOffset))
+//                    || (overScrollFlingState() == 2 && overScrollBackDell(2, currScrollOffset)))) {
+//                return;
+//            }
+            if (scrollOver(currScrollOffset)) {
                 return;
             } else if (isScrollAbleViewBackScroll && (pullContentLayout instanceof ListView)) {
                 // ListView scroll back scroll to normal
@@ -442,6 +448,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             // invalidate View ,the method invalidate() sometimes not work , so i use ViewCompat.postInvalidateOnAnimation(this) instead of invalidate()
             ViewCompat.postInvalidateOnAnimation(this);
         }
+    }
+
+    private boolean scrollOver(int currScrollOffset) {
+        if (!isTargetAbleScrollUp() && currScrollOffset < 0 && moveDistance < srollOverDistance) {
+            dellScroll(-currScrollOffset);
+            ViewCompat.postInvalidateOnAnimation(this);
+            return true;
+        }
+        if (pullTwinkEnable && (overScrollFlingState() == 1 || overScrollFlingState() == 2) && overScrollBackDell(overScrollFlingState(), currScrollOffset)) {
+            return true;
+        }
+        Log.e("scrollOver", "scrollOver: " + currScrollOffset);
+        return false;
     }
 
     /**
