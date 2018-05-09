@@ -380,6 +380,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         cancelAllAnimation();
         abortScroller();
 
+        if (isHoldingTrigger) {
+            isResetTrigger = true;
+        }
+
         startRefreshAnimator = null;
         resetHeaderAnimator = null;
         startLoadMoreAnimator = null;
@@ -667,7 +671,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             startLoadMore(moveDistance, -1, true);
         } else if ((!isHoldingTrigger && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
-        } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
+        } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && (moveDistance > 0 || isResetTrigger))) {
             resetFootView(moveDistance);
         }
     }
@@ -846,17 +850,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (view != null) {
             view.bringToFront();
         }
-    }
-
-    private boolean dellDetachComplete() {
-        // if the refreshLayout is detach window just mark the trigger state
-        // to dell reAttachWindow , both the same as loadingComplete
-        if (!isAttachWindow) {
-            isResetTrigger = true;
-            isHoldingFinishTrigger = true;
-            return true;
-        }
-        return false;
     }
 
     private boolean nestedAble(View target) {
@@ -1397,7 +1390,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void refreshComplete(boolean flag) {
-        if (!dellDetachComplete() && !isLoading()) {
+        if (!isLoading()) {
             isResetTrigger = true;
             resetHeaderAnimationListener.setFlag(flag);
             if (resetHeaderAnimator != null && resetHeaderAnimator.isRunning()) {
@@ -1413,7 +1406,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void loadMoreComplete(boolean flag) {
-        if (!dellDetachComplete() && !isRefreshing()) {
+        if (!isRefreshing()) {
             isResetTrigger = true;
             resetFooterAnimationListener.setFlag(flag);
             if (resetFooterAnimator != null && resetFooterAnimator.isRunning()) {
