@@ -686,7 +686,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             startLoadMore(moveDistance, -1, true);
         } else if ((!isHoldingTrigger && moveDistance > 0) || (isRefreshing() && (moveDistance < 0 || isResetTrigger))) {
             resetHeaderView(moveDistance);
-        } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && moveDistance > 0) || isResetTrigger) {
+        } else if ((!isHoldingTrigger && moveDistance < 0) || (isLoading() && (moveDistance > 0 || isResetTrigger))) {
             resetFootView(moveDistance);
         }
     }

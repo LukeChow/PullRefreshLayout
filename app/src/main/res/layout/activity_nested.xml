@@ -24,7 +24,7 @@
     app:prl_topOverScrollMaxTriggerOffset="65dp"
     app:prl_twinkEnable="true">
 
-    <com.yan.refreshloadlayouttest.widget.NestedFrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -57,6 +57,6 @@
             android:textColor="#212121"
             android:textSize="20sp"
             android:visibility="gone" />
-    </com.yan.refreshloadlayouttest.widget.NestedFrameLayout>
+    </RelativeLayout>
 
 </com.yan.pullrefreshlayout.PullRefreshLayout>
