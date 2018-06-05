@@ -285,7 +285,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.2.2 ：修复回调时机错误问题
  <br/>
- version:2.2.4 ：剔除反射部分，恢复header画出的原本处理
+ version:2.2.4 ：剔除反射部分，恢复header划出的原本处理
  
 ## 4.问题 FAQ(对于本库的使用有问题，都可以在github上提issue，本人重度github控，一天最最少半小时泡在github上)
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
