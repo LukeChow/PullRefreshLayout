@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  * refresh show helper
  * Created by yan on 2017/7/7
  */
-public class ShowGravity {
+public final class ShowGravity {
 
     /**
      * @ShowState

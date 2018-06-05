@@ -11,7 +11,7 @@ import android.widget.ListView;
 /**
  * Created by yan on 2017/5/21
  */
-public class PRLCommonUtils {
+public final class PRLCommonUtils {
 
     /**
      * code from SwipeRefreshLayout
