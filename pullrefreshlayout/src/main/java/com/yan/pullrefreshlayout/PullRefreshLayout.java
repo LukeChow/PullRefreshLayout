@@ -706,7 +706,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void resetRefreshState() {
-        if (isHoldingFinishTrigger && onHeaderPullReset()) ;
+        if (isHoldingFinishTrigger) {
+            onHeaderPullReset();
+        }
         if (footerView != null) {
             footerView.setVisibility(VISIBLE);
         }
@@ -753,7 +755,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void resetLoadMoreState() {
-        if (isHoldingFinishTrigger && onFooterPullReset()) ;
+        if (isHoldingFinishTrigger) {
+            onFooterPullReset();
+        }
         if (headerView != null) {
             headerView.setVisibility(VISIBLE);
         }
@@ -842,13 +846,14 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private boolean dellDetachComplete() {
-        // if the refreshLayout is detach window just mark the trigger state
-        // to dell reAttachWindow , both the same as loadingComplete
-        if (!isAttachWindow) {
-            isResetTrigger = true;
-            isHoldingFinishTrigger = true;
+        if (isAttachWindow) {
             return true;
         }
+
+        // if the refreshLayout is detach window just mark the trigger state
+        // to dell reAttachWindow , both the same as loadingComplete
+        isResetTrigger = true;
+        isHoldingFinishTrigger = true;
         return false;
     }
 
@@ -922,12 +927,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return false;
     }
 
-    private boolean onHeaderPullReset() {
+    private void onHeaderPullReset() {
         if (headerView != null && headerView instanceof OnPullListener) {
             ((OnPullListener) headerView).onPullReset();
-            return true;
         }
-        return false;
     }
 
     private void onFooterPullChange() {
@@ -964,12 +967,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return false;
     }
 
-    private boolean onFooterPullReset() {
+    private void onFooterPullReset() {
         if (footerView != null && footerView instanceof OnPullListener) {
             ((OnPullListener) footerView).onPullReset();
-            return true;
         }
-        return false;
     }
 
     public boolean isTargetAbleScrollUp() {
@@ -1381,7 +1382,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void refreshComplete(boolean flag) {
-        if (!dellDetachComplete() && !isLoading()) {
+        if (dellDetachComplete() && !isLoading()) {
             isResetTrigger = true;
             resetHeaderAnimationListener.setFlag(flag);
             if (resetHeaderAnimator != null && resetHeaderAnimator.isRunning()) {
@@ -1397,7 +1398,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public void loadMoreComplete(boolean flag) {
-        if (!dellDetachComplete() && !isRefreshing()) {
+        if (dellDetachComplete() && !isRefreshing()) {
             isResetTrigger = true;
             resetFooterAnimationListener.setFlag(flag);
             if (resetFooterAnimator != null && resetFooterAnimator.isRunning()) {
