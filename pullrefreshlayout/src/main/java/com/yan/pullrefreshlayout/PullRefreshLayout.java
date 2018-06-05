@@ -872,13 +872,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (!generalPullHelper.isDragMoveTrendDown) {
             if (moveDistance > 0) {
                 return 1;
-            } else if (moveDistance < 0) {
+            } else {
                 return -1; // scroller fling unable
             }
         } else {
             if (moveDistance < 0) {
                 return 2;
-            } else if (moveDistance > 0) {
+            } else {
                 return -1; // scroller fling unable
             }
         }
