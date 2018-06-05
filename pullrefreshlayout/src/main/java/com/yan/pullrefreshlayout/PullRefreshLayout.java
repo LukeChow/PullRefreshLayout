@@ -420,9 +420,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
             if (scrollOver(currScrollOffset)) {
                 return;
-            } else if (isScrollAbleViewBackScroll && (pullContentLayout instanceof ListView)) {
+            } else if (isScrollAbleViewBackScroll && (targetView instanceof ListView)) {
                 // ListView scroll back scroll to normal
-                ListViewCompat.scrollListBy((ListView) pullContentLayout, currScrollOffset);
+                ListViewCompat.scrollListBy((ListView) targetView, currScrollOffset);
             }
 
             if (!isOverScrollTrigger && !isTargetAbleScrollUp() && currScrollOffset < 0 && moveDistance >= 0) {
@@ -870,17 +870,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             return 0;
         }
         if (!generalPullHelper.isDragMoveTrendDown) {
-            if (moveDistance > 0) {
-                return 1;
-            } else {
-                return -1; // scroller fling unable
-            }
+            return moveDistance > 0 ? 1 : -1;
         } else {
-            if (moveDistance < 0) {
-                return 2;
-            } else {
-                return -1; // scroller fling unable
-            }
+            return moveDistance < 0 ? 2 : -1;
         }
     }
 
