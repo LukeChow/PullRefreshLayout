@@ -39,6 +39,7 @@ public class ScrollingActivity2 extends BaseActivity {
         final View buttonBar = findViewById(R.id.buttonBarLayout);
         final NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.scrollView);
         final PullRefreshLayout refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setHeaderView(new ClassicsHeader(this));
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -90,20 +91,13 @@ public class ScrollingActivity2 extends BaseActivity {
     }
 
     private void setImages() {
-        ((ImageView) findViewById(R.id.iv1)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img1));
-        ((ImageView) findViewById(R.id.iv2)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img2));
-        ((ImageView) findViewById(R.id.iv3)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img3));
-        ((ImageView) findViewById(R.id.iv4)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img4));
-        ((ImageView) findViewById(R.id.iv5)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img5));
-        ((ImageView) findViewById(R.id.iv6)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.img6));
-        ((ImageView) findViewById(R.id.iv7)).setImageDrawable(ContextCompat
-                .getDrawable(getApplicationContext(), R.drawable.loading_bg));
+        ((ImageView) findViewById(R.id.iv1)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img1));
+        ((ImageView) findViewById(R.id.iv2)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img2));
+        ((ImageView) findViewById(R.id.iv3)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img3));
+        ((ImageView) findViewById(R.id.iv4)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img4));
+        ((ImageView) findViewById(R.id.iv5)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img5));
+        ((ImageView) findViewById(R.id.iv6)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.img6));
+        ((ImageView) findViewById(R.id.iv7)).setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.loading_bg));
     }
 
 }

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
+import com.yan.refreshloadlayouttest.widget.PlaceHolderHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class NestedFragment extends Fragment {
                 refreshLayout.autoRefresh();
             }
         }, 150);
+        refreshLayout.setHeaderView(new PlaceHolderHeader(getContext()));
     }
 
 

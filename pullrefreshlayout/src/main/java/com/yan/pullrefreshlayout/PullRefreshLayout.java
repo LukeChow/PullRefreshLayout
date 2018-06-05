@@ -14,6 +14,7 @@ import android.support.v4.widget.ListViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -268,7 +269,17 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
         targetViewId = ta.getResourceId(R.styleable.PullRefreshLayout_prl_targetId, targetViewId);
 
+        headerView = initRefreshView(context, ta.getResourceId(R.styleable.PullRefreshLayout_prl_headerViewId, -1));
+        footerView = initRefreshView(context, ta.getResourceId(R.styleable.PullRefreshLayout_prl_footerViewId, -1));
+
         ta.recycle();
+    }
+
+    private View initRefreshView(Context context, int resourceId) {
+        if (resourceId != -1) {
+            return LayoutInflater.from(context).inflate(resourceId, null, false);
+        }
+        return null;
     }
 
     @Override
