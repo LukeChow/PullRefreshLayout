@@ -283,7 +283,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.2.1 ：add method autoRefresh(int toRefreshDistance),autoLoading(int toLoadDistance)
  <br/>
- version:2.2.3 ：修复回调时机错误问题
+ version:2.2.2 ：修复回调时机错误问题
  
 ## 4.问题 FAQ(对于本库的使用有问题，都可以在github上提issue，本人重度github控，一天最最少半小时泡在github上)
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
