@@ -50,9 +50,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private View pullContentLayout;
 
     //-------------------------START| values part |START-----------------------------
-
-    private int srollOverDistance = 100;
-
     /**
      * trigger distance
      * - use by showGravity to control the layout move
