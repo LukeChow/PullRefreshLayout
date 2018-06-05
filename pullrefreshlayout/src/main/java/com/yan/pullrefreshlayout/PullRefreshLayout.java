@@ -51,6 +51,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     //-------------------------START| values part |START-----------------------------
 
+    private int srollOverDistance = 100;
+
     /**
      * trigger distance
      * - use by showGravity to control the layout move
@@ -360,10 +362,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private void layoutContentView() {
         MarginLayoutParams lp = (MarginLayoutParams) pullContentLayout.getLayoutParams();
-        pullContentLayout.layout(getPaddingLeft() + lp.leftMargin
-                , getPaddingTop() + lp.topMargin
-                , getPaddingLeft() + lp.leftMargin + pullContentLayout.getMeasuredWidth()
-                , getPaddingTop() + lp.topMargin + pullContentLayout.getMeasuredHeight());
+        pullContentLayout.layout(getPaddingLeft() + lp.leftMargin, getPaddingTop() + lp.topMargin, getPaddingLeft() + lp.leftMargin + pullContentLayout.getMeasuredWidth(), getPaddingTop() + lp.topMargin + pullContentLayout.getMeasuredHeight());
     }
 
     @Override
@@ -425,8 +424,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             int currScrollOffset = currY - lastScrollY;
             lastScrollY = currY;
 
-            if (pullTwinkEnable && ((overScrollFlingState() == 1 && overScrollBackDell(1, currScrollOffset))
-                    || (overScrollFlingState() == 2 && overScrollBackDell(2, currScrollOffset)))) {
+            if (scrollOver(currScrollOffset)) {
                 return;
             } else if (isScrollAbleViewBackScroll && (pullContentLayout instanceof ListView)) {
                 // ListView scroll back scroll to normal
@@ -442,6 +440,13 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             // invalidate View ,the method invalidate() sometimes not work , so i use ViewCompat.postInvalidateOnAnimation(this) instead of invalidate()
             ViewCompat.postInvalidateOnAnimation(this);
         }
+    }
+
+    private boolean scrollOver(int currScrollOffset) {
+        if (pullTwinkEnable && (overScrollFlingState() == 1 || overScrollFlingState() == 2) && overScrollBackDell(overScrollFlingState(), currScrollOffset)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -485,10 +490,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).fling(0, velocity);
         } else if (targetView instanceof NestedScrollView && !isTargetNestedScrollingEnabled() && !isScrollAbleViewBackScroll) {
             ((NestedScrollView) targetView).fling(velocity);
-        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView)
-                || (targetView instanceof ListView && !isScrollAbleViewBackScroll)
-                || targetView instanceof RecyclerView
-                || targetView instanceof NestedScrollView) {
+        } else if (!PRLCommonUtils.canChildScrollUp(targetView) && !PRLCommonUtils.canChildScrollDown(targetView) || (targetView instanceof ListView && !isScrollAbleViewBackScroll) || targetView instanceof RecyclerView || targetView instanceof NestedScrollView) {
             // this case just dell overScroll normal,without any operation
         } else {
             // the target is able to scrollUp or scrollDown but have not the fling method
@@ -541,8 +543,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private void readyScroller() {
         if (scroller == null && (pullTwinkEnable || autoLoadingEnable)) {
             if (targetView instanceof RecyclerView) {
-                scroller = new OverScroller(getContext(), scrollInterpolator == null
-                        ? scrollInterpolator = getRecyclerDefaultInterpolator() : scrollInterpolator);
+                scroller = new OverScroller(getContext(), scrollInterpolator == null ? scrollInterpolator = getRecyclerDefaultInterpolator() : scrollInterpolator);
                 return;
             }
             scroller = new OverScroller(getContext());
@@ -631,14 +632,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * @return need intercept
      */
     private boolean checkMoving(float distanceY) {
-        return (((distanceY > 0 && moveDistance == 0) || moveDistance > 0) && onDragIntercept != null && !onDragIntercept.onHeaderDownIntercept())
-                || (((distanceY < 0 && moveDistance == 0) || moveDistance < 0) && onDragIntercept != null && !onDragIntercept.onFooterUpIntercept());
+        return (((distanceY > 0 && moveDistance == 0) || moveDistance > 0) && onDragIntercept != null && !onDragIntercept.onHeaderDownIntercept()) || (((distanceY < 0 && moveDistance == 0) || moveDistance < 0) && onDragIntercept != null && !onDragIntercept.onFooterUpIntercept());
     }
 
     private void overScrollDell(int type, int offset) {
         if (parentOffsetInWindow[1] != 0 || pullTwinkEnable // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
-                && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0
-                || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
+                && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0 || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
             return;
         }
 
