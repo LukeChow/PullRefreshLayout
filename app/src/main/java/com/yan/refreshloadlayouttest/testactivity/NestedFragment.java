@@ -108,7 +108,7 @@ public class NestedFragment extends Fragment {
                         adapter.notifyItemInserted(datas.size());
                         classicLoadView.startBackAnimation();
                     }
-                }, 1000);
+                }, 2000);
             }
         });
     }
