@@ -8,7 +8,6 @@
     app:prl_downOverScrollMaxTriggerOffset="65dp"
     app:prl_dragDampingRatio="0.6"
     app:prl_footerShowGravity="follow"
-    app:prl_headerClass="com.yan.refreshloadlayouttest.widget.PlaceHolderHeader"
     app:prl_headerShowGravity="placeholder"
     app:prl_loadMoreEnable="true"
     app:prl_loadTriggerDistance="70dp"

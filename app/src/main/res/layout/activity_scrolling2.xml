@@ -16,7 +16,6 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:prl_headerClass="com.yan.refreshloadlayouttest.widget.ClassicsHeader"
         app:prl_headerFront="true"
         app:prl_headerShowGravity="follow"
         app:prl_pullDownMaxDistance="120dp"

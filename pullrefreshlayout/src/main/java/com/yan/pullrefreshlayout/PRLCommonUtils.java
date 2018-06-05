@@ -2,14 +2,11 @@ package com.yan.pullrefreshlayout;
 
 import android.content.Context;
 import android.support.v4.widget.ListViewCompat;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
-
-import java.lang.reflect.Constructor;
 
 /**
  * Created by yan on 2017/5/21
@@ -59,25 +56,4 @@ public class PRLCommonUtils {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, metrics);
     }
 
-    /**
-     * parseClassName
-     *
-     * @param context   context
-     * @param className className
-     * @return
-     */
-    static View parseClassName(Context context, String className) {
-        if (!TextUtils.isEmpty(className)) {
-            try {
-                final Class<?>[] CONSTRUCTOR_PARAMS = new Class<?>[]{Context.class};
-                final Class<View> clazz = (Class<View>) Class.forName(className, true, context.getClassLoader());
-                Constructor<View> constructor = clazz.getConstructor(CONSTRUCTOR_PARAMS);
-                constructor.setAccessible(true);
-                return constructor.newInstance(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 }

@@ -28,9 +28,6 @@
         <attr name="prl_headerViewId" format="reference" />
         <attr name="prl_footerViewId" format="reference" />
 
-        <attr name="prl_headerClass" format="string" />
-        <attr name="prl_footerClass" format="string" />
-
         <attr name="prl_headerShowGravity" format="enum">
             <enum name="follow" value="0" />
             <enum name="follow_placeholder" value="1" />
