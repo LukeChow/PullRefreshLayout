@@ -882,7 +882,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 return -1; // scroller fling unable
             }
         }
-        return 0;
     }
 
     private View getRefreshView(View v) {
