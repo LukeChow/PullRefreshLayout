@@ -1,6 +1,7 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
@@ -22,12 +24,14 @@ import java.util.ArrayList;
 public class ScrollingActivity extends BaseActivity {
     private static final String TAG = "NestedActivity";
     private PullRefreshLayout refreshLayout;
+    private AppBarLayout appBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        appBar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +85,29 @@ public class ScrollingActivity extends BaseActivity {
                         ScrollingActivity.this.refreshLayout.refreshComplete();
                     }
                 }, 3000);
+            }
+        });
+
+        refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragIntercept() {
+            @Override
+            public boolean onHeaderDownIntercept() {
+                if ((appBar.getTag() instanceof Integer) && 0 > (int) appBar.getTag() && refreshLayout.isDragDown()) {
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onFooterUpIntercept() {
+                return true;
+            }
+        });
+
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.e(TAG, "onOffsetChanged: " + verticalOffset);
+                appBarLayout.setTag(verticalOffset);
             }
         });
     }
