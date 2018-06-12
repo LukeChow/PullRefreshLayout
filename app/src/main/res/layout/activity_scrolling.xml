@@ -11,7 +11,7 @@
     app:prl_pullUpMaxDistance="300dp"
     app:prl_targetId="@+id/rv_data">
 
-    <com.yan.refreshloadlayouttest.widget.NestedCoordinatorLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -58,5 +58,5 @@
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    </com.yan.refreshloadlayouttest.widget.NestedCoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </com.yan.pullrefreshlayout.PullRefreshLayout>
