@@ -6,11 +6,11 @@
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:prl_twinkEnable="false"
     android:background="#002233"
     app:prl_pullDownMaxDistance="300dp"
     app:prl_pullUpMaxDistance="300dp"
-    app:prl_targetId="@+id/rv_data">
+    app:prl_targetId="@+id/rv_data"
+    app:prl_twinkEnable="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/container"

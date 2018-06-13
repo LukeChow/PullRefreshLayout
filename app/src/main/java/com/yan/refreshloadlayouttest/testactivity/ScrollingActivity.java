@@ -11,8 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
+import com.yan.pullrefreshlayout.PRLCommonUtils;
 import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.house.StoreHouseHeader;
@@ -37,8 +37,7 @@ public class ScrollingActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
         initRecyclerView();
@@ -68,7 +67,7 @@ public class ScrollingActivity extends BaseActivity {
     }
 
     private void initRefreshLayout() {
-        this.refreshLayout = (PullRefreshLayout) findViewById(R.id.refreshLayout);
+        this.refreshLayout = findViewById(R.id.refreshLayout);
         findViewById(R.id.container).setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
         StoreHouseHeader header = new StoreHouseHeader(getBaseContext());
         header.setPadding(0, dipToPx(getApplicationContext(), 20), 0, dipToPx(getApplicationContext(), 20));
@@ -88,27 +87,26 @@ public class ScrollingActivity extends BaseActivity {
             }
         });
 
-        refreshLayout.setOnDragIntercept(new PullRefreshLayout.OnDragIntercept() {
-            @Override
-            public boolean onHeaderDownIntercept() {
-                if ((appBar.getTag() instanceof Integer) && 0 > (int) appBar.getTag() && refreshLayout.isDragDown()) {
-                    return false;
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onFooterUpIntercept() {
-                return true;
-            }
-        });
-
         appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                Log.e(TAG, "onOffsetChanged: " + verticalOffset);
                 appBarLayout.setTag(verticalOffset);
             }
         });
+
+        refreshLayout.setOnTargetScrollCheckListener(new PullRefreshLayout.OnTargetScrollCheckListener() {
+            @Override
+            public boolean onScrollUpAbleCheck() {
+                int appbarOffset = ((appBar.getTag() instanceof Integer)) ? (int) appBar.getTag() : 0;
+                return PRLCommonUtils.canChildScrollUp(refreshLayout.getTargetView()) || appbarOffset != 0;
+            }
+
+            @Override
+            public boolean onScrollDownAbleCheck() {
+                return PRLCommonUtils.canChildScrollDown(refreshLayout.getTargetView());
+            }
+        });
     }
+
+
 }

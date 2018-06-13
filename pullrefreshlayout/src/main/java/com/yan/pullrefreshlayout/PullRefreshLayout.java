@@ -206,7 +206,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private OnRefreshListener onRefreshListener;
 
-    private OnDragIntercept onDragIntercept;
+    private OnTargetScrollCheckListener onTargetScrollCheckListener;
+
     private OverScroller scroller;
 
     private Interpolator scrollInterpolator;
@@ -567,7 +568,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
      * @param distanceY move distance of Y
      */
     private void dellScroll(float distanceY) {
-        if (checkMoving(distanceY) || distanceY == 0) {
+        if (distanceY == 0) {
             return;
         }
         int tempDistance = (int) (moveDistance + distanceY);
@@ -617,16 +618,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             pullStateControl = true;
             onFooterPullHoldUnTrigger();
         }
-    }
-
-    /**
-     * check before header down and footer up moving
-     *
-     * @param distanceY just make sure the move direct
-     * @return need intercept
-     */
-    private boolean checkMoving(float distanceY) {
-        return (((distanceY > 0 && moveDistance == 0) || moveDistance > 0) && onDragIntercept != null && !onDragIntercept.onHeaderDownIntercept()) || (((distanceY < 0 && moveDistance == 0) || moveDistance < 0) && onDragIntercept != null && !onDragIntercept.onFooterUpIntercept());
     }
 
     private void overScrollDell(int type, int offset) {
@@ -974,10 +965,16 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public boolean isTargetAbleScrollUp() {
+        if (onTargetScrollCheckListener != null) {
+            return onTargetScrollCheckListener.onScrollUpAbleCheck();
+        }
         return PRLCommonUtils.canChildScrollUp(targetView);
     }
 
     public boolean isTargetAbleScrollDown() {
+        if (onTargetScrollCheckListener != null) {
+            return onTargetScrollCheckListener.onScrollDownAbleCheck();
+        }
         return PRLCommonUtils.canChildScrollDown(targetView);
     }
 
@@ -1277,20 +1274,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         void onPullReset();
     }
 
-    public interface OnDragIntercept {
-        boolean onHeaderDownIntercept();
+    public interface OnTargetScrollCheckListener {
+        boolean onScrollUpAbleCheck();
 
-        boolean onFooterUpIntercept();
-    }
-
-    public static class OnDragInterceptAdapter implements OnDragIntercept {
-        public boolean onHeaderDownIntercept() {
-            return true;
-        }
-
-        public boolean onFooterUpIntercept() {
-            return true;
-        }
+        boolean onScrollDownAbleCheck();
     }
 
     public interface OnRefreshListener {
@@ -1510,8 +1497,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         this.onRefreshListener = onRefreshListener;
     }
 
-    public void setOnDragIntercept(OnDragIntercept onDragIntercept) {
-        this.onDragIntercept = onDragIntercept;
+    public void setOnTargetScrollCheckListener(OnTargetScrollCheckListener onTargetScrollCheckListener) {
+        this.onTargetScrollCheckListener = onTargetScrollCheckListener;
     }
 
     public void setScrollInterpolator(Interpolator interpolator) {
