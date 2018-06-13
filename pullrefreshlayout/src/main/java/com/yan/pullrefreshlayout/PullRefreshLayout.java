@@ -206,6 +206,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     private OnRefreshListener onRefreshListener;
 
+    /**
+     * use this can instead of isTargetAbleScrollUp and isTargetAbleScrollDown
+     */
     private OnTargetScrollCheckListener onTargetScrollCheckListener;
 
     private OverScroller scroller;
