@@ -39,10 +39,10 @@ fun header from https://github.com/scwang90/SmartRefreshLayout
 <br/>
  <br/>
 
- 包裹ViewPager 参考： https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/CommonActivity5.java
+  include ViewPager demo： https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/CommonActivity5.java
   <br/>
   <br/>
-  包裹CoordinatorLayout 参考：https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/ScrollingActivity.java
+  include CoordinatorLayout demo：https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/ScrollingActivity.java
   <br/>
 
 ## 1.Summary
