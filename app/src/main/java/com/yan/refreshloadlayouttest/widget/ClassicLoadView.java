@@ -130,6 +130,14 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
                 Toast.makeText(getContext().getApplicationContext(), "you just touched me", Toast.LENGTH_SHORT).show();
             }
         });
+
+        tv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override public boolean onLongClick(View v) {
+                Toast.makeText(v.getContext(), "setOnLongClickListener   -- " + v, Toast.LENGTH_LONG)
+                    .show();
+                return false;
+            }
+        });
         loadingView = (AVLoadingIndicatorView) findViewById(R.id.loading_view);
 
         loadingView.setIndicator("LineScaleIndicator");

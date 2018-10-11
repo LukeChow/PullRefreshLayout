@@ -6,6 +6,7 @@ publish {
     groupId = 'com.yan'
     artifactId = 'pullrefreshlayout'
     publishVersion = '2.2.5'
+    desc = ""
     website = 'https://github.com/genius158/RefreshLayout/'
 }
 

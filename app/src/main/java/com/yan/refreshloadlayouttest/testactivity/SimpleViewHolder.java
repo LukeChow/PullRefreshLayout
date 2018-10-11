@@ -27,5 +27,13 @@ public class SimpleViewHolder extends RecyclerView.ViewHolder {
                 Toast.makeText(v.getContext().getApplicationContext(), "you just touched me", android.widget.Toast.LENGTH_SHORT).show();
             }
         });
+
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+          @Override public boolean onLongClick(View v) {
+            Toast.makeText(v.getContext(), "setOnLongClickListener   -- " + v, Toast.LENGTH_LONG)
+                .show();
+            return false;
+          }
+        });
     }
 }
