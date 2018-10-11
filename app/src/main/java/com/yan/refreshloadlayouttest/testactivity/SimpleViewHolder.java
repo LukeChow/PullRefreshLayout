@@ -32,7 +32,7 @@ public class SimpleViewHolder extends RecyclerView.ViewHolder {
           @Override public boolean onLongClick(View v) {
             Toast.makeText(v.getContext(), "setOnLongClickListener   -- " + v, Toast.LENGTH_LONG)
                 .show();
-            return false;
+            return true;
           }
         });
     }

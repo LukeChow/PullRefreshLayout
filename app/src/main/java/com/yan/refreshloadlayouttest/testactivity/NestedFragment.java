@@ -71,25 +71,25 @@ public class NestedFragment extends Fragment {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (vState.getVisibility() == View.VISIBLE) {
-                            vState.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            refreshLayout.setTargetView(recyclerView);
-                            refreshLayout.setFooterView(classicLoadView);
-                            refreshLayout.setLoadMoreEnable(true);
-                            refreshLayout.setAutoLoadingEnable(true);
-
-                            classicLoadView.holdReset();
-
-                        } else {
-                            refreshLayout.setTargetView(vState);
-                            vState.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.GONE);
-                            refreshLayout.cancelTouchEvent();
-                            refreshLayout.setFooterView(null);
-                            refreshLayout.setLoadMoreEnable(false);
-                            refreshLayout.setAutoLoadingEnable(false);
-                        }
+                        //if (vState.getVisibility() == View.VISIBLE) {
+                        //    vState.setVisibility(View.GONE);
+                        //    recyclerView.setVisibility(View.VISIBLE);
+                        //    refreshLayout.setTargetView(recyclerView);
+                        //    refreshLayout.setFooterView(classicLoadView);
+                        //    refreshLayout.setLoadMoreEnable(true);
+                        //    refreshLayout.setAutoLoadingEnable(true);
+                        //
+                        //    classicLoadView.holdReset();
+                        //
+                        //} else {
+                        //    refreshLayout.setTargetView(vState);
+                        //    vState.setVisibility(View.VISIBLE);
+                        //    recyclerView.setVisibility(View.GONE);
+                        //    refreshLayout.cancelTouchEvent();
+                        //    refreshLayout.setFooterView(null);
+                        //    refreshLayout.setLoadMoreEnable(false);
+                        //    refreshLayout.setAutoLoadingEnable(false);
+                        //}
                         refreshLayout.refreshComplete();
                     }
                 }, 3000);
