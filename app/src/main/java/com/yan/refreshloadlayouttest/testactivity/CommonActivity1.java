@@ -13,8 +13,9 @@ import com.yan.pullrefreshlayout.ShowGravity;
 import com.yan.refreshloadlayouttest.widget.HeaderOrFooter;
 import com.yan.refreshloadlayouttest.R;
 import com.yan.refreshloadlayouttest.widget.TwoRefreshHeader;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-public class CommonActivity1 extends BaseActivity {
+public class CommonActivity1 extends SwipeBackActivity {
     private static final String TAG = "CommonActivity1";
 
     protected PullRefreshLayout refreshLayout;

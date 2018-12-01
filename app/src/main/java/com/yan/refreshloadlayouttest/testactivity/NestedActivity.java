@@ -15,8 +15,9 @@ import com.yan.refreshloadlayouttest.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
-public class NestedActivity extends BaseActivity {
+public class NestedActivity extends SwipeBackActivity {
 //    private static final String TAG = "NestedActivity";
 //    private List<SimpleItem> datas;
 //    private PullRefreshLayout refreshLayout;
