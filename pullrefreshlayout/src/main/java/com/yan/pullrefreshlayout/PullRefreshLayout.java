@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
@@ -32,9 +31,9 @@ import android.widget.ScrollView;
  */
 public class PullRefreshLayout extends ViewGroup
     implements NestedScrollingParent, NestedScrollingChild {
-  private final NestedScrollingParentHelper parentHelper;
-  private final NestedScrollingChildHelper childHelper;
-  private final int[] parentScrollConsumed = new int[2];
+  private NestedScrollingParentHelper parentHelper;
+  private NestedScrollingChildHelper childHelper;
+  private int[] parentScrollConsumed = new int[2];
   final int[] parentOffsetInWindow = new int[2];
 
   /**
@@ -203,13 +202,13 @@ public class PullRefreshLayout extends ViewGroup
   //--------------------END|| values can modify in class only ||END------------------
   //--------------------END| values part |END------------------
 
-  private final ShowGravity showGravity;
-  private final GeneralPullHelper generalPullHelper;
+  private ShowGravity showGravity;
+  private GeneralPullHelper generalPullHelper;
 
   private OnRefreshListener onRefreshListener;
 
   /**
-   * use this can instead of isTargetAbleScrollUp and isTargetAbleScrollDown
+   * use this can instead of isTargetScrollUpAble and isTargetScrollDownAble
    */
   private OnTargetScrollCheckListener onTargetScrollCheckListener;
 
@@ -348,6 +347,9 @@ public class PullRefreshLayout extends ViewGroup
   }
 
   @Override public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (!isEnabled()) {
+      return super.dispatchTouchEvent(ev);
+    }
     try {//dell Exception - java.lang.IllegalArgumentException: pointerIndex out of range
       return dispatchTouchAble && ((!dispatchPullTouchAble && super.dispatchTouchEvent(ev))
           || generalPullHelper.dispatchTouchEvent(ev));
@@ -427,11 +429,7 @@ public class PullRefreshLayout extends ViewGroup
   }
 
   @Override public void requestDisallowInterceptTouchEvent(boolean b) {
-    if ((android.os.Build.VERSION.SDK_INT >= 21 || !(targetView instanceof AbsListView)) && (
-        targetView == null
-            || ViewCompat.isNestedScrollingEnabled(targetView))) {
-      super.requestDisallowInterceptTouchEvent(b);
-    }
+    super.requestDisallowInterceptTouchEvent(b);
   }
 
   @Override public void computeScroll() {
@@ -449,12 +447,12 @@ public class PullRefreshLayout extends ViewGroup
       }
 
       if (!isOverScrollTrigger
-          && !isTargetAbleScrollUp()
+          && !isTargetScrollUpAble()
           && currScrollOffset < 0
           && moveDistance >= 0) {
         overScrollDell(1, currScrollOffset);
       } else if (!isOverScrollTrigger
-          && !isTargetAbleScrollDown()
+          && !isTargetScrollDownAble()
           && currScrollOffset > 0
           && moveDistance <= 0) {
         overScrollDell(2, currScrollOffset);
@@ -466,12 +464,9 @@ public class PullRefreshLayout extends ViewGroup
   }
 
   private boolean scrollOver(int currScrollOffset) {
-    if (pullTwinkEnable
+    return pullTwinkEnable
         && (overScrollFlingState() == 1 || overScrollFlingState() == 2)
-        && overScrollBackDell(overScrollFlingState(), currScrollOffset)) {
-      return true;
-    }
-    return false;
+        && overScrollBackDell(overScrollFlingState(), currScrollOffset);
   }
 
   /**
@@ -670,8 +665,8 @@ public class PullRefreshLayout extends ViewGroup
   private void overScrollDell(int type, int offset) {
     if (parentOffsetInWindow[1] != 0 || pullTwinkEnable
         // if pullTwinkEnable is true , while fling back the target is able to over scroll just intercept that
-        && ((!isTargetAbleScrollUp() && isTargetAbleScrollDown()) && moveDistance < 0
-        || (isTargetAbleScrollUp() && !isTargetAbleScrollDown()) && moveDistance > 0)) {
+        && ((!isTargetScrollUpAble() && isTargetScrollDownAble()) && moveDistance < 0
+        || (isTargetScrollUpAble() && !isTargetScrollDownAble()) && moveDistance > 0)) {
       return;
     }
 
@@ -1039,14 +1034,14 @@ public class PullRefreshLayout extends ViewGroup
     }
   }
 
-  public boolean isTargetAbleScrollUp() {
+  public boolean isTargetScrollUpAble() {
     if (onTargetScrollCheckListener != null) {
       return onTargetScrollCheckListener.onScrollUpAbleCheck();
     }
     return PRLCommonUtils.canChildScrollUp(targetView);
   }
 
-  public boolean isTargetAbleScrollDown() {
+  public boolean isTargetScrollDownAble() {
     if (onTargetScrollCheckListener != null) {
       return onTargetScrollCheckListener.onScrollDownAbleCheck();
     }
@@ -1056,7 +1051,7 @@ public class PullRefreshLayout extends ViewGroup
   /**
    * state animation
    */
-  private final PullAnimatorListenerAdapter resetHeaderAnimationListener =
+  private PullAnimatorListenerAdapter resetHeaderAnimationListener =
       new PullAnimatorListenerAdapter() {
         @Override protected void animationStart() {
           if (isResetTrigger && isRefreshing() && !isHoldingFinishTrigger && onHeaderPullFinish(
@@ -1072,7 +1067,7 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final PullAnimatorListenerAdapter resetFooterAnimationListener =
+  private PullAnimatorListenerAdapter resetFooterAnimationListener =
       new PullAnimatorListenerAdapter() {
         @Override protected void animationStart() {
           if (isResetTrigger && isLoading() && !isHoldingFinishTrigger && onFooterPullFinish(
@@ -1088,7 +1083,7 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final AnimatorListenerAdapter refreshStartAnimationListener =
+  private AnimatorListenerAdapter refreshStartAnimationListener =
       new PullAnimatorListenerAdapter() {
         @Override public void onAnimationEnd(Animator animation) {
           super.onAnimationEnd(animation);
@@ -1104,7 +1099,7 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final AnimatorListenerAdapter loadingStartAnimationListener =
+  private AnimatorListenerAdapter loadingStartAnimationListener =
       new PullAnimatorListenerAdapter() {
         @Override public void onAnimationEnd(Animator animation) {
           super.onAnimationEnd(animation);
@@ -1120,26 +1115,25 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final AnimatorListenerAdapter overScrollAnimatorListener =
-      new PullAnimatorListenerAdapter() {
-        @Override public void onAnimationStart(Animator animation) {
-          super.onAnimationStart(animation);
-          onNestedScrollAccepted(null, null, 2);
-        }
+  private AnimatorListenerAdapter overScrollAnimatorListener = new PullAnimatorListenerAdapter() {
+    @Override public void onAnimationStart(Animator animation) {
+      super.onAnimationStart(animation);
+      onNestedScrollAccepted(null, null, 2);
+    }
 
-        @Override public void onAnimationEnd(Animator animation) {
-          super.onAnimationEnd(animation);
-          handleAction();
-          onStopNestedScroll(null);
-          overScrollState = 0;
-          isOverScrollTrigger = false;
-        }
-      };
+    @Override public void onAnimationEnd(Animator animation) {
+      super.onAnimationEnd(animation);
+      handleAction();
+      onStopNestedScroll(null);
+      overScrollState = 0;
+      isOverScrollTrigger = false;
+    }
+  };
 
   /**
    * animator update listener
    */
-  private final ValueAnimator.AnimatorUpdateListener headerAnimationUpdate =
+  private ValueAnimator.AnimatorUpdateListener headerAnimationUpdate =
       new ValueAnimator.AnimatorUpdateListener() {
         @Override public void onAnimationUpdate(ValueAnimator animation) {
           moveChildren((Integer) animation.getAnimatedValue());
@@ -1147,7 +1141,7 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final ValueAnimator.AnimatorUpdateListener footerAnimationUpdate =
+  private ValueAnimator.AnimatorUpdateListener footerAnimationUpdate =
       new ValueAnimator.AnimatorUpdateListener() {
         @Override public void onAnimationUpdate(ValueAnimator animation) {
           moveChildren((Integer) animation.getAnimatedValue());
@@ -1155,7 +1149,7 @@ public class PullRefreshLayout extends ViewGroup
         }
       };
 
-  private final ValueAnimator.AnimatorUpdateListener overScrollAnimatorUpdate =
+  private ValueAnimator.AnimatorUpdateListener overScrollAnimatorUpdate =
       new ValueAnimator.AnimatorUpdateListener() {
         @Override public void onAnimationUpdate(ValueAnimator animation) {
           int offsetY = (int) ((Integer) animation.getAnimatedValue() * overScrollDampingRatio);
@@ -1191,8 +1185,8 @@ public class PullRefreshLayout extends ViewGroup
   }
 
   void onScroll(int dy) {
-    if ((generalPullHelper.isDragMoveTrendDown && !isTargetAbleScrollUp())
-        || (!generalPullHelper.isDragMoveTrendDown && !isTargetAbleScrollDown())) {
+    if ((generalPullHelper.isDragMoveTrendDown && !isTargetScrollUpAble())
+        || (!generalPullHelper.isDragMoveTrendDown && !isTargetScrollDownAble())) {
       onScrollAny(dy);
     }
   }
@@ -1424,7 +1418,7 @@ public class PullRefreshLayout extends ViewGroup
    */
   public final void moveChildren(int distance) {
     moveDistance = distance;
-    if (moveDistance <= 0 && !isTargetAbleScrollDown()) {
+    if (moveDistance <= 0 && !isTargetScrollDownAble()) {
       autoLoadingTrigger();
     }
     if (isMoveWithFooter) {

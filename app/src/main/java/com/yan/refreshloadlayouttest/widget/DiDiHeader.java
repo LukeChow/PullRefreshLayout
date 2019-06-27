@@ -121,7 +121,7 @@ public class DiDiHeader extends FrameLayout implements PullRefreshLayout.OnPullL
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(0);
-                float offset = viewHolder != null && (prl.isTargetAbleScrollDown() || prl.isTargetAbleScrollUp()) ? viewHolder.itemView.getTop() : 0;
+                float offset = viewHolder != null && (prl.isTargetScrollDownAble() || prl.isTargetScrollUpAble()) ? viewHolder.itemView.getTop() : 0;
                 getChildAt(0).setTranslationY(-fixedHeader.getHeight() + Math.max(0, offset));
             }
         };

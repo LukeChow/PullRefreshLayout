@@ -21,6 +21,9 @@ public final class PRLCommonUtils {
    * scroll up. Override this if the child view is a custom view.
    */
   public static boolean canChildScrollUp(View targetView) {
+    if (targetView == null) {
+      return false;
+    }
     if (targetView instanceof ListView) {
       return ListViewCompat.canScrollList((ListView) targetView, -1);
     }
@@ -32,6 +35,9 @@ public final class PRLCommonUtils {
    * scroll down. Override this if the child view is a custom view.
    */
   public static boolean canChildScrollDown(View targetView) {
+    if (targetView == null) {
+      return false;
+    }
     if (targetView instanceof ListView) {
       return ListViewCompat.canScrollList((ListView) targetView, 1);
     }
@@ -41,7 +47,7 @@ public final class PRLCommonUtils {
   /**
    * common utils
    */
-  public static int getWindowHeight(Context context) {
+  static int getWindowHeight(Context context) {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     if (windowManager != null) {

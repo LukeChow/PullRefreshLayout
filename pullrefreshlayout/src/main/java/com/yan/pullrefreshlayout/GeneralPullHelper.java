@@ -291,8 +291,8 @@ class GeneralPullHelper {
     if ((!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent)
         && (movingY > 0 && prl.moveDistance > 0 || movingY < 0 && prl.moveDistance < 0
         || (isDragHorizontal && (prl.moveDistance != 0
-        || !prl.isTargetAbleScrollUp() && movingY < 0
-        || !prl.isTargetAbleScrollDown() && movingY > 0)))) {
+        || !prl.isTargetScrollUpAble() && movingY < 0
+        || !prl.isTargetScrollDownAble() && movingY > 0)))) {
       isDispatchTouchCancel = true;
       prl.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
     }
@@ -313,7 +313,7 @@ class GeneralPullHelper {
     if ((!prl.isTargetNestedScrollingEnabled() || !prl.isMoveWithContent)
         && isDragVertical
         && isLayoutDragMoved) {
-      if (!prl.isTargetAbleScrollDown() && !prl.isTargetAbleScrollUp()) {
+      if (!prl.isTargetScrollDownAble() && !prl.isTargetScrollUpAble()) {
         prl.dispatchSuperTouchEvent(getReEvent(event, MotionEvent.ACTION_CANCEL));
       } else if (prl.targetView instanceof ViewGroup) {
         ViewGroup vp = (ViewGroup) prl.targetView;

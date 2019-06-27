@@ -198,7 +198,7 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
             RecyclerView.ViewHolder viewHolder = rv.findViewHolderForAdapterPosition(layoutManager.getItemCount() - 1);
             float offset = 0;
             if (viewHolder != null) {
-                offset = refreshLayout.isTargetAbleScrollDown() || refreshLayout.isTargetAbleScrollUp() ?
+                offset = refreshLayout.isTargetScrollDownAble() || refreshLayout.isTargetScrollUpAble() ?
                         viewHolder.itemView.getBottom() - refreshLayout.getTargetView().getHeight() : 0;
             }
             setTranslationY(getHeight() + refreshLayout.getMoveDistance() + offset);
@@ -265,7 +265,7 @@ public class ClassicHoldLoadView extends FrameLayout implements PullRefreshLayou
         postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp()) {
+                if (!refreshLayout.isTargetScrollDownAble() && !refreshLayout.isTargetScrollUpAble()) {
                     if (!refreshLayout.isRefreshing()) {
                         refreshLayout.autoLoading();
                     }

@@ -294,7 +294,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.2.4 ：剔除反射部分，恢复header划出的原本处理
  <br/>
- version:2.2.5 ：增加isTargetAbleScrollUp和isTargetAbleScrollDown拦截监听
+ version:2.2.5 ：增加isTargetScrollUpAble和isTargetScrollDownAble拦截监听
  <br/>
  version:2.2.6 ：fix issue https://github.com/genius158/PullRefreshLayout/issues/25
  
@@ -309,7 +309,7 @@ compile 'com.yan:pullrefreshlayout:(↖)'
 解决办法：可复写刷新判断
 ```
     @Override
-    public boolean isTargetAbleScrollUp() {
+    public boolean isTargetScrollUpAble() {
           ...  
 ```
 

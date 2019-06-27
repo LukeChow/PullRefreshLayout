@@ -190,7 +190,7 @@ public class ClassicLoadView extends FrameLayout implements PullRefreshLayout.On
         /*
          * 内容没有铺满时继续执行自动加载
          */
-        if (!refreshLayout.isTargetAbleScrollDown() && !refreshLayout.isTargetAbleScrollUp()) {
+        if (!refreshLayout.isTargetScrollDownAble() && !refreshLayout.isTargetScrollUpAble()) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
