@@ -2,13 +2,14 @@ package com.yan.pullrefreshlayout;
 
 import android.support.annotation.IntDef;
 import android.view.ViewGroup;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
  * refresh show helper
- * Created by yan on 2017/7/7
+ *
+ * @author yanxianwei
+ * @date 2017/7/7
  */
 public final class ShowGravity {
 
@@ -16,12 +17,9 @@ public final class ShowGravity {
    * @ShowState
    */
   @IntDef({
-      FOLLOW, FOLLOW_PLACEHOLDER, FOLLOW_CENTER
-      , PLACEHOLDER, PLACEHOLDER_FOLLOW, PLACEHOLDER_CENTER
-      , CENTER, CENTER_FOLLOW
-  })
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ShowState {
+      FOLLOW, FOLLOW_PLACEHOLDER, FOLLOW_CENTER, PLACEHOLDER, PLACEHOLDER_FOLLOW,
+      PLACEHOLDER_CENTER, CENTER, CENTER_FOLLOW
+  }) @Retention(RetentionPolicy.SOURCE) public @interface ShowState {
   }
 
   public static final int FOLLOW = 0;
@@ -72,10 +70,11 @@ public final class ShowGravity {
           prl.headerView.setTranslationY(moveDistance / 2);
           break;
         case CENTER_FOLLOW:
-          prl.headerView.setTranslationY(moveDistance <= prl.refreshTriggerDistance
-              ? moveDistance / 2 : moveDistance - prl.refreshTriggerDistance / 2);
+          prl.headerView.setTranslationY(
+              moveDistance <= prl.refreshTriggerDistance ? moveDistance / 2
+                  : moveDistance - prl.refreshTriggerDistance / 2);
           break;
-          default:
+        default:
       }
     }
   }
@@ -87,8 +86,8 @@ public final class ShowGravity {
           prl.footerView.setTranslationY(moveDistance);
           break;
         case FOLLOW_PLACEHOLDER:
-          prl.footerView.setTranslationY(moveDistance >= -prl.loadTriggerDistance
-              ? moveDistance : -prl.loadTriggerDistance);
+          prl.footerView.setTranslationY(
+              moveDistance >= -prl.loadTriggerDistance ? moveDistance : -prl.loadTriggerDistance);
           break;
         case FOLLOW_CENTER:
           prl.footerView.setTranslationY(
@@ -96,21 +95,24 @@ public final class ShowGravity {
                   + (prl.loadTriggerDistance + moveDistance) / 2 : moveDistance);
           break;
         case PLACEHOLDER_CENTER:
-          prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
-              ? (moveDistance + prl.loadTriggerDistance) / 2 : 0);
+          prl.footerView.setTranslationY(
+              moveDistance <= -prl.loadTriggerDistance ? (moveDistance + prl.loadTriggerDistance)
+                  / 2 : 0);
           break;
         case PLACEHOLDER_FOLLOW:
-          prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
-              ? moveDistance + prl.loadTriggerDistance : 0);
+          prl.footerView.setTranslationY(
+              moveDistance <= -prl.loadTriggerDistance ? moveDistance + prl.loadTriggerDistance
+                  : 0);
           break;
         case CENTER:
           prl.footerView.setTranslationY(moveDistance / 2);
           break;
         case CENTER_FOLLOW:
-          prl.footerView.setTranslationY(moveDistance <= -prl.loadTriggerDistance
-              ? moveDistance + prl.loadTriggerDistance / 2 : moveDistance / 2);
+          prl.footerView.setTranslationY(
+              moveDistance <= -prl.loadTriggerDistance ? moveDistance + prl.loadTriggerDistance / 2
+                  : moveDistance / 2);
           break;
-          default:
+        default:
       }
     }
   }
@@ -125,27 +127,26 @@ public final class ShowGravity {
         case FOLLOW:
         case FOLLOW_PLACEHOLDER:
         case FOLLOW_CENTER:
-          prl.headerView.layout(paddingLeft + lp.leftMargin
-              , top + lp.topMargin + paddingTop - prl.headerView.getMeasuredHeight()
-              , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
-              , top + lp.topMargin + paddingTop);
+          prl.headerView.layout(paddingLeft + lp.leftMargin,
+              top + lp.topMargin + paddingTop - prl.headerView.getMeasuredHeight(),
+              paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth(),
+              top + lp.topMargin + paddingTop);
           break;
         case PLACEHOLDER:
         case PLACEHOLDER_CENTER:
         case PLACEHOLDER_FOLLOW:
-          prl.headerView.layout(paddingLeft + lp.leftMargin
-              , top + paddingTop + lp.topMargin
-              , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
-              , top + paddingTop + lp.topMargin + prl.headerView.getMeasuredHeight());
+          prl.headerView.layout(paddingLeft + lp.leftMargin, top + paddingTop + lp.topMargin,
+              paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth(),
+              top + paddingTop + lp.topMargin + prl.headerView.getMeasuredHeight());
           break;
         case CENTER:
         case CENTER_FOLLOW:
-          prl.headerView.layout(paddingLeft + lp.leftMargin
-              , top + paddingTop - prl.headerView.getMeasuredHeight() / 2
-              , paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth()
-              , top + paddingTop + prl.headerView.getMeasuredHeight() / 2);
+          prl.headerView.layout(paddingLeft + lp.leftMargin,
+              top + paddingTop - prl.headerView.getMeasuredHeight() / 2,
+              paddingLeft + lp.leftMargin + prl.headerView.getMeasuredWidth(),
+              top + paddingTop + prl.headerView.getMeasuredHeight() / 2);
           break;
-          default:
+        default:
       }
     }
     if (prl.footerView != null) {
@@ -157,27 +158,26 @@ public final class ShowGravity {
         case FOLLOW:
         case FOLLOW_PLACEHOLDER:
         case FOLLOW_CENTER:
-          prl.footerView.layout(lp.leftMargin + paddingLeft
-              , bottom - lp.topMargin - paddingBottom
-              , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-              , bottom - lp.topMargin - paddingBottom + prl.footerView.getMeasuredHeight());
+          prl.footerView.layout(lp.leftMargin + paddingLeft, bottom - lp.topMargin - paddingBottom,
+              lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth(),
+              bottom - lp.topMargin - paddingBottom + prl.footerView.getMeasuredHeight());
           break;
         case PLACEHOLDER:
         case PLACEHOLDER_CENTER:
         case PLACEHOLDER_FOLLOW:
-          prl.footerView.layout(lp.leftMargin + paddingLeft
-              , bottom - lp.bottomMargin - paddingBottom - prl.footerView.getMeasuredHeight()
-              , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-              , bottom - lp.bottomMargin - paddingBottom);
+          prl.footerView.layout(lp.leftMargin + paddingLeft,
+              bottom - lp.bottomMargin - paddingBottom - prl.footerView.getMeasuredHeight(),
+              lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth(),
+              bottom - lp.bottomMargin - paddingBottom);
           break;
         case CENTER:
         case CENTER_FOLLOW:
-          prl.footerView.layout(lp.leftMargin + paddingLeft
-              , bottom - paddingBottom - prl.footerView.getMeasuredHeight() / 2
-              , lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth()
-              , bottom - paddingBottom + prl.footerView.getMeasuredHeight() / 2);
+          prl.footerView.layout(lp.leftMargin + paddingLeft,
+              bottom - paddingBottom - prl.footerView.getMeasuredHeight() / 2,
+              lp.leftMargin + paddingLeft + prl.footerView.getMeasuredWidth(),
+              bottom - paddingBottom + prl.footerView.getMeasuredHeight() / 2);
           break;
-          default:
+        default:
       }
     }
   }

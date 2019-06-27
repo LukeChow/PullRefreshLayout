@@ -9,7 +9,8 @@ import android.view.WindowManager;
 import android.widget.ListView;
 
 /**
- * Created by yan on 2017/5/21
+ * @author yanxianwei
+ * @date 2017/5/21
  */
 public final class PRLCommonUtils {
 

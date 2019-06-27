@@ -2,6 +2,9 @@ package com.yan.pullrefreshlayout;
 
 import android.view.animation.Interpolator;
 
+/**
+ * @author yanxianwei
+ */
 public final class ViscousInterpolator implements Interpolator {
   /**
    * Controls the viscous fluid effect (how much of it).

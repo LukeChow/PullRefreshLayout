@@ -216,6 +216,8 @@ class GeneralPullHelper {
         // get know the touchState first
         dragState = 0;
 
+        reDispatchUpEvent(ev);
+      case MotionEvent.ACTION_CANCEL:
         velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
         float velocityY = (isDragMoveTrendDown ? 1 : -1) * Math.abs(
             velocityTracker.getYVelocity(activePointerId));
@@ -225,8 +227,6 @@ class GeneralPullHelper {
         }
         recycleVelocityTracker();
 
-        reDispatchUpEvent(ev);
-      case MotionEvent.ACTION_CANCEL:
         prl.onStopScroll();
 
         isReDispatchMoveEvent = false;
