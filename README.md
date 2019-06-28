@@ -46,7 +46,7 @@ fun header 来自from https://github.com/scwang90/SmartRefreshLayout
 包裹ViewPager 参考： https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/CommonActivity5.java
  <br/>
  <br/>
- 包裹CoordinatorLayout 参考：https://github.com/genius158/PullRefreshLayout/blob/developer/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/ScrollingActivity.java
+ 包裹CoordinatorLayout 参考：https://github.com/genius158/PullRefreshLayout/blob/master/app/src/main/java/com/yan/refreshloadlayouttest/testactivity/ScrollingActivity.java
  <br/>
 
 ## 1.概述
