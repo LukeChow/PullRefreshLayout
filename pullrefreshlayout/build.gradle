@@ -5,7 +5,7 @@ publish {
     userOrg = 'yan157'
     groupId = 'com.yan'
     artifactId = 'pullrefreshlayout'
-    publishVersion = '2.2.6'
+    publishVersion = '2.2.7'
     desc = ""
     website = 'https://github.com/genius158/RefreshLayout/'
 }
@@ -34,6 +34,5 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    provided 'com.android.support:recyclerview-v7:27.0.2'
+    compileOnly 'com.android.support:recyclerview-v7:27.0.2'
 }
