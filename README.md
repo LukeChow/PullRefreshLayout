@@ -298,7 +298,9 @@ compile 'com.yan:pullrefreshlayout:(↖)'
  <br/>
  version:2.2.6 ：fix issue https://github.com/genius158/PullRefreshLayout/issues/25
  <br/>
- version:2.2.7 ：增强滑动体验
+ version:2.2.7 ：增强滑动体验 
+ <br/>
+ version:3.x ：androidx
  
 ## 4.问题 FAQ(对于本库的使用有问题，都可以在github上提issue，本人重度github控，一天最最少半小时泡在github上)
  1.VLayout 设置悬浮后，不可下拉（问题可见https://github.com/alibaba/vlayout/blob/master/docs/VLayoutFAQ.md）
