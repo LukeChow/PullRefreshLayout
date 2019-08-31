@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:prl_headerFront="true"
+        app:prl_twinkEnable="false"
         app:prl_headerShowGravity="follow"
         app:prl_pullDownMaxDistance="120dp"
         app:prl_pullUpMaxDistance="200dp">
@@ -211,7 +212,7 @@
 
     </com.yan.pullrefreshlayout.PullRefreshLayout>
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -221,7 +222,7 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <android.support.v7.widget.ButtonBarLayout
+        <androidx.appcompat.widget.ButtonBarLayout
             android:id="@+id/buttonBarLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -235,6 +236,6 @@
                 android:text="PullRefreshLayout"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
-        </android.support.v7.widget.ButtonBarLayout>
-    </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.ButtonBarLayout>
+    </androidx.appcompat.widget.Toolbar>
 </FrameLayout>

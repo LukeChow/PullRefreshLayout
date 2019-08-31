@@ -1,14 +1,13 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;

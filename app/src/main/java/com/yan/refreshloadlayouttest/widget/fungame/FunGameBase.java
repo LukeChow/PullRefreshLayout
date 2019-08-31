@@ -3,8 +3,7 @@ package com.yan.refreshloadlayouttest.widget.fungame;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.support.v4.view.ViewCompat;
-import android.util.Log;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 
 import com.yan.pullrefreshlayout.PullRefreshLayout;

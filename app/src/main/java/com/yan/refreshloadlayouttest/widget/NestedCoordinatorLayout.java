@@ -5,10 +5,10 @@ package com.yan.refreshloadlayouttest.widget;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingChildHelper;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.NestedScrollingChildHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;

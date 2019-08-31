@@ -1,9 +1,9 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 

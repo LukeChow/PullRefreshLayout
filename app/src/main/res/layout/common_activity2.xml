@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <android.support.v7.widget.CardView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="160dp"
                             android:layout_margin="10dp">
@@ -54,9 +54,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop" />
-                        </android.support.v7.widget.CardView>
+                        </androidx.cardview.widget.CardView>
 
-                        <android.support.v7.widget.CardView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="160dp"
                             android:layout_margin="10dp">
@@ -66,9 +66,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop" />
-                        </android.support.v7.widget.CardView>
+                        </androidx.cardview.widget.CardView>
 
-                        <android.support.v7.widget.CardView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="200dp"
                             android:layout_height="160dp"
                             android:layout_margin="10dp">
@@ -78,7 +78,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop" />
-                        </android.support.v7.widget.CardView>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -89,7 +89,7 @@
                     android:padding="10dp"
                     android:text="vertical" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_margin="10dp">
@@ -99,11 +99,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop" />
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -114,7 +114,7 @@
                 android:gravity="center"
                 android:text="header"
                 android:textSize="18sp" />
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </FrameLayout>
 
 </com.yan.pullrefreshlayout.PullRefreshLayout>

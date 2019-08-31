@@ -1,15 +1,9 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 
-import com.yan.pullrefreshlayout.PullRefreshLayout;
 import com.yan.refreshloadlayouttest.R;
-import com.yan.refreshloadlayouttest.widget.DiDiHeader;
-import com.yan.refreshloadlayouttest.widget.DiDiListHeader;
 
 public class DiDiListViewActivity extends BaseActivity {
 //

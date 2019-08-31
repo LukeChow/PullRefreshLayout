@@ -1,8 +1,6 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
-import android.support.v7.app.AppCompatActivity;
-
-import com.yan.refreshloadlayouttest.App;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by yan on 2017/9/20.

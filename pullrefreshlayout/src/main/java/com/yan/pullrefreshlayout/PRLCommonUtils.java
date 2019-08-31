@@ -1,7 +1,7 @@
 package com.yan.pullrefreshlayout;
 
 import android.content.Context;
-import android.support.v4.widget.ListViewCompat;
+import androidx.core.widget.ListViewCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;

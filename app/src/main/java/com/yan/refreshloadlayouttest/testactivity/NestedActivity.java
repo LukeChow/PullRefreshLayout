@@ -1,20 +1,10 @@
 package com.yan.refreshloadlayouttest.testactivity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.FrameLayout;
+import androidx.annotation.Nullable;
 
-import com.yan.pullrefreshlayout.PullRefreshLayout;
-import com.yan.refreshloadlayouttest.widget.ClassicHoldLoadView;
 import com.yan.refreshloadlayouttest.R;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
 public class NestedActivity extends SwipeBackActivity {

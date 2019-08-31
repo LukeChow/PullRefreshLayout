@@ -4,12 +4,12 @@
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:prl_autoLoadingEnable="true"
+    app:prl_autoLoadingEnable="false"
     app:prl_downOverScrollMaxTriggerOffset="65dp"
     app:prl_dragDampingRatio="0.6"
     app:prl_footerShowGravity="follow"
     app:prl_headerShowGravity="placeholder"
-    app:prl_loadMoreEnable="true"
+    app:prl_loadMoreEnable="false"
     app:prl_loadTriggerDistance="70dp"
     app:prl_overScrollAdjustValue="1"
     app:prl_overScrollDampingRatio="0.35"
@@ -21,20 +21,20 @@
     app:prl_resetAnimationDuring="400"
     app:prl_targetId="@+id/recyclerView"
     app:prl_topOverScrollMaxTriggerOffset="65dp"
-    app:prl_twinkEnable="true">
+    app:prl_twinkEnable="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#f1f1f1"
             android:overScrollMode="never" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:text="header"
                 android:textSize="18sp" />
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/no_data"
