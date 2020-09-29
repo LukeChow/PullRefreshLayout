@@ -578,7 +578,7 @@ public class PullRefreshLayout extends ViewGroup
   private void autoRefreshTrigger() {
     if (autoRefreshEnable && !isHoldingTrigger && onRefreshListener != null) {
       isHoldingTrigger = true;
-      loadingStartAnimationListener.onAnimationEnd(null);
+      refreshStartAnimationListener.onAnimationEnd(null);
     }
   }
 
