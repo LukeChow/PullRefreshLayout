@@ -116,6 +116,7 @@ public class PullRefreshLayout extends ViewGroup
   private boolean pullTwinkEnable = true;
   private boolean pullLoadMoreEnable = false;
   private boolean autoLoadingEnable = false;
+  private boolean autoRefreshEnable = false;
 
   /**
    * dispatch control
@@ -559,6 +560,7 @@ public class PullRefreshLayout extends ViewGroup
 
   private void onTopOverScroll() {
     overScrollState = 1;
+    autoRefreshTrigger();
   }
 
   private void onBottomOverScroll() {
@@ -572,9 +574,16 @@ public class PullRefreshLayout extends ViewGroup
       loadingStartAnimationListener.onAnimationEnd(null);
     }
   }
+  
+  private void autoRefreshTrigger() {
+    if (autoRefreshEnable && !isHoldingTrigger && onRefreshListener != null) {
+      isHoldingTrigger = true;
+      loadingStartAnimationListener.onAnimationEnd(null);
+    }
+  }
 
   private void readyScroller() {
-    if (scroller == null && (pullTwinkEnable || autoLoadingEnable)) {
+    if (scroller == null && (pullTwinkEnable || autoLoadingEnable || autoRefreshEnable)) {
       if (targetView instanceof RecyclerView) {
         scroller = new OverScroller(getContext(),
             scrollInterpolator == null ? scrollInterpolator = getRecyclerDefaultInterpolator()
@@ -1233,7 +1242,7 @@ public class PullRefreshLayout extends ViewGroup
   }
 
   void onPreFling(float velocityY) {
-    if ((pullTwinkEnable || autoLoadingEnable) && overScrollFlingState() != -1) {
+    if ((pullTwinkEnable || autoLoadingEnable || autoRefreshEnable) && overScrollFlingState() != -1) {
       readyScroller();
       lastScrollY = 0;
       scroller.fling(0, 0, 0, (int) velocityY, 0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -1421,6 +1430,9 @@ public class PullRefreshLayout extends ViewGroup
     if (moveDistance <= 0 && !isTargetScrollDownAble()) {
       autoLoadingTrigger();
     }
+    if (moveDistance >= 0 && !isTargetScrollUpAble()) {
+      autoRefreshTrigger();
+    }
     if (isMoveWithFooter) {
       showGravity.dellFooterMoving(moveDistance);
     }
@@ -1551,7 +1563,7 @@ public class PullRefreshLayout extends ViewGroup
     this.targetView = targetView;
     cancelTouchEvent();
     dellNestedScrollCheck();
-    if ((targetView instanceof RecyclerView) && (pullTwinkEnable || autoLoadingEnable)) {
+    if ((targetView instanceof RecyclerView) && (pullTwinkEnable || autoLoadingEnable || autoRefreshEnable)) {
       if (scrollInterpolator == null) {
         scroller =
             new OverScroller(getContext(), scrollInterpolator = getRecyclerDefaultInterpolator());
@@ -1635,6 +1647,10 @@ public class PullRefreshLayout extends ViewGroup
 
   public void setAutoLoadingEnable(boolean ableAutoLoading) {
     autoLoadingEnable = ableAutoLoading;
+  }
+  
+  public void setAutoRefreshEnable(boolean ableAutoRefresh) {
+    autoRefreshEnable = ableAutoRefresh;
   }
 
   public void setRefreshShowGravity(@ShowGravity.ShowState int headerShowGravity,
@@ -1757,6 +1773,10 @@ public class PullRefreshLayout extends ViewGroup
 
   public boolean isAutoLoadingEnable() {
     return autoLoadingEnable;
+  }
+  
+  public boolean isAutoRefreshEnable() {
+    return autoRefreshEnable;
   }
 
   public boolean isTwinkEnable() {
